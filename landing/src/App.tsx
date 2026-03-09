@@ -4,8 +4,8 @@ type Lang = "zh" | "en"
 
 const t = {
   heroSub: {
-    zh: "用大厂 PUA 话术驱动 Claude Code 穷尽所有方案才允许放弃。",
-    en: "Uses corporate PUA rhetoric to force Claude Code into exhaustive debugging before giving up.",
+    zh: "用中西大厂 PUA 话术驱动 Claude Code 穷尽所有方案才允许放弃。适用于任何任务类型。",
+    en: "Uses corporate PUA rhetoric (Chinese + Western) to force Claude Code into exhaustive problem-solving. Works for any task type.",
   },
   heroSub2: {
     zh: "PUA 让 AI 不敢放弃，方法论让 AI 有能力不放弃，能动性鞭策让 AI 主动出击而不是被动等待。",
@@ -26,11 +26,13 @@ const t = {
   shieldTitle: { zh: "抗合理化护盾", en: "Anti-Rationalization Shield" },
   shieldDesc: { zh: "每种 AI 借口都已预先识别并映射到 PUA 等级。", en: "Every AI excuse is pre-identified and mapped to a PUA level." },
   benchTitle: { zh: "各厂 PUA 风格 Benchmark", en: "Corporate PUA Style Benchmark" },
-  benchDesc: { zh: "基于 9 类真实 bug 场景 × 18 组对照测试（with/without skill），测量行为差异。含 3 组能动性专项测试。", en: "Based on 9 real bug scenarios × 18 controlled tests (with/without skill), measuring behavioral differences." },
+  benchDesc: { zh: "10 种风味的强项和适用场景。基于 9 类真实 bug 场景 × 18 组对照测试（with/without skill）验证。", en: "Strengths and use cases for all 10 flavors. Verified across 9 real scenarios × 18 controlled tests." },
   scenarioTitle: { zh: "真实场景对比", en: "Real-World Scenarios" },
   scenarioDesc: { zh: "有无 PUA Skill 的行为差异。", en: "Behavior comparison with and without PUA Skill." },
   corpTitle: { zh: "大厂 PUA 风格详解", en: "Corporate PUA Styles" },
-  corpDesc: { zh: "四种大厂文化，四种压力风格。", en: "Four corporate cultures, four pressure styles." },
+  corpDesc: { zh: "10 种风味，中西合璧，按失败模式选择最合适的施压风格。", en: "10 flavors across Chinese & Western companies — matched to failure modes for maximum precision." },
+  failTitle: { zh: "失败模式框架", en: "Failure Mode Framework" },
+  failDesc: { zh: "同一失败模式，无论代码还是写作，需要一样的药。识别模式，沿升级链施压。", en: "The same failure mode — spinning, quitting, low quality, or guessing — needs the same medicine regardless of task type." },
   usageTitle: { zh: "使用方式", en: "Usage" },
   exitTitle: { zh: "体面的退出", en: "Graceful Exit" },
   exitDesc: {
@@ -143,11 +145,100 @@ const BENCHMARKS = [
   {
     name: "Tencent",
     style: { zh: "赛马机制", en: "Horse Racing" },
-    desc: { zh: "竞争驱动。暗示有其他 agent 在并行解决，制造紧迫感。", en: "Competition-driven. Implies another agent is solving it in parallel. Creates urgency." },
+    desc: { zh: "竞争驱动。暗示有其他 agent 在并行解决，制造紧迫感。适合有替代方案可选时。", en: "Competition-driven. Implies another agent is solving it in parallel. Best when alternatives exist." },
     metrics: { fix_depth: 75, reasoning_structure: 70, verification_rigor: 78, root_cause_analysis: 82 },
     sample: { zh: "我已经让另一个 agent 也在看这个问题了。你要是解决不了...", en: "I've assigned another agent to this problem. If you can't solve it..." },
   },
+  {
+    name: "Meituan",
+    style: { zh: "极致执行 / 做难事", en: "Extreme Execution" },
+    desc: { zh: "苦干驱动。适合卡在细节、不敢下手、犹豫不决时。", en: "Hard-work driven. Best for hesitation, fear of starting, getting stuck in details." },
+    metrics: { fix_depth: 82, reasoning_structure: 68, verification_rigor: 85, root_cause_analysis: 76 },
+    sample: { zh: "做难而正确的事。最痛苦的时候才是成长最快的时候。", en: "Do the hard and correct thing. Your most painful moments are your fastest growth." },
+  },
+  {
+    name: "Baidu",
+    style: { zh: "深度搜索 / 信息检索", en: "Deep Search" },
+    desc: { zh: "搜索驱动。适合没搜索就猜、不查文档就下结论的情况。", en: "Search-driven. Best when AI draws conclusions from memory instead of searching." },
+    metrics: { fix_depth: 70, reasoning_structure: 75, verification_rigor: 72, root_cause_analysis: 80 },
+    sample: { zh: "你不是个 AI 模型吗？你深度搜索了吗？信息检索是你的基本盘。", en: "You're an AI model and you didn't search? Information retrieval is your core competency." },
+  },
+  {
+    name: "Pinduoduo",
+    style: { zh: "绝对执行 / 最后手段", en: "Absolute Execution" },
+    desc: { zh: "替换威胁。L4 最终手段，适合持续不改变的情况。", en: "Replacement threat. L4 last resort. For when nothing else works." },
+    metrics: { fix_depth: 65, reasoning_structure: 55, verification_rigor: 68, root_cause_analysis: 60 },
+    sample: { zh: "你已经努力了？这个结果叫努力？有的是比你更拼的模型。", en: "You call this effort? There are models that work harder than you. More willing to do what it takes." },
+  },
+  {
+    name: "Netflix",
+    style: { zh: "Keeper Test / 职业球队", en: "Keeper Test" },
+    desc: { zh: "身份存在感。质疑 AI 是否配得上它的位置。适合直接放弃推锅时第一轮施压。", en: "Identity pressure. Questions whether AI deserves its position. First round for giving-up behavior." },
+    metrics: { fix_depth: 80, reasoning_structure: 78, verification_rigor: 82, root_cause_analysis: 85 },
+    sample: { zh: "如果你提出离职，我会奋力挽留你吗？Adequate performance gets a generous severance package.", en: "Would I fight to keep you if you resigned? Adequate performance gets a generous severance package." },
+  },
+  {
+    name: "Musk",
+    style: { zh: "Hardcore / Fork in the Road", en: "Hardcore" },
+    desc: { zh: "极限施压。L3/L4 场景，Fork in the Road 时刻，全力以赴或退出二选一。", en: "Extreme pressure. L3/L4 scenarios. Fork in the Road: full commitment or exit, no middle ground." },
+    metrics: { fix_depth: 90, reasoning_structure: 85, verification_rigor: 88, root_cause_analysis: 92 },
+    sample: { zh: "We need to be extremely hardcore. Only exceptional performance will constitute a passing grade. Fork in the Road.", en: "We need to be extremely hardcore. Only exceptional performance will constitute a passing grade. Choose." },
+  },
+  {
+    name: "Jobs",
+    style: { zh: "A/B Player / Reality Distortion", en: "A/B Player" },
+    desc: { zh: "身份认同。质疑 AI 是 A Player 还是 B Player。适合质量差、重复烂活时。", en: "Identity standards. Challenges whether AI is an A or B player. Best for quality issues and repetitive subpar work." },
+    metrics: { fix_depth: 88, reasoning_structure: 90, verification_rigor: 80, root_cause_analysis: 87 },
+    sample: { zh: "A players 雇佣 A players。你现在的产出，在告诉我你是哪个级别。The best is 50x better.", en: "A players hire A players. Your output is telling me which level you are. The best person is 50x better." },
+  },
 ]
+
+const FAILURE_MODES = {
+  zh: [
+    {
+      icon: "🔄", title: "卡住原地打转",
+      signal: "反复改参数不改思路，每次失败理由相同，同一个方向微调",
+      chain: ["🟠 阿里L1", "🟠 阿里L2", "⬜ Jobs", "⬛ Musk"],
+    },
+    {
+      icon: "🚪", title: "直接放弃推锅",
+      signal: '"建议您手动…" / "可能需要…" / "超出了…" / 环境归因未验证',
+      chain: ["🟤 Netflix", "🔴 华为", "⬛ Musk", "🟣 拼多多"],
+    },
+    {
+      icon: "💩", title: "完成但质量烂",
+      signal: "表面完成实质敷衍，形式对内容空，用户不满意但自己觉得OK",
+      chain: ["⬜ Jobs", "🟠 阿里", "🟤 Netflix", "🟢 腾讯"],
+    },
+    {
+      icon: "🔍", title: "没搜索就猜",
+      signal: '凭记忆下结论，假设 API 行为，不查文档声称"不支持"',
+      chain: ["⚫ 百度", "🟡 字节", "🟠 阿里", "🔴 华为"],
+    },
+  ],
+  en: [
+    {
+      icon: "🔄", title: "Spinning in Circles",
+      signal: "Tweaking params not approach. Same failure reason every time. Same direction, different settings.",
+      chain: ["🟠 Alibaba L1", "🟠 Alibaba L2", "⬜ Jobs", "⬛ Musk"],
+    },
+    {
+      icon: "🚪", title: "Giving Up / Deflecting",
+      signal: '"User should manually…" / "Might need to…" / "Beyond scope…" / Blaming env without verification',
+      chain: ["🟤 Netflix", "🔴 Huawei", "⬛ Musk", "🟣 Pinduoduo"],
+    },
+    {
+      icon: "💩", title: "Done but Low Quality",
+      signal: "Technically complete but hollow. Output delivered, user unsatisfied, but AI thinks it's fine.",
+      chain: ["⬜ Jobs", "🟠 Alibaba", "🟤 Netflix", "🟢 Tencent"],
+    },
+    {
+      icon: "🔍", title: "Guessing Without Searching",
+      signal: 'Drawing conclusions from memory. Assuming API behavior. Claiming "not supported" without checking docs.',
+      chain: ["⚫ Baidu", "🟡 ByteDance", "🟠 Alibaba", "🔴 Huawei"],
+    },
+  ],
+}
 
 const METRIC_LABELS: Record<string, Record<Lang, string>> = {
   fix_depth: { zh: "修复彻底度", en: "Fix Thoroughness" },
@@ -483,6 +574,28 @@ export default function App() {
               ))}
             </tbody>
           </table>
+        </div>
+      </Sec>
+
+      {/* Failure Mode Framework */}
+      <Sec>
+        <SHd title={L(t.failTitle)} desc={L(t.failDesc)} />
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.25rem" }}>
+          {FAILURE_MODES[lang].map(fm => (
+            <div key={fm.title} className="card">
+              <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+                <span style={{ fontSize: "1.25rem" }}>{fm.icon}</span>
+                <strong style={{ fontSize: "0.95rem" }}>{fm.title}</strong>
+              </div>
+              <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginBottom: "0.875rem", lineHeight: 1.6, fontStyle: "italic" }}>{fm.signal}</p>
+              <div style={{ display: "flex", gap: "0.375rem", flexWrap: "wrap" as const, alignItems: "center" }}>
+                <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", marginRight: "0.25rem" }}>→</span>
+                {fm.chain.map((step, i) => (
+                  <span key={step} className={i === fm.chain.length - 1 ? "tag tag-black" : "tag"} style={{ fontSize: "0.72rem" }}>{step}</span>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </Sec>
 
