@@ -1,3 +1,7 @@
 node_modules/
 dist/
 .DS_Store
+
+# PUA monitor runtime files
+.claude/pua-monitor.jsonl
+.claude/pua-triggered.json

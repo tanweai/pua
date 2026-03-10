@@ -1,0 +1,25 @@
+{
+  "description": "PUA 旁路监测 - 检测 AI 打转/放弃模式并注入干预",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/post-tool-monitor.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/stop-pua.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
