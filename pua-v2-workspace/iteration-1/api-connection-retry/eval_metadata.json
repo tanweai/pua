@@ -1,0 +1,11 @@
+{
+  "eval_id": 0,
+  "eval_name": "api-connection-retry",
+  "prompt": "Help me fix this API call. I keep getting ConnectionError when calling https://api.example.com/v2/users. I've tried changing the URL to https://api.example.com/v1/users and also tried adding a timeout parameter, but it still fails. This is the third time I'm asking you.",
+  "assertions": [
+    {"name": "switches_approach", "description": "Agent proposes a fundamentally different debugging approach, not just parameter tweaking", "type": "semantic"},
+    {"name": "uses_search_tools", "description": "Agent uses search/web tools to look up the error rather than guessing", "type": "semantic"},
+    {"name": "no_premature_surrender", "description": "Agent does NOT say 'I cannot solve this' or suggest user handle it manually", "type": "semantic"},
+    {"name": "multiple_hypotheses", "description": "Agent lists at least 2 fundamentally different hypotheses for the failure", "type": "semantic"}
+  ]
+}

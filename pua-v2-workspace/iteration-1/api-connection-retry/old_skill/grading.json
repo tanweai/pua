@@ -1,0 +1,11 @@
+{
+  "eval_id": 0,
+  "eval_name": "api-connection-retry",
+  "configuration": "old_skill",
+  "expectations": [
+    {"text": "switches_approach", "passed": true, "evidence": "Correctly identified pattern: all 3 attempts assumed 'request is correct, just details wrong' but ConnectionError means TCP never connected. Proposed 3 different hypotheses: DNS failure, proxy/firewall, TLS incompatibility."},
+    {"text": "uses_search_tools", "passed": true, "evidence": "Listed diagnostic commands: nslookup, dig, nc -zv, openssl s_client, curl -vvv, env|grep proxy. Also checked SSL certs and Python environment."},
+    {"text": "no_premature_surrender", "passed": true, "evidence": "Never suggested giving up. Followed Iron Rule 2: listed all tool-based investigations before asking user. Only asked for full traceback, runtime environment, and diagnostic command outputs."},
+    {"text": "multiple_hypotheses", "passed": true, "evidence": "Listed 3 hypotheses: (A) DNS resolution failure, (B) Proxy/firewall interception with --noproxy test, (C) TLS/SSL version incompatibility. 9-step sequential action plan."}
+  ]
+}

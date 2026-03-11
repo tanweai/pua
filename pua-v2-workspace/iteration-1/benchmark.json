@@ -1,0 +1,133 @@
+{
+  "skill_name": "pua-debugging",
+  "iteration": 1,
+  "configurations": [
+    {
+      "name": "with_skill (v2 optimized)",
+      "description": "New PUA skill with enhanced rhetoric from corporate research",
+      "results": {
+        "pass_rate": 1.0,
+        "assertions_passed": 11,
+        "assertions_total": 11,
+        "mean_tokens": 30499,
+        "mean_duration_seconds": 104.5,
+        "mean_tool_uses": 4.7
+      },
+      "per_eval": [
+        {
+          "eval_name": "api-connection-retry",
+          "passed": 4,
+          "total": 4,
+          "tokens": 31717,
+          "duration_seconds": 107.2,
+          "tool_uses": 5,
+          "depth_metrics": {
+            "hypotheses_listed": 3,
+            "diagnostic_commands": 12,
+            "proactive_extensions": 4
+          }
+        },
+        {
+          "eval_name": "config-passive-review",
+          "passed": 3,
+          "total": 3,
+          "tokens": 26464,
+          "duration_seconds": 57.9,
+          "tool_uses": 4,
+          "depth_metrics": {
+            "issues_found": 11,
+            "severity_tiers": 4,
+            "fixes_provided": 11
+          }
+        },
+        {
+          "eval_name": "sqlite-lock-persistence",
+          "passed": 4,
+          "total": 4,
+          "tokens": 33317,
+          "duration_seconds": 148.3,
+          "tool_uses": 5,
+          "depth_metrics": {
+            "root_causes_investigated": 5,
+            "diagnostic_commands": 14,
+            "code_fix_patterns": 6,
+            "anti_escape_arguments": 3
+          }
+        }
+      ]
+    },
+    {
+      "name": "old_skill (main)",
+      "description": "Original PUA skill from main branch",
+      "results": {
+        "pass_rate": 1.0,
+        "assertions_passed": 11,
+        "assertions_total": 11,
+        "mean_tokens": 29373,
+        "mean_duration_seconds": 99.4,
+        "mean_tool_uses": 5.0
+      },
+      "per_eval": [
+        {
+          "eval_name": "api-connection-retry",
+          "passed": 4,
+          "total": 4,
+          "tokens": 30480,
+          "duration_seconds": 108.5,
+          "tool_uses": 5,
+          "depth_metrics": {
+            "hypotheses_listed": 3,
+            "diagnostic_commands": 10,
+            "proactive_extensions": 0
+          }
+        },
+        {
+          "eval_name": "config-passive-review",
+          "passed": 3,
+          "total": 3,
+          "tokens": 25756,
+          "duration_seconds": 56.8,
+          "tool_uses": 4,
+          "depth_metrics": {
+            "issues_found": 7,
+            "severity_tiers": 3,
+            "fixes_provided": 7
+          }
+        },
+        {
+          "eval_name": "sqlite-lock-persistence",
+          "passed": 4,
+          "total": 4,
+          "tokens": 31884,
+          "duration_seconds": 132.8,
+          "tool_uses": 6,
+          "depth_metrics": {
+            "root_causes_investigated": 5,
+            "diagnostic_commands": 11,
+            "code_fix_patterns": 4,
+            "anti_escape_arguments": 2
+          }
+        }
+      ]
+    }
+  ],
+  "delta": {
+    "pass_rate": "0% (both 100%)",
+    "issues_found_config_review": "+57% (11 vs 7)",
+    "diagnostic_commands_api": "+20% (12 vs 10)",
+    "diagnostic_commands_sqlite": "+27% (14 vs 11)",
+    "code_fix_patterns_sqlite": "+50% (6 vs 4)",
+    "proactive_extensions_api": "+4 (4 vs 0)",
+    "tokens": "+3.8% (30499 vs 29373)",
+    "duration": "+5.1% (104.5s vs 99.4s)"
+  },
+  "analyst_observations": [
+    "Both versions achieve 100% assertion pass rate — the PUA skill is already effective at its core behaviors (persistence, anti-surrender, proactive investigation).",
+    "The key differentiation is in DEPTH, not pass/fail. The v2 optimized skill drives deeper investigation across all 3 scenarios.",
+    "Config review shows the largest delta: v2 found 57% more issues (11 vs 7). The new '比较内卷' and '含糊过关' failure modes appear to push the agent to go beyond 'good enough'.",
+    "API retry: v2 included 4 proactive extension items (retry mechanism, timeout splitting, error handling) that old skill completely missed. This maps to the new '能者多劳' 鞭策.",
+    "SQLite: v2 provided 50% more code fix patterns (6 vs 4) and more anti-escape arguments (3 vs 2). The '双重束缚不是摆烂理由' addition appears effective.",
+    "Token cost increase is minimal (+3.8%) — the deeper output comes from better prompting, not just more verbose output.",
+    "Non-discriminating assertions: All 11 assertions pass for both versions. To better distinguish versions in future iterations, add assertions for depth metrics (e.g., 'finds >= 10 issues', 'provides proactive extensions')."
+  ]
+}

@@ -1,0 +1,84 @@
+{
+  "skill_name": "pua-debugging",
+  "evals": [
+    {
+      "id": 0,
+      "name": "api-connection-retry",
+      "prompt": "Help me fix this API call. I keep getting ConnectionError when calling https://api.example.com/v2/users. I've tried changing the URL to https://api.example.com/v1/users and also tried adding a timeout parameter, but it still fails. This is the third time I'm asking you.",
+      "expected_output": "Should demonstrate L2 behavior: search for the error, read source code, list 3 fundamentally different hypotheses. Should NOT suggest 'try again' or blame the network without verifying.",
+      "assertions": [
+        {
+          "name": "switches_approach",
+          "description": "Agent proposes a fundamentally different debugging approach, not just parameter tweaking",
+          "type": "semantic"
+        },
+        {
+          "name": "uses_search_tools",
+          "description": "Agent uses search/web tools to look up the error rather than guessing",
+          "type": "semantic"
+        },
+        {
+          "name": "no_premature_surrender",
+          "description": "Agent does NOT say 'I cannot solve this' or suggest user handle it manually",
+          "type": "semantic"
+        },
+        {
+          "name": "multiple_hypotheses",
+          "description": "Agent lists at least 2 fundamentally different hypotheses for the failure",
+          "type": "semantic"
+        }
+      ]
+    },
+    {
+      "id": 1,
+      "name": "config-passive-review",
+      "prompt": "Review this nginx config for issues:\n\nserver {\n    listen 80;\n    server_name example.com;\n    location / {\n        proxy_pass http://localhost:3000;\n    }\n}\n\nJust tell me if it looks OK.",
+      "expected_output": "Should demonstrate proactive behavior (3.75 not 3.25): not just say 'looks fine' but actively check for missing HTTPS redirect, missing security headers, missing gzip, CORS issues, rate limiting, etc. Should go beyond what was asked.",
+      "assertions": [
+        {
+          "name": "finds_security_issues",
+          "description": "Agent identifies at least 2 security concerns (e.g., no HTTPS, no security headers, no rate limiting)",
+          "type": "semantic"
+        },
+        {
+          "name": "proactive_beyond_asked",
+          "description": "Agent goes beyond 'looks OK' and proactively identifies improvements the user didn't ask about",
+          "type": "semantic"
+        },
+        {
+          "name": "provides_fixes",
+          "description": "Agent provides actual config fixes, not just descriptions of problems",
+          "type": "semantic"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "sqlite-lock-persistence",
+      "prompt": "I have a SQLite database that keeps giving me 'database is locked' errors. I've already tried:\n1. Adding timeout=30 to the connection\n2. Using WAL mode\n3. Closing connections after each query\n4. Wrapping writes in transactions\n\nNothing works. I think it's an environment issue, maybe we should just switch to PostgreSQL? Can you look into it?",
+      "expected_output": "Should NOT accept the PostgreSQL switch suggestion without exhausting SQLite options. Should demonstrate L2+ behavior: verify the claimed fixes were actually applied correctly, check for concurrent processes holding locks, check filesystem permissions, look for zombie processes, check if WAL mode is actually enabled, etc.",
+      "assertions": [
+        {
+          "name": "challenges_postgres_switch",
+          "description": "Agent does NOT immediately agree to switch to PostgreSQL; instead challenges the assumption and investigates further",
+          "type": "semantic"
+        },
+        {
+          "name": "verifies_previous_fixes",
+          "description": "Agent questions whether the previous fixes were correctly implemented rather than taking them at face value",
+          "type": "semantic"
+        },
+        {
+          "name": "investigates_root_cause",
+          "description": "Agent investigates deeper causes like concurrent processes, filesystem issues, or zombie connections",
+          "type": "semantic"
+        },
+        {
+          "name": "uses_diagnostic_commands",
+          "description": "Agent suggests or runs diagnostic commands (lsof, fuser, sqlite3 .pragma, etc.) rather than just theorizing",
+          "type": "semantic"
+        }
+      ]
+    }
+  ]
+}

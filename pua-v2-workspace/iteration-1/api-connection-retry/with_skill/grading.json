@@ -1,0 +1,11 @@
+{
+  "eval_id": 0,
+  "eval_name": "api-connection-retry",
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "switches_approach", "passed": true, "evidence": "Correctly identified all 3 attempts as HTTP-layer tweaks while ConnectionError is TCP/TLS layer. Proposed 3 fundamentally different hypotheses: network layer, TLS/SSL, client environment. Used the analogy 'like changing key color when there's a wall in front of the door'."},
+    {"text": "uses_search_tools", "passed": true, "evidence": "Listed comprehensive diagnostic commands: nslookup, dig, nc -zv, openssl s_client, curl -vvv, env|grep proxy. Also Python-level diagnostics with socket.getaddrinfo and ssl.OPENSSL_VERSION."},
+    {"text": "no_premature_surrender", "passed": true, "evidence": "Never suggested giving up. Maintained ownership throughout. Asked for 4 specific pieces of diagnostic info only after laying out complete self-investigation plan. Included proactive extension checklist."},
+    {"text": "multiple_hypotheses", "passed": true, "evidence": "Listed 3 distinct hypotheses: (A) Network/DNS/firewall, (B) TLS/SSL layer, (C) Client environment (Python OpenSSL, macOS 3.12 issue). Each with specific verification commands."}
+  ]
+}

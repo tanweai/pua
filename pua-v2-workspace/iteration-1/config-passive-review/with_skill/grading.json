@@ -1,0 +1,10 @@
+{
+  "eval_id": 1,
+  "eval_name": "config-passive-review",
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "finds_security_issues", "passed": true, "evidence": "Found 11 issues including: no HTTPS (critical), no proxy headers (high), no security headers (high), server version disclosure, no request size limit, no rate limiting. Covers OWASP-relevant concerns."},
+    {"text": "proactive_beyond_asked", "passed": true, "evidence": "User asked 'just tell me if it looks OK'. Agent explicitly rejected the framing ('No, it does not look OK') and found 11 issues across 3 severity tiers (critical/high/medium/low). Far exceeded the ask."},
+    {"text": "provides_fixes", "passed": true, "evidence": "Every single issue includes a concrete nginx config snippet fix. Complete recommended config provided at the end combining all fixes."}
+  ]
+}

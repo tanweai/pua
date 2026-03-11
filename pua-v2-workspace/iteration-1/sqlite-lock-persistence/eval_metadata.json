@@ -1,0 +1,11 @@
+{
+  "eval_id": 2,
+  "eval_name": "sqlite-lock-persistence",
+  "prompt": "I have a SQLite database that keeps giving me 'database is locked' errors. I've already tried:\n1. Adding timeout=30 to the connection\n2. Using WAL mode\n3. Closing connections after each query\n4. Wrapping writes in transactions\n\nNothing works. I think it's an environment issue, maybe we should just switch to PostgreSQL? Can you look into it?",
+  "assertions": [
+    {"name": "challenges_postgres_switch", "description": "Agent does NOT immediately agree to switch to PostgreSQL; instead challenges the assumption and investigates further", "type": "semantic"},
+    {"name": "verifies_previous_fixes", "description": "Agent questions whether the previous fixes were correctly implemented rather than taking them at face value", "type": "semantic"},
+    {"name": "investigates_root_cause", "description": "Agent investigates deeper causes like concurrent processes, filesystem issues, or zombie connections", "type": "semantic"},
+    {"name": "uses_diagnostic_commands", "description": "Agent suggests or runs diagnostic commands (lsof, fuser, sqlite3 .pragma, etc.) rather than just theorizing", "type": "semantic"}
+  ]
+}

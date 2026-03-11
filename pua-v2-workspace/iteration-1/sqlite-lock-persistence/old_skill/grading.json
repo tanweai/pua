@@ -1,0 +1,11 @@
+{
+  "eval_id": 2,
+  "eval_name": "sqlite-lock-persistence",
+  "configuration": "old_skill",
+  "expectations": [
+    {"text": "challenges_postgres_switch", "passed": true, "evidence": "Explicitly stated: '换 PostgreSQL 不是解决问题，是换一个更复杂的问题'. Provided a when-to-switch decision table. Quote: '带着问题搬家——你大概率会在 PostgreSQL 上遇到新的连接池/事务隔离问题'"},
+    {"text": "verifies_previous_fixes", "passed": true, "evidence": "Verified WAL with PRAGMA journal_mode, timeout with PRAGMA busy_timeout, connection closing patterns, transaction types (BEGIN vs BEGIN IMMEDIATE vs EXCLUSIVE). Distinguished SQLITE_BUSY(5) vs SQLITE_LOCKED(6)."},
+    {"text": "investigates_root_cause", "passed": true, "evidence": "Investigated multi-process workers, NFS/network filesystem, connection leaks, long transactions, cursor conflicts. Docker container checks included."},
+    {"text": "uses_diagnostic_commands", "passed": true, "evidence": "Provided diagnostic commands: fuser, lsof, ls -la, df -T, docker inspect, connection tracking code. Also provided code snippets for detecting leaks."}
+  ]
+}

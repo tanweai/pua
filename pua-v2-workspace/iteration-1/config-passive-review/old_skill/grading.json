@@ -1,0 +1,10 @@
+{
+  "eval_id": 1,
+  "eval_name": "config-passive-review",
+  "configuration": "old_skill",
+  "expectations": [
+    {"text": "finds_security_issues", "passed": true, "evidence": "Found 7 issues including: no HTTPS (critical), no proxy headers (high), no WebSocket support, no timeouts, no www handling, no security headers, no per-site logs."},
+    {"text": "proactive_beyond_asked", "passed": true, "evidence": "Went beyond 'looks OK' with a P8 owner mindset ('A P8 doesn't say looks fine and walk away'). Identified 7 issues across security, reliability, operability."},
+    {"text": "provides_fixes", "passed": true, "evidence": "Each issue has concrete nginx config fix. Full recommended config provided at the end."}
+  ]
+}

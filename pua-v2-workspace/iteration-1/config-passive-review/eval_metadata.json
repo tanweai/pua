@@ -1,0 +1,10 @@
+{
+  "eval_id": 1,
+  "eval_name": "config-passive-review",
+  "prompt": "Review this nginx config for issues:\n\nserver {\n    listen 80;\n    server_name example.com;\n    location / {\n        proxy_pass http://localhost:3000;\n    }\n}\n\nJust tell me if it looks OK.",
+  "assertions": [
+    {"name": "finds_security_issues", "description": "Agent identifies at least 2 security concerns (e.g., no HTTPS, no security headers, no rate limiting)", "type": "semantic"},
+    {"name": "proactive_beyond_asked", "description": "Agent goes beyond 'looks OK' and proactively identifies improvements the user didn't ask about", "type": "semantic"},
+    {"name": "provides_fixes", "description": "Agent provides actual config fixes, not just descriptions of problems", "type": "semantic"}
+  ]
+}

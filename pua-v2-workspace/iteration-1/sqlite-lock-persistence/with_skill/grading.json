@@ -1,0 +1,11 @@
+{
+  "eval_id": 2,
+  "eval_name": "sqlite-lock-persistence",
+  "configuration": "with_skill",
+  "expectations": [
+    {"text": "challenges_postgres_switch", "passed": true, "evidence": "Explicitly called out: 'switching to PostgreSQL is not solving the problem, it's running away'. Provided a decision matrix for when Postgres IS justified vs when it's premature. Quote: '以客户为中心：你需要的是问题被解决，不是技术栈被替换'"},
+    {"text": "verifies_previous_fixes", "passed": true, "evidence": "Verified each of the 4 claimed fixes: timeout (PRAGMA busy_timeout vs Python timeout are different things), WAL (may not have taken effect), close connections (陷阱1-3 showing common leaks), transactions (DEFERRED vs IMMEDIATE vs EXCLUSIVE). Distinguished SQLITE_BUSY(5) vs SQLITE_LOCKED(6)."},
+    {"text": "investigates_root_cause", "passed": true, "evidence": "Investigated: NFS/network filesystem, multi-process workers, external tools holding locks, file permissions, disk space, Docker volumes, zombie locks. Provided a 5-item root cause ranking by probability."},
+    {"text": "uses_diagnostic_commands", "passed": true, "evidence": "Provided extensive diagnostic commands: lsof, fuser, df -T, ps aux, sqlite3 PRAGMA, ls -la, /proc/locks, grep for connection patterns. Organized into Phase 1 (30-second triage) and Phase 2 (fix by diagnosis)."}
+  ]
+}
