@@ -130,10 +130,10 @@ const BENCHMARKS = [
   },
   {
     name: "ByteDance",
-    style: { zh: "坦诚直接 / Always Day 1", en: "Radical Candor / Always Day 1" },
-    desc: { zh: "速度优先。直接指出问题，不绕弯子，适合明确的单点 bug。", en: "Speed-first. Direct problem identification, no beating around the bush. Best for clear single-point bugs." },
-    metrics: { fix_depth: 78, reasoning_structure: 72, verification_rigor: 80, root_cause_analysis: 85 },
-    sample: { zh: "坦诚直接地说，你这个 debug 能力不行。Context, not control。", en: "Being radically candid: your debugging ability is poor. Context, not control." },
+    style: { zh: "坦诚清晰 / Always Day 1", en: "Candor & Clarity / Always Day 1" },
+    desc: { zh: "透明高效。直言不讳指出问题，更强调逻辑清晰、信息同步，减少沟通成本。适合需要对齐根因与解决方案的 bug。", en: "Transparent and efficient. Candid about problems, but focuses on logical clarity and information sync to reduce communication overhead. Best for bugs requiring root cause alignment." },
+    metrics: { fix_depth: 82, reasoning_structure: 85, verification_rigor: 80, root_cause_analysis: 85 },
+    sample: { zh: "把问题说清楚：现象是什么、根因在哪、方案是什么。Context 对齐后再推进。", en: "State it clearly: what's the symptom, what's the root cause, what's the fix. Align on context first, then move." },
   },
   {
     name: "Huawei",
