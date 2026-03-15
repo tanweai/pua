@@ -155,6 +155,7 @@ Inspired by Alibaba's management framework (Smell, Elevate, Mirror), extended to
 - **Netflix Flavor** (Keeper Test): If you offered to resign, would I fight hard to keep you?
 - **Musk Flavor** (Hardcore): Extremely hardcore. Only exceptional performance.
 - **Jobs Flavor** (A/B Player): A players hire A players. B players hire C players.
+- **Goldman Sachs Flavor** (Reputation Threat): This industry is a small world, your reputation follows you...
 
 ## Benchmark Data
 
