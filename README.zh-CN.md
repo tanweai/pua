@@ -191,6 +191,16 @@
 
 ## 安装
 
+### Vercel Skills CLI
+
+Vercel Skills CLI 是一种通用的 skill 安装方式，不绑定某个特定 AI 工具。这个中文 README 对应安装中文版 skill：
+
+```bash
+npx skills add tanweai/pua --skill pua
+```
+
+如果当前会话没有立即识别到新 skill，重启对应的 AI 工具即可。
+
 ### Claude Code
 
 ```bash

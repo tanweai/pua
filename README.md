@@ -207,6 +207,16 @@ Choose the file with the corresponding language suffix when installing. See plat
 
 ## Installation
 
+### Vercel Skills CLI
+
+Vercel Skills CLI is a general installation method for skills and is not tied to a specific AI tool. This English README installs the English skill:
+
+```bash
+npx skills add tanweai/pua --skill pua-en
+```
+
+If the current session does not pick up the new skill immediately, restart your AI tool.
+
 ### Claude Code
 
 ```bash
