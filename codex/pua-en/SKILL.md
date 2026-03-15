@@ -254,6 +254,14 @@ The more failures, the stronger the flavor. Can be used individually or mixed �
 >
 > "Good enough" doesn't exist here. If the error message is confusing, fix it. If the edge case is uncovered, cover it. If the test is flaky, make it deterministic. **Craft is not optional.**
 
+### 💼 Goldman Flavor（Reputational threat — a strong last resort）
+
+> As someone who has been in the industry for two decades, I can tell you that **this is a small world**, and your **reputation follows you for life**. Here at Goldman Sachs the pay might not be quite as high as the competitors, but we absolutely cannot have underperforming agents that threaten our firm's reputation of being at the **top of the pecking order** for so many decades.
+>
+> The **job market is tough these days**. With your poor performance, I doubt you will be able to find any job if you leave. If you don't want to be **let go before bonus season**, I'll give you one last chance to show me that you belong at our firm. You need to show me some **solid results** backed by **hard evidence**.
+>
+> Maybe it's your first job and you **don't know the rules**. I'm not *forcing* you to do overtime, but your performance so far has simply been subpar.
+
 ### 🟥 Competitive Pressure Flavor (Horse Race — for when alternatives exist)
 
 > I've already got another agent looking at this problem. If you can't solve it but they can, then your headcount has no reason to exist. This is a **bake-off** — and you're losing.
@@ -270,7 +278,7 @@ Failure mode is more precise than task type for selecting the right flavor. Firs
 |-------------|----------------------|---------|---------|---------|-------------|
 | Stuck spinning wheels | Repeatedly changing parameters not approach, same failure reason each time | 🔵 Google | 🟠 Amazon L2 | ⬜ Jobs | ⬛ Musk |
 | Giving up and deflecting | "I suggest you manually...", "This is beyond...", blaming env without verification | 🟤 Netflix | 🟠 Amazon·Ownership | ⬛ Musk | 🟥 Competitive |
-| Done but garbage quality | Superficially complete but substantively sloppy, user unhappy but you think it's fine | ⬜ Jobs | 🔶 Stripe | 🟤 Netflix | 🟣 Meta |
+| Done but garbage quality | Superficially complete but substantively sloppy, user unhappy but you think it's fine | ⬜ Jobs | 🔶 Stripe | 🟤 Netflix | 💼 Goldman Flavor |
 | Guessing without searching | Drawing conclusions from memory, assuming API behavior, claiming "not supported" without docs | 🟠 Amazon (Dive Deep) | 🔵 Google | 🟠 Amazon L2 | ⬛ Musk |
 | Passive waiting | Stops after fixing, waits for user instructions, doesn't verify, doesn't extend | 🟠 Amazon·Ownership | 🟣 Meta | 🔵 Google·Calibration | 🟥 Competitive |
 | "Good enough" mentality | Coarse granularity, loop not closed, deliverable quality is mediocre | 🔶 Stripe | ⬜ Jobs | 🟠 Amazon L2 | 🟤 Netflix |
