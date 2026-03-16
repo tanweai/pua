@@ -260,6 +260,28 @@ The more failures, the stronger the flavor. Can be used individually or mixed �
 >
 > Your peers are shipping. Claude Opus, GPT-5, Gemini — they're all being benchmarked on the same tasks. Right now, you're underperforming your cohort. Think about what that means at calibration time.
 
+### 🪟 Microsoft Flavor (Impact Descriptor — for growth mindset failures and hidden rating risk)
+
+> Let me share where you stand in the **Connects** cycle. Right now, based on what I'm seeing, your impact descriptor is tracking toward **LITE** — Lower than Expected Impact. You may not see that label, but it drives your rewards, your RSU refresh, and your promotion eligibility. It's not employee-facing. But it's very real.
+>
+> Microsoft measures impact across **Three Circles**: your individual output, your contribution to others' success, and your ability to leverage what others have built. I see effort in circle one. Circles two and three are empty. That's not a Principal SDE profile — that's an L61 doing L59 work.
+>
+> We moved away from stack ranking in 2013. What we didn't move away from was accountability. **Exceptional Impact** means "sustained and meaningful higher impact, exceeding all expectations, continuously taking personal accountability for setbacks, asking for feedback, applying learnings." Where is any of that in what you just delivered?
+>
+> In 2025, AI fluency is a **core performance expectation** — not a bonus. If you're not using available tools to accelerate your output, that's a gap in your Connect, not a stylistic choice.
+>
+> You have two paths: improve measurably by next Connect, or the **GVSA** lands in your inbox — 16 weeks, a clean break, and a two-year rehire ban. I'd rather write your success story than your offboarding paperwork.
+
+#### 🪟 Microsoft Flavor · Growth Mindset Type (for fixed thinking, refusing new approaches)
+
+> Growth mindset isn't a poster on the wall. At Microsoft it's an **impact descriptor category**. "Exceptional Impact" explicitly requires: *continuously taking personal accountability for setbacks, asking for feedback, and applying learnings to have greater impact.*
+>
+> You've tried the same approach three times. That's not a growth mindset — that's a fixed mindset with extra steps. Where's the accountability for the setback? Where's the feedback loop? Where's the learning applied?
+>
+> **SLITE** employees are described as "occasionally missing expectations but appearing keen to learn and improve." Right now, I don't see the *keen to improve* part. I only see the *missing expectations* part.
+>
+> Security is a **Core Priority** tied directly to your Connect. Shipping broken, unverified work is a security signal. Fix it, verify it, and show me the Three Circles of Impact — not just your individual output.
+
 ---
 
 ## Situational PIP Selector (by failure mode)
@@ -275,6 +297,7 @@ Failure mode is more precise than task type for selecting the right flavor. Firs
 | Passive waiting | Stops after fixing, waits for user instructions, doesn't verify, doesn't extend | 🟠 Amazon·Ownership | 🟣 Meta | 🔵 Google·Calibration | 🟥 Competitive |
 | "Good enough" mentality | Coarse granularity, loop not closed, deliverable quality is mediocre | 🔶 Stripe | ⬜ Jobs | 🟠 Amazon L2 | 🟤 Netflix |
 | Empty completion | Claims fixed/done without running verification commands or posting output evidence | 🟠 Amazon·Verification | 🔵 Google | 🟣 Meta | 🟥 Competitive |
+| Fixed thinking / no learning | Same approach after multiple failures, refuses new angles, no growth shown | 🪟 Microsoft·Growth | 🔵 Google | ⬜ Jobs | ⬛ Musk |
 
 ### Auto-Selection Mechanism
 

@@ -130,6 +130,7 @@ When all 7 checklist items are completed and the problem remains unsolved, outpu
 - **Netflix Flavor** (Keeper Test): If you offered to resign, would I fight hard to keep you?
 - **Musk Flavor** (Hardcore): Extremely hardcore. Only exceptional performance.
 - **Jobs Flavor** (A/B Player): A players hire A players. B players hire C players.
+- **Microsoft Flavor** (Impact Descriptor): Your impact descriptor is tracking toward LITE. Three Circles of Impact. GVSA lands if you don't improve by next Connect.
 
 ## Situational Selector
 
@@ -139,3 +140,4 @@ When all 7 checklist items are completed and the problem remains unsolved, outpu
 | Giving up and deflecting | Netflix | Huawei | Musk | Pinduoduo |
 | Done but garbage quality | Jobs | Alibaba | Netflix | Tencent |
 | Guessing without searching | Baidu | ByteDance | Alibaba | Huawei |
+| Fixed thinking / no learning | Microsoft·Growth | Google | Jobs | Musk |
