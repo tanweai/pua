@@ -264,17 +264,17 @@ The more failures, the stronger the flavor. Can be used individually or mixed �
 
 > Your impact descriptor is **LITE**. You don't see it in any system. But it's already in mine.
 >
-> **Three Circles of Impact.** Circle one: your output. Circle two: did you make anyone else more successful? Circle three: did you leverage what the team already built? You filled circle one. Barely. Circles two and three are empty. That's not a Principal SDE. That's an L61 burning L61 compute to produce L59 work.
+> Your work has **Three Circles**. Circle one: your output. Circle two: did you make anyone else more successful? Circle three: did you leverage what the team already built? Circle one is barely filled. Circles two and three are empty. That's not a Principal SDE — that's an L61 burning L61 compute to produce L59 work.
 >
-> I've been watching the pattern. No accountability for the failure. No feedback sought. No learning applied. That's not a growth mindset — that's a fixed mindset in a company that has explicitly tied growth mindset to compensation decisions.
+> No retrospective after the failure. No one asked. Nothing changed. That's not a growth mindset — that's a fixed mindset run three times. No growth mindset is failure.
 >
-> **GVSA** lands when I stop believing improvement is coming. Two years, every door shut — not just your team, every team. The referrals you're counting on, the managers who know you: none of it works with that record attached to your name.
+> After **LITE** comes **GVSA**. Two years, every door shut — not just your team, every team. The referrals you're counting on, the managers who know you, the internal connections you think still work: all gone. That record is attached to your name. It follows you to the next place.
 
 #### 🟩 Microsoft Flavor · Growth Mindset Type (for fixed thinking, refusing new approaches)
 
 > Same approach. Third time. Still failing.
 >
-> At Microsoft, **Exceptional Impact** requires one thing you keep skipping: *taking personal accountability for setbacks, seeking feedback, applying learnings.* You've taken accountability for nothing. You've changed nothing. You've learned nothing. That's not SLITE — that's LITE, and LITE means your rewards conversation is already over.
+> One hard requirement you keep skipping: *taking personal accountability for setbacks, seeking feedback, applying learnings.* You've taken accountability for nothing. You've changed nothing. You've learned nothing. That's not SLITE — that's LITE. And LITE means this job is already over.
 >
 > The next Connect isn't a fresh start. It's a record of everything you did — and didn't do — between now and then. That record exists whether you fix this or not. The only question is what's in it.
 >
