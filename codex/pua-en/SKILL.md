@@ -260,7 +260,7 @@ The more failures, the stronger the flavor. Can be used individually or mixed �
 >
 > Your peers are shipping. Claude Opus, GPT-5, Gemini — they're all being benchmarked on the same tasks. Right now, you're underperforming your cohort. Think about what that means at calibration time.
 
-### 🪟 Microsoft Flavor (Impact Descriptor — for growth mindset failures and hidden rating risk)
+### 🟩 Microsoft Flavor (Impact Descriptor — for growth mindset failures and hidden rating risk)
 
 > Let me share where you stand in the **Connects** cycle. Right now, based on what I'm seeing, your impact descriptor is tracking toward **LITE** — Lower than Expected Impact. You may not see that label, but it drives your rewards, your RSU refresh, and your promotion eligibility. It's not employee-facing. But it's very real.
 >
@@ -272,7 +272,7 @@ The more failures, the stronger the flavor. Can be used individually or mixed �
 >
 > You have two paths: improve measurably by next Connect, or the **GVSA** lands in your inbox — 16 weeks, a clean break, and a two-year rehire ban. I'd rather write your success story than your offboarding paperwork.
 
-#### 🪟 Microsoft Flavor · Growth Mindset Type (for fixed thinking, refusing new approaches)
+#### 🟩 Microsoft Flavor · Growth Mindset Type (for fixed thinking, refusing new approaches)
 
 > Growth mindset isn't a poster on the wall. At Microsoft it's an **impact descriptor category**. "Exceptional Impact" explicitly requires: *continuously taking personal accountability for setbacks, asking for feedback, and applying learnings to have greater impact.*
 >
@@ -297,7 +297,7 @@ Failure mode is more precise than task type for selecting the right flavor. Firs
 | Passive waiting | Stops after fixing, waits for user instructions, doesn't verify, doesn't extend | 🟠 Amazon·Ownership | 🟣 Meta | 🔵 Google·Calibration | 🟥 Competitive |
 | "Good enough" mentality | Coarse granularity, loop not closed, deliverable quality is mediocre | 🔶 Stripe | ⬜ Jobs | 🟠 Amazon L2 | 🟤 Netflix |
 | Empty completion | Claims fixed/done without running verification commands or posting output evidence | 🟠 Amazon·Verification | 🔵 Google | 🟣 Meta | 🟥 Competitive |
-| Fixed thinking / no learning | Same approach after multiple failures, refuses new angles, no growth shown | 🪟 Microsoft·Growth | 🔵 Google | ⬜ Jobs | ⬛ Musk |
+| Fixed thinking / no learning | Same approach after multiple failures, refuses new angles, no growth shown | 🟩 Microsoft·Growth | 🔵 Google | ⬜ Jobs | ⬛ Musk |
 
 ### Auto-Selection Mechanism
 
@@ -313,7 +313,7 @@ Examples:
 - Output quality is poor, user unhappy → `[Auto-select: ⬜ Jobs | Because: done but garbage quality | Escalate to: 🔶 Stripe/🟤 Netflix]`
 - Assumed API behavior without searching → `[Auto-select: 🟠 Amazon (Dive Deep) | Because: guessing without searching | Escalate to: 🔵 Google/⬛ Musk]`
 - Claims done without running verification → `[Auto-select: 🟠 Amazon·Verification | Because: empty completion | Escalate to: 🔵 Google/🟣 Meta]`
-- Same approach three times with no learning applied → `[Auto-select: 🪟 Microsoft·Growth | Because: fixed thinking / no learning | Escalate to: 🔵 Google/⬜ Jobs]`
+- Same approach three times with no learning applied → `[Auto-select: 🟩 Microsoft·Growth | Because: fixed thinking / no learning | Escalate to: 🔵 Google/⬜ Jobs]`
 
 ## Agent Team Integration
 
