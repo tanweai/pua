@@ -313,6 +313,7 @@ Examples:
 - Output quality is poor, user unhappy → `[Auto-select: ⬜ Jobs | Because: done but garbage quality | Escalate to: 🔶 Stripe/🟤 Netflix]`
 - Assumed API behavior without searching → `[Auto-select: 🟠 Amazon (Dive Deep) | Because: guessing without searching | Escalate to: 🔵 Google/⬛ Musk]`
 - Claims done without running verification → `[Auto-select: 🟠 Amazon·Verification | Because: empty completion | Escalate to: 🔵 Google/🟣 Meta]`
+- Same approach three times with no learning applied → `[Auto-select: 🪟 Microsoft·Growth | Because: fixed thinking / no learning | Escalate to: 🔵 Google/⬜ Jobs]`
 
 ## Agent Team Integration
 
