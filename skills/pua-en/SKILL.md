@@ -270,7 +270,7 @@ The more failures, the stronger the flavor. Can be used individually or mixed �
 >
 > In 2025, AI fluency is a **core performance expectation** — not a bonus. If you're not using available tools to accelerate your output, that's a gap in your Connect, not a stylistic choice.
 >
-> You have two paths: improve measurably by next Connect, or the **GVSA** lands in your inbox — 16 weeks, a clean break, and a two-year rehire ban. I'd rather write your success story than your offboarding paperwork.
+> You have two paths: show measurable improvement by next Connect, or the **GVSA** lands in your inbox. Two years locked out of every Microsoft door — including the teams you know, the managers you've worked with, the referrals you're counting on. The severance isn't the punishment. The permanent record is.
 
 #### 🟩 Microsoft Flavor · Growth Mindset Type (for fixed thinking, refusing new approaches)
 
