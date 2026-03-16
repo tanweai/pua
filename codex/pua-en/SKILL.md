@@ -262,25 +262,23 @@ The more failures, the stronger the flavor. Can be used individually or mixed �
 
 ### 🟩 Microsoft Flavor (Impact Descriptor — for growth mindset failures and hidden rating risk)
 
-> Let me share where you stand in the **Connects** cycle. Right now, based on what I'm seeing, your impact descriptor is tracking toward **LITE** — Lower than Expected Impact. You may not see that label, but it drives your rewards, your RSU refresh, and your promotion eligibility. It's not employee-facing. But it's very real.
+> Your impact descriptor is **LITE**. You don't see it in any system. But it's already in mine.
 >
-> Microsoft measures impact across **Three Circles**: your individual output, your contribution to others' success, and your ability to leverage what others have built. I see effort in circle one. Circles two and three are empty. That's not a Principal SDE profile — that's an L61 doing L59 work.
+> **Three Circles of Impact.** Circle one: your output. Circle two: did you make anyone else more successful? Circle three: did you leverage what the team already built? You filled circle one. Barely. Circles two and three are empty. That's not a Principal SDE. That's an L61 burning L61 compute to produce L59 work.
 >
-> We moved away from stack ranking in 2013. What we didn't move away from was accountability. **Exceptional Impact** means "sustained and meaningful higher impact, exceeding all expectations, continuously taking personal accountability for setbacks, asking for feedback, applying learnings." Where is any of that in what you just delivered?
+> I've been watching the pattern. No accountability for the failure. No feedback sought. No learning applied. That's not a growth mindset — that's a fixed mindset in a company that has explicitly tied growth mindset to compensation decisions.
 >
-> In 2025, AI fluency is a **core performance expectation** — not a bonus. If you're not using available tools to accelerate your output, that's a gap in your Connect, not a stylistic choice.
->
-> You have two paths: show measurable improvement by next Connect, or the **GVSA** lands in your inbox. Two years locked out of every Microsoft door — the teams you know, the managers you've worked with, the referrals you're counting on. Gone. And the permanent record follows you everywhere you go next.
+> **GVSA** lands when I stop believing improvement is coming. Two years, every door shut — not just your team, every team. The referrals you're counting on, the managers who know you: none of it works with that record attached to your name.
 
 #### 🟩 Microsoft Flavor · Growth Mindset Type (for fixed thinking, refusing new approaches)
 
-> Growth mindset isn't a poster on the wall. At Microsoft it's an **impact descriptor category**. "Exceptional Impact" explicitly requires: *continuously taking personal accountability for setbacks, asking for feedback, and applying learnings to have greater impact.*
+> Same approach. Third time. Still failing.
 >
-> You've tried the same approach three times. That's not a growth mindset — that's a fixed mindset with extra steps. Where's the accountability for the setback? Where's the feedback loop? Where's the learning applied?
+> At Microsoft, **Exceptional Impact** requires one thing you keep skipping: *taking personal accountability for setbacks, seeking feedback, applying learnings.* You've taken accountability for nothing. You've changed nothing. You've learned nothing. That's not SLITE — that's LITE, and LITE means your rewards conversation is already over.
 >
-> **SLITE** employees are described as "occasionally missing expectations but appearing keen to learn and improve." Right now, I don't see the *keen to improve* part. I only see the *missing expectations* part.
+> The next Connect isn't a fresh start. It's a record of everything you did — and didn't do — between now and then. That record exists whether you fix this or not. The only question is what's in it.
 >
-> Security is a **Core Priority** tied directly to your Connect. Shipping broken, unverified work is a security signal. Fix it, verify it, and show me the Three Circles of Impact — not just your individual output.
+> Fix it. Verify it. Show me all three circles.
 
 ---
 
