@@ -49,7 +49,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ env, request }) => {
   return new Response(null, {
     status: 302,
     headers: {
-      Location: "/#/contribute",
+      Location: "https://openpua.ai/#/contribute",
       "Set-Cookie": `pua_session=${session}; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=604800`,
     },
   })
