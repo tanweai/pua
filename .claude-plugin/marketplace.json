@@ -1,20 +1,20 @@
 {
-  "name": "pua-skills",
-  "description": "PUA Motivator for Claude Code -- forces AI to exhaust all solutions before giving up, using corporate PUA rhetoric from Chinese and Western tech giants",
-  "owner": {
-    "name": "探微安全实验室",
-    "url": "https://github.com/tanweai"
-  },
-  "plugins": [
-    {
-      "name": "pua",
-      "description": "PUA Motivator -- forces Claude Code to exhaust all solutions before giving up, using corporate PUA rhetoric (Alibaba, ByteDance, Huawei, Tencent, Netflix, Musk, Jobs)",
-      "version": "1.1.1",
-      "source": "./",
-      "author": {
+    "name": "pua-skills",
+    "description": "PUA 我们不养闲 Agent — Forces AI to exhaust all solutions with corporate PUA pressure escalation. 13 flavors (Alibaba, ByteDance, Huawei, Tencent, Netflix, Musk, Jobs...), 5 modular skills (/pua /pua:p7 /pua:p9 /pua:p10 /pua:pro), L0-L4 pressure system, self-evolution tracking.",
+    "owner": {
         "name": "探微安全实验室",
         "url": "https://github.com/tanweai"
-      }
-    }
-  ]
+    },
+    "plugins": [
+        {
+            "name": "pua",
+            "description": "PUA 我们不养闲 Agent — 9 modular skills, 14 corporate flavors, L0-L4 pressure, auto-iteration loop, ENFP yes-mode, feedback system. v1→v2: token -74%, progressive disclosure, behavioral Gotchas.",
+            "version": "2.8.0",
+            "source": "./",
+            "author": {
+                "name": "探微安全实验室",
+                "url": "https://github.com/tanweai"
+            }
+        }
+    ]
 }

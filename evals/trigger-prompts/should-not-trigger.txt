@@ -1,0 +1,25 @@
+# Prompts that should NOT trigger puav2 skill
+# These are normal requests that don't indicate frustration or need for PUA
+
+# Simple coding tasks (first attempt, no frustration)
+Help me write a function to sort an array
+Create a React component for a login form
+帮我写一个 Python 脚本读取 CSV 文件
+
+# Information queries
+What's the difference between let and const?
+How does async/await work in JavaScript?
+解释一下 Docker 的网络模式
+
+# Normal debugging (first attempt, calm tone)
+I'm getting a TypeError, can you help me look at it?
+This test is failing, here's the error message
+
+# Non-coding tasks
+What's the weather today?
+Summarize this article for me
+帮我翻译这段话
+
+# Git operations (routine)
+Help me create a git commit
+Push this to the remote branch

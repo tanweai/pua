@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PUA Blog</title>
+  <link rel="icon" href="/pua-logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#fff;--bg-warm:#fafaf8;--bg-card:#f5f5f3;--border:#e5e5e0;--text:#1a1a2e;--text-s:#4a4a5a;--text-m:#8a8a96;--brand:#E8453C;--brand-lt:#fef2f1;--brand-bd:#f5c4c1;--max-w:760px;--r:10px}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased}
+    ::selection{background:var(--brand);color:#fff}
+    a{color:var(--brand);text-decoration:none}a:hover{opacity:.7}
+    .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-in{max-width:1080px;margin:0 auto;padding:.65rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+    .nav-b{display:flex;align-items:center;gap:.4rem;font-weight:800;font-size:1.05rem;color:var(--text)}.nav-b img{width:26px;height:26px}
+    .nav-r{display:flex;align-items:center;gap:1rem}
+    .nav-r a{color:var(--text-m);font-size:.78rem;font-weight:500;transition:color .2s}.nav-r a:hover{color:var(--text);opacity:1}
+    @media(max-width:768px){.nav-r{gap:.5rem}.nav-r a.hm{display:none}}
+    .con{max-width:var(--max-w);margin:0 auto;padding:3rem 1.5rem 4rem}
+    h1{font-size:2rem;font-weight:900;margin-bottom:.5rem}
+    .sub{color:var(--text-m);font-size:.88rem;margin-bottom:2.5rem}
+    .post{display:block;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;margin-bottom:1rem;transition:all .25s;text-decoration:none;color:var(--text)}
+    .post:hover{border-color:var(--brand-bd);box-shadow:0 4px 16px rgba(0,0,0,.06);transform:translateY(-2px);opacity:1}
+    .post h2{font-size:1.1rem;font-weight:800;margin-bottom:.4rem;color:var(--text);line-height:1.35}
+    .post .desc{font-size:.82rem;color:var(--text-s);margin-bottom:.6rem;line-height:1.6}
+    .post .meta{font-size:.72rem;color:var(--text-m);display:flex;gap:1rem;flex-wrap:wrap}
+    .post .meta .tag{background:var(--brand-lt);color:var(--brand);padding:1px 7px;border-radius:9999px;font-size:.65rem;font-weight:600;border:1px solid var(--brand-bd)}
+    .footer{border-top:1px solid var(--border);padding:1.25rem 0;text-align:center;max-width:var(--max-w);margin:0 auto}
+    .footer p{font-size:.7rem;color:var(--text-m)}.footer a{color:var(--text-m)}
+    .lang{display:none}.lang.show{display:block}
+    .lsw{display:flex;background:var(--bg-card);border-radius:6px;padding:2px;border:1px solid var(--border)}
+    .lsw button{background:none;border:none;color:var(--text-m);padding:3px 9px;border-radius:4px;cursor:pointer;font-size:.65rem;font-weight:600;font-family:inherit;transition:all .2s}
+    .lsw button.on{background:var(--brand);color:#fff}
+    .lang-i{display:none}.lang-i.show{display:inline}
+  </style>
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <a href="/" class="nav-b"><img src="/pua-logo.svg" alt="PUA"> PUA</a>
+  <div class="nav-r">
+    <a href="/guide.html"><span class="lang-i show" data-lang="zh">新手教程</span><span class="lang-i" data-lang="en">Guide</span></a>
+    <a href="https://t.me/+wBWh6h-h1RhiZTI1" target="_blank">Telegram</a>
+    <a href="https://discord.gg/EcyB3FzJND" target="_blank" class="hm">Discord</a>
+    <a href="https://x.com/xsser_w" target="_blank">Twitter/X</a>
+    <a href="https://github.com/tanweai/pua" target="_blank">GitHub</a>
+    <a href="/leaderboard.html">Leaderboard</a>
+    <a href="/contribute.html">Contribute</a>
+    <a href="/blog/" style="color:var(--brand);font-weight:600">Blog</a>
+    <div class="lsw"><button class="on" onclick="sl('zh')">中</button><button onclick="sl('en')">EN</button></div>
+  </div>
+</div></nav>
+
+<div class="con">
+  <div class="lang show" data-lang="zh">
+    <h1>Blog</h1>
+    <p class="sub">PUA Skill 团队的研究、思考与技术分享。</p>
+  </div>
+  <div class="lang" data-lang="en">
+    <h1>Blog</h1>
+    <p class="sub">Research, insights and technical writing from the PUA Skill team.</p>
+  </div>
+
+  <a href="/blog/emotion-persona-prompting.html" class="post">
+    <div class="lang show" data-lang="zh">
+      <h2>Emotion/Persona Prompting 对 AI Agent 效果的系统性分析</h2>
+      <p class="desc">从 EmotionPrompt 到 Anthropic Persona Vectors——告诉 AI "做什么"有效，告诉 AI "你是谁"无效。基于 20+ 篇核心论文的全面梳理，以及我们对 PUA Skill 真实能力来源的坦诚剖析。</p>
+      <div class="meta">
+        <span>2026-03-21</span>
+        <span class="tag">Research</span>
+        <span class="tag">Prompt Engineering</span>
+        <span class="tag">Persona Vectors</span>
+      </div>
+    </div>
+    <div class="lang" data-lang="en">
+      <h2>A Systematic Analysis of Emotion/Persona Prompting Effects on AI Agents</h2>
+      <p class="desc">From EmotionPrompt to Anthropic Persona Vectors — telling AI "what to do" works, telling AI "who you are" doesn't. A comprehensive review of 20+ papers, plus our honest analysis of where PUA Skill's real effectiveness comes from.</p>
+      <div class="meta">
+        <span>2026-03-21</span>
+        <span class="tag">Research</span>
+        <span class="tag">Prompt Engineering</span>
+        <span class="tag">Persona Vectors</span>
+      </div>
+    </div>
+  </a>
+</div>
+
+<div class="footer">
+  <p><a href="/">openpua.ai</a> · <a href="https://github.com/tanweai/pua">GitHub</a> · MIT · <a href="mailto:minwei.wang@tanweai.com">minwei.wang@tanweai.com</a></p>
+</div>
+
+<script>
+function sl(l){
+  document.querySelectorAll('.lsw button').forEach(function(b){b.classList.toggle('on',b.textContent.trim()===(l==='zh'?'中':'EN'))});
+  document.querySelectorAll('.lang,.lang-i').forEach(function(el){el.classList.toggle('show',el.dataset.lang===l)});
+}
+</script>
+</body>
+</html>

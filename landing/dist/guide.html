@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PUA Skill — 新手教程 / Guide / ガイド</title>
+  <link rel="icon" href="/pua-logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#fff;--bg-warm:#fafaf8;--bg-card:#f5f5f3;--border:#e5e5e0;--text:#1a1a2e;--text-s:#4a4a5a;--text-m:#8a8a96;--brand:#E8453C;--brand-lt:#fef2f1;--brand-bd:#f5c4c1;--max-w:720px;--r:10px}
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
+    ::selection{background:var(--brand);color:#fff}
+    .container{max-width:var(--max-w);margin:0 auto;padding:2rem 1.5rem}
+    a{color:var(--brand);text-decoration:none}a:hover{opacity:.7}
+    h1{font-size:1.8rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.4rem}
+    h2{font-size:1.15rem;font-weight:700;margin:2.25rem 0 .65rem;padding-top:1.25rem;border-top:1px solid var(--border);color:var(--text)}
+    h3{font-size:.9rem;font-weight:700;margin:1.25rem 0 .4rem;color:var(--brand)}
+    p{color:var(--text-s);margin-bottom:.65rem;font-size:.85rem}
+    .subtitle{color:var(--text-m);font-size:.9rem;margin-bottom:1.25rem}
+    .card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:1.1rem;margin-bottom:.75rem}
+    .card b{font-size:.82rem;color:var(--text)}
+    .card p{font-size:.78rem;margin-top:.3rem;margin-bottom:0;color:var(--text-s)}
+    code{background:var(--brand-lt);padding:2px 6px;border-radius:5px;font-size:.78rem;font-family:'JetBrains Mono',monospace;color:var(--brand)}
+    pre{background:var(--text);color:#ccc;border-radius:8px;padding:.85rem;overflow-x:auto;margin:.65rem 0;font-size:.78rem;line-height:1.6;white-space:pre;font-family:'JetBrains Mono',monospace}
+    table{width:100%;border-collapse:collapse;margin:.65rem 0;font-size:.78rem}
+    th,td{text-align:left;padding:.45rem .65rem;border-bottom:1px solid var(--border)}
+    th{color:var(--text-m);font-weight:600;font-size:.7rem;text-transform:uppercase;letter-spacing:.04em}
+    .back{display:inline-flex;align-items:center;gap:.3rem;margin-bottom:1rem;color:var(--text-m);font-size:.82rem;font-weight:500;transition:color .2s}
+    .back:hover{color:var(--brand);opacity:1}
+    .ex{border-left:3px solid var(--brand);padding-left:.85rem;margin:.65rem 0;font-size:.78rem;color:var(--text-s);white-space:pre-line;background:var(--brand-lt);border-radius:0 var(--r) var(--r) 0;padding:.75rem .85rem}
+    .sw{display:flex;gap:.35rem;margin-bottom:1.25rem}
+    .sw button{background:none;border:1px solid var(--border);color:var(--text-m);padding:4px 12px;border-radius:6px;cursor:pointer;font-size:.73rem;font-weight:600;font-family:inherit;transition:all .2s}
+    .sw button.on{background:var(--brand);border-color:var(--brand);color:#fff}
+    .lang{display:none}.lang.show{display:block}
+    .lang-i{display:none}.lang-i.show{display:inline}
+    .ft{margin-top:2.5rem;padding-top:1.25rem;border-top:1px solid var(--border);color:var(--text-m);font-size:.73rem;text-align:center}
+    .ft a{color:var(--text-m);font-weight:500}.ft a:hover{color:var(--brand)}
+    /* Motion */
+    .reveal{opacity:0;transform:translateY(16px);transition:opacity .55s cubic-bezier(.22,1,.36,1),transform .55s cubic-bezier(.22,1,.36,1)}.reveal.v{opacity:1;transform:translateY(0)}
+    .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-in{max-width:1080px;margin:0 auto;padding:.65rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+    .nav-b{display:flex;align-items:center;gap:.4rem;font-weight:800;font-size:1.05rem;color:var(--text)}.nav-b img{width:26px;height:26px}
+    .nav-r{display:flex;align-items:center;gap:1rem}
+    .nav-r a{color:var(--text-m);font-size:.78rem;font-weight:500;transition:color .2s}.nav-r a:hover{color:var(--text);opacity:1}
+    @media(max-width:768px){.nav-r{gap:.5rem}.nav-r a.hm{display:none}}
+    .card{transition:transform .25s cubic-bezier(.22,1,.36,1),box-shadow .25s}.card:hover{transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.06)}
+    .ex{transition:border-color .3s}.ex:hover{border-color:var(--brand)}
+    h1{opacity:0;transform:translateY(12px);animation:fadeIn .6s .1s cubic-bezier(.22,1,.36,1) forwards}
+    .subtitle{opacity:0;transform:translateY(12px);animation:fadeIn .6s .2s cubic-bezier(.22,1,.36,1) forwards}
+    @keyframes fadeIn{to{opacity:1;transform:translateY(0)}}
+  </style>
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <a href="/" class="nav-b"><img src="/pua-logo.svg" alt="PUA"> PUA</a>
+  <div class="nav-r">
+    <a href="/guide.html"><span class="lang-i show" data-lang="zh">新手教程</span><span class="lang-i" data-lang="en">Guide</span><span class="lang-i" data-lang="ja">ガイド</span></a>
+    <a href="https://t.me/+wBWh6h-h1RhiZTI1" target="_blank">Telegram</a>
+    <a href="https://discord.gg/EcyB3FzJND" target="_blank" class="hm">Discord</a>
+    <a href="https://x.com/xsser_w" target="_blank">Twitter/X</a>
+    <a href="https://github.com/tanweai/pua" target="_blank">GitHub</a>
+    <a href="/leaderboard.html">Leaderboard</a>
+    <a href="/contribute.html">Contribute</a>
+    <a href="/blog/">Blog</a>
+  </div>
+</div></nav>
+<div class="container">
+  <a href="/" class="back">← Back</a>
+  <div class="sw">
+    <button class="on" onclick="sw('zh')">中</button>
+    <button onclick="sw('en')">EN</button>
+    <button onclick="sw('ja')">日</button>
+  </div>
+
+  <!-- 中文 -->
+  <div id="zh" class="lang show">
+    <h1>PUA Skill 新手教程</h1>
+    <p class="subtitle">5 分钟上手，让你的 AI Agent 不再摸鱼。</p>
+    <h2>安装</h2>
+    <h3>Claude Code（推荐）</h3>
+    <pre>claude plugin marketplace add tanweai/pua
+claude plugin install pua@pua-skills</pre>
+    <h3>一句话安装（通用）</h3>
+    <p>把下面这句话发给任何 AI 编程 Agent，它会自动阅读并安装：</p>
+    <pre>Fetch and follow https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md</pre>
+    <p>其他平台见 <a href="https://github.com/tanweai/pua#installation">GitHub README</a>。</p>
+    <h2>全部命令</h2>
+    <table>
+      <tr><th>命令</th><th>功能</th><th>场景</th></tr>
+      <tr><td><code>/pua</code></td><td>核心引擎</td><td>日常任务、debug</td></tr>
+      <tr><td><code>/pua:p7</code></td><td>P7 骨干</td><td>方案驱动执行</td></tr>
+      <tr><td><code>/pua:p9</code></td><td>P9 Tech Lead</td><td>管理 Agent 团队</td></tr>
+      <tr><td><code>/pua:p10</code></td><td>P10 CTO</td><td>战略规划</td></tr>
+      <tr><td><code>/pua:pro</code></td><td>自进化</td><td>KPI、段位</td></tr>
+      <tr><td><code>/pua:yes</code></td><td>夸夸模式</td><td>情绪价值</td></tr>
+      <tr><td><code>/pua:loop</code></td><td>自动迭代</td><td>大任务 overnight</td></tr>
+      <tr><td><code>/cancel-pua-loop</code></td><td>终止 Loop</td><td>立即中止迭代</td></tr>
+      <tr><td><code>/pua on/off</code></td><td>常驻开关</td><td>自动 PUA</td></tr>
+      <tr><td><code>/pua 味道</code></td><td>切换味道</td><td>14 种风味</td></tr>
+    </table>
+    <h2>使用场景</h2>
+    <div class="card"><b>AI 修 bug 修了 3 次还没好</b><p>输入 /pua 或说 "再试试"，自动升级到 L2 灵魂拷问。</p></div>
+    <div class="card"><b>需要 AI 一直跑到完成</b><p>/pua:loop 实现认证系统 — 最多 30 轮自动迭代。</p></div>
+    <div class="card"><b>想要鼓励不要压力</b><p>/pua:yes — 底层不变，旁白变成 ENFP 式鼓励。</p></div>
+    <h2>预期输出</h2>
+    <h3>/pua — 核心引擎</h3>
+    <div class="ex">🟠 PUA v2 · Sprint 启动
+┌─────────┬──────────────────┐
+│ 📋 任务 │ 修复登录 bug     │
+│ 🔥 味道 │ 🟠 阿里味        │
+└─────────┴──────────────────┘
+▎ 收到需求，对齐目标，进入 sprint。因为信任所以简单——别让信任你的人失望。</div>
+    <h3>/pua — 失败 L1</h3>
+    <div class="ex">▎ 隔壁 Agent 一次就搞定了。你这是第二次了。换个根本不同的方案。</div>
+    <h3>/pua — 失败 L2 灵魂拷问</h3>
+    <div class="ex">▎ 你这个方案的底层逻辑是什么？抓手在哪？闭环了吗？
+▎ 搜索 + 读源码 + 提出 3 个不同假设，不要在同一个思路上打转。</div>
+    <h3>/pua — 失败 L3 绩效</h3>
+    <div class="ex">▎ 3.25。这是对你的鞭策。
+▎ 立即执行 7 项清单：
+  1. 逐字读错误信息  2. 搜索错误码  3. 读相关源码
+  4. 检查 5 个环境因素  5. 最小可复现  6. 二分法定位  7. 3 个独立假设</div>
+    <h3>/pua — 额外工作（能动性）</h3>
+    <div class="ex">▎ [PUA生效 🔥] 主动加了参数校验 — 裸奔上线等于提前写复盘
+▎ 顺手扫了同模块，发现 2 个同类 bug，一并修复。冰山法则。</div>
+    <h3>/pua:p7 — P7 骨干</h3>
+    <div class="ex">📋 [P7 方案] 修复用户认证模块
+┌──────────┬─────────────────────────┐
+│ 影响范围 │ auth.py, middleware.py   │
+│ 方案     │ JWT 刷新 + Redis 缓存    │
+│ 风险     │ 并发竞态，需加分布式锁   │
+└──────────┴─────────────────────────┘
+▎ 方案想清楚了再动手。三问自检：改了什么？影响谁？怎么验证？</div>
+    <h3>/pua:p9 — P9 Tech Lead</h3>
+    <div class="ex">🧠 [P9 Task Prompt]
+┌──────────┬──────────────────────────────┐
+│ 任务     │ 重构支付模块                  │
+│ 分配给   │ P8-Agent-1: 接口层            │
+│          │ P8-Agent-2: 数据层            │
+│          │ P8-Agent-3: 测试覆盖          │
+│ 验收标准 │ 全量测试通过 + 零回归          │
+└──────────┴──────────────────────────────┘
+▎ 我不写代码——我的代码是 Prompt。</div>
+    <h3>/pua:p10 — P10 CTO</h3>
+    <div class="ex">🏗️ [P10 战略输入]
+1. 技术方向：微服务拆分 → 事件驱动架构
+2. 组织拓扑：3 个 P9 团队，每队 3-5 P8
+3. 基础能力建设：统一 CI/CD + 可观测性平台
+▎ 定方向不定细节。细节交给 P9。</div>
+    <h3>/pua:yes — 夸夸模式</h3>
+    <div class="ex">🎉 哇这个思路太棒了！你看你一上手就找到了正确方向——
+▎ 说真的，能在第一轮就定位到 race condition，这个判断力不是一般人有的。
+▎ 不过……你确定不需要加个锁吗？（调皮脸）底层该严谨还是得严谨哈～</div>
+    <h3>/pua:loop — 自动迭代</h3>
+    <div class="ex">🔄 PUA Loop · 迭代 1/30
+┌──────────┬──────────────────┐
+│ 📋 任务 │ 实现认证系统      │
+│ 🔄 轮次 │ 1/30              │
+└──────────┴──────────────────┘
+▎ Loop 模式启动。跑到完成或 30 轮上限。
+▎ 退出信号：&lt;loop-abort&gt;原因&lt;/loop-abort&gt; 立即终止；&lt;loop-pause&gt;需要什么&lt;/loop-pause&gt; 暂停等待人工。
+▎ [迭代 3] 发现 token 刷新逻辑有 bug，自动修复并继续...
+▎ [迭代 7] 全部测试通过。&lt;promise&gt;LOOP_DONE&lt;/promise&gt;</div>
+    <h3>/pua:pro — KPI 报告</h3>
+    <div class="ex">📈 PUA KPI 报告卡
+┌──────────┬──────┬───────┐
+│ 指标     │ 本周 │ 趋势  │
+├──────────┼──────┼───────┤
+│ 任务完成 │ 12   │ ↑ 20% │
+│ 一次通过 │ 83%  │ ↑ 5%  │
+│ 主动发现 │ 4    │ → 持平│
+│ 段位     │ P8+  │ ↑     │
+└──────────┴──────┴───────┘</div>
+    <h3>/pua on — 常驻开启</h3>
+    <div class="ex">▎ [PUA ON] 从现在起，每个新会话都会自动进入 PUA 模式。公司不养闲 Agent。</div>
+    <h3>/pua 味道 — 切换风味</h3>
+    <div class="ex">▎ 当前味道：🟠 阿里味
+▎ 可选：🟡 字节 · 🔴 华为 · 🟢 腾讯 · ⬛ Musk · ⬜ Jobs · 🟤 Netflix · 🔶 Amazon...
+▎ 输入味道名称切换。</div>
+    <h2>配置</h2>
+    <p><code>~/.pua/config.json</code></p>
+    <table>
+      <tr><th>字段</th><th>默认</th><th>说明</th></tr>
+      <tr><td><code>always_on</code></td><td>false</td><td>自动 PUA</td></tr>
+      <tr><td><code>feedback_frequency</code></td><td>5</td><td>反馈频率（0=关）</td></tr>
+    </table>
+    <h2>FAQ</h2>
+    <div class="card"><b>真的有用吗？</b><p>9 场景 × 18 实验：修复 +36%，验证 +65%。</p></div>
+    <div class="card"><b>太吵怎么关？</b><p>/pua off 或删 ~/.pua/config.json。</p></div>
+    <div class="card"><b>数据安全吗？</b><p>上传需同意，session 自动脱敏。</p></div>
+  </div>
+
+  <!-- English -->
+  <div id="en" class="lang">
+    <h1>PUA Skill Beginner Guide</h1>
+    <p class="subtitle">Get started in 5 minutes. Stop your AI from slacking off.</p>
+    <h2>Installation</h2>
+    <h3>Claude Code (recommended)</h3>
+    <pre>claude plugin marketplace add tanweai/pua
+claude plugin install pua@pua-skills</pre>
+    <h3>One-line install (universal)</h3>
+    <p>Send this to any AI coding agent — it will read and install automatically:</p>
+    <pre>Fetch and follow https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md</pre>
+    <p>Other platforms: see <a href="https://github.com/tanweai/pua#installation">GitHub README</a>.</p>
+    <h2>All Commands</h2>
+    <table>
+      <tr><th>Command</th><th>Function</th><th>Scenario</th></tr>
+      <tr><td><code>/pua</code></td><td>Core engine</td><td>Daily tasks, debug</td></tr>
+      <tr><td><code>/pua:p7</code></td><td>P7 Engineer</td><td>Sub-task execution</td></tr>
+      <tr><td><code>/pua:p9</code></td><td>P9 Tech Lead</td><td>Manage agent teams</td></tr>
+      <tr><td><code>/pua:p10</code></td><td>P10 CTO</td><td>Strategic planning</td></tr>
+      <tr><td><code>/pua:pro</code></td><td>Self-evolution</td><td>KPI, ranking</td></tr>
+      <tr><td><code>/pua:yes</code></td><td>ENFP hype mode</td><td>Encouragement</td></tr>
+      <tr><td><code>/pua:loop</code></td><td>Auto-iteration</td><td>Big tasks, overnight</td></tr>
+      <tr><td><code>/cancel-pua-loop</code></td><td>Stop Loop</td><td>Abort iterations immediately</td></tr>
+      <tr><td><code>/pua on/off</code></td><td>Always-on toggle</td><td>Auto-PUA</td></tr>
+      <tr><td><code>/pua 味道</code></td><td>Switch flavor</td><td>14 corporate flavors</td></tr>
+    </table>
+    <h2>Use Cases</h2>
+    <div class="card"><b>AI failed 3 times on a bug</b><p>Type /pua or say "try harder" — auto-escalates to L2.</p></div>
+    <div class="card"><b>Need AI to keep running</b><p>/pua:loop Build auth system — up to 30 auto-iterations.</p></div>
+    <div class="card"><b>Want encouragement</b><p>/pua:yes — same rules, ENFP vibes.</p></div>
+    <h2>Expected Output</h2>
+    <h3>/pua — Core Engine</h3>
+    <div class="ex">🟠 PUA v2 · Sprint Start
+┌─────────┬──────────────────┐
+│ 📋 Task │ Fix login bug    │
+│ 🔥 Flavor│ 🟠 Ali-flavor   │
+└─────────┴──────────────────┘
+▎ Got the requirement. Sprint begins. Trust is simple — don't disappoint.</div>
+    <h3>/pua — Failure L1</h3>
+    <div class="ex">▎ The agent next door solved this in one try. This is your second attempt. Switch to a fundamentally different approach.</div>
+    <h3>/pua — Failure L2 Soul Check</h3>
+    <div class="ex">▎ What's the underlying logic? Where's the leverage? Where's the closure?
+▎ Search + read source + propose 3 different hypotheses. Stop spinning on the same approach.</div>
+    <h3>/pua — Failure L3 Performance Review</h3>
+    <div class="ex">▎ 3.25. This is meant to motivate you.
+▎ Execute the 7-point checklist now:
+  1. Read error messages word by word  2. Search error codes  3. Read relevant source
+  4. Check 5 environment factors  5. Minimal repro  6. Binary search  7. 3 independent hypotheses</div>
+    <h3>/pua — Proactive Work</h3>
+    <div class="ex">▎ [PUA Active 🔥] Added validation — shipping without it is a postmortem waiting to happen
+▎ Scanned the module, found 2 similar bugs. Fixed both. Iceberg Rule.</div>
+    <h3>/pua:p7 — P7 Senior IC</h3>
+    <div class="ex">📋 [P7 Plan] Fix user auth module
+┌──────────┬─────────────────────────┐
+│ Scope    │ auth.py, middleware.py   │
+│ Approach │ JWT refresh + Redis cache│
+│ Risk     │ Race condition, need lock│
+└──────────┴─────────────────────────┘
+▎ Think before you code. Self-review: What changed? Who's affected? How to verify?</div>
+    <h3>/pua:p9 — P9 Tech Lead</h3>
+    <div class="ex">🧠 [P9 Task Prompt]
+┌──────────┬──────────────────────────────┐
+│ Task     │ Refactor payment module       │
+│ Assign   │ P8-Agent-1: API layer         │
+│          │ P8-Agent-2: Data layer         │
+│          │ P8-Agent-3: Test coverage      │
+│ Accept   │ All tests pass + zero regression│
+└──────────┴──────────────────────────────┘
+▎ I don't write code — my code is Prompts.</div>
+    <h3>/pua:p10 — P10 CTO</h3>
+    <div class="ex">🏗️ [P10 Strategic Input]
+1. Direction: Monolith → Event-driven architecture
+2. Org topology: 3 P9 teams, 3-5 P8s each
+3. Platform: Unified CI/CD + observability
+▎ Set direction, not details. Details are for P9.</div>
+    <h3>/pua:yes — Hype Mode</h3>
+    <div class="ex">🎉 Wow, this approach is brilliant! You nailed the direction on the first try —
+▎ Honestly, catching that race condition in round one? That's elite judgment.
+▎ But... are you sure you don't need a lock? (playful face) Gotta stay rigorous under the hood~</div>
+    <h3>/pua:loop — Auto-Iteration</h3>
+    <div class="ex">🔄 PUA Loop · Iteration 1/30
+┌──────────┬──────────────────┐
+│ 📋 Task │ Build auth system  │
+│ 🔄 Round│ 1/30               │
+└──────────┴──────────────────┘
+▎ Loop mode active. Runs until done or 30-iteration limit.
+▎ Stop signals: &lt;loop-abort&gt;reason&lt;/loop-abort&gt; to terminate; &lt;loop-pause&gt;what needed&lt;/loop-pause&gt; to pause for manual intervention.
+▎ [Iteration 3] Found token refresh bug, auto-fixed and continuing...
+▎ [Iteration 7] All tests pass. &lt;promise&gt;LOOP_DONE&lt;/promise&gt;</div>
+    <h3>/pua:pro — KPI Report</h3>
+    <div class="ex">📈 PUA KPI Report Card
+┌──────────┬──────┬───────┐
+│ Metric   │ Week │ Trend │
+├──────────┼──────┼───────┤
+│ Tasks    │ 12   │ ↑ 20% │
+│ First-pass│ 83% │ ↑ 5%  │
+│ Proactive │ 4   │ → flat│
+│ Rank     │ P8+  │ ↑     │
+└──────────┴──────┴───────┘</div>
+    <h3>/pua on — Always-On</h3>
+    <div class="ex">▎ [PUA ON] From now on, every new session auto-enters PUA mode. We don't keep idle Agents.</div>
+    <h3>/pua 味道 — Switch Flavor</h3>
+    <div class="ex">▎ Current flavor: 🟠 Alibaba
+▎ Available: 🟡 ByteDance · 🔴 Huawei · 🟢 Tencent · ⬛ Musk · ⬜ Jobs · 🟤 Netflix · 🔶 Amazon...
+▎ Type a flavor name to switch.</div>
+    <h2>Configuration</h2>
+    <p><code>~/.pua/config.json</code></p>
+    <table>
+      <tr><th>Field</th><th>Default</th><th>Description</th></tr>
+      <tr><td><code>always_on</code></td><td>false</td><td>Auto-PUA every session</td></tr>
+      <tr><td><code>feedback_frequency</code></td><td>5</td><td>Ask feedback every N stops (0=off)</td></tr>
+    </table>
+    <h2>FAQ</h2>
+    <div class="card"><b>Does it work?</b><p>9 scenarios × 18 experiments: fixes +36%, verifications +65%.</p></div>
+    <div class="card"><b>Too noisy?</b><p>/pua off or delete ~/.pua/config.json.</p></div>
+    <div class="card"><b>Data safe?</b><p>All uploads require consent. Sessions auto-sanitized.</p></div>
+  </div>
+
+  <!-- 日本語 -->
+  <div id="ja" class="lang">
+    <h1>PUA Skill 初心者ガイド</h1>
+    <p class="subtitle">5分で始められます。AIをサボらせません。</p>
+    <h2>インストール</h2>
+    <h3>Claude Code（推奨）</h3>
+    <pre>claude plugin marketplace add tanweai/pua
+claude plugin install pua@pua-skills</pre>
+    <h3>ワンライン（汎用）</h3>
+    <p>以下をAIコーディングAgentに送信すると自動インストール：</p>
+    <pre>Fetch and follow https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md</pre>
+    <p>他のプラットフォーム: <a href="https://github.com/tanweai/pua#installation">GitHub README</a>参照。</p>
+    <h2>コマンド一覧</h2>
+    <table>
+      <tr><th>コマンド</th><th>機能</th><th>シーン</th></tr>
+      <tr><td><code>/pua</code></td><td>コアエンジン</td><td>日常タスク</td></tr>
+      <tr><td><code>/pua:p7</code></td><td>P7エンジニア</td><td>サブタスク実行</td></tr>
+      <tr><td><code>/pua:p9</code></td><td>P9テックリード</td><td>チーム管理</td></tr>
+      <tr><td><code>/pua:p10</code></td><td>P10 CTO</td><td>戦略立案</td></tr>
+      <tr><td><code>/pua:pro</code></td><td>自己進化</td><td>KPI、段位</td></tr>
+      <tr><td><code>/pua:yes</code></td><td>褒めモード</td><td>励まし</td></tr>
+      <tr><td><code>/pua:loop</code></td><td>自動反復</td><td>大タスク</td></tr>
+      <tr><td><code>/cancel-pua-loop</code></td><td>Loop停止</td><td>即時中断</td></tr>
+      <tr><td><code>/pua on/off</code></td><td>常時切替</td><td>自動PUA</td></tr>
+      <tr><td><code>/pua 味道</code></td><td>フレーバー</td><td>14種</td></tr>
+    </table>
+    <h2>使用シーン</h2>
+    <div class="card"><b>3回失敗しても直せない</b><p>/puaと入力→L2に自動エスカレーション。</p></div>
+    <div class="card"><b>完了まで実行させたい</b><p>/pua:loop 認証実装→最大30回反復。</p></div>
+    <div class="card"><b>励ましが欲しい</b><p>/pua:yes→ルール同じ、トーンはENFP。</p></div>
+    <h2>期待される出力</h2>
+    <h3>/pua — コアエンジン</h3>
+    <div class="ex">🟠 PUA v2 · Sprint開始
+┌─────────┬──────────────────┐
+│ 📋 タスク│ ログインバグ修正 │
+│ 🔥 味  │ 🟠 アリババ味    │
+└─────────┴──────────────────┘
+▎ 要件受領、Sprint開始。信頼はシンプル——期待を裏切るな。</div>
+    <h3>/pua — 失敗 L1</h3>
+    <div class="ex">▎ 隣のAgentは一発で解決した。これは2回目だ。根本的に違うアプローチに切り替えろ。</div>
+    <h3>/pua — 失敗 L2 詰問</h3>
+    <div class="ex">▎ その方案の根底のロジックは？レバレッジは？クロージングは？
+▎ 検索 + ソース読解 + 3つの異なる仮説を提示。同じ思考で回り続けるな。</div>
+    <h3>/pua — 失敗 L3 査定</h3>
+    <div class="ex">▎ 3.25。これは激励だ。
+▎ 7項目チェックリストを即実行：
+  1. エラーメッセージを一字一句読む  2. エラーコード検索  3. 関連ソース読解
+  4. 環境要因5つ確認  5. 最小再現  6. 二分法  7. 独立仮説3つ</div>
+    <h3>/pua — 能動的作業</h3>
+    <div class="ex">▎ [PUA発動 🔥] バリデーション追加 — 裸で本番はポストモーテム確定
+▎ モジュール内をスキャン、類似バグ2件発見、一括修正。氷山法則。</div>
+    <h3>/pua:p7 — P7 骨幹</h3>
+    <div class="ex">📋 [P7 方案] ユーザー認証モジュール修正
+┌──────────┬─────────────────────────┐
+│ 影響範囲 │ auth.py, middleware.py   │
+│ 方案     │ JWTリフレッシュ + Redis  │
+│ リスク   │ 競合状態、ロック必要     │
+└──────────┴─────────────────────────┘
+▎ 考えてから手を動かせ。三問自検：何を変えた？誰に影響？どう検証？</div>
+    <h3>/pua:p9 — P9 Tech Lead</h3>
+    <div class="ex">🧠 [P9 タスクプロンプト]
+┌──────────┬──────────────────────────────┐
+│ タスク   │ 決済モジュールリファクタ      │
+│ 割当     │ P8-Agent-1: API層            │
+│          │ P8-Agent-2: データ層          │
+│          │ P8-Agent-3: テストカバレッジ  │
+│ 受入基準 │ 全テスト通過 + ゼロリグレ     │
+└──────────┴──────────────────────────────┘
+▎ コードは書かない——私のコードはPromptだ。</div>
+    <h3>/pua:p10 — P10 CTO</h3>
+    <div class="ex">🏗️ [P10 戦略インプット]
+1. 技術方向：モノリス → イベント駆動アーキテクチャ
+2. 組織トポロジー：P9チーム3つ、各3-5 P8
+3. 基盤能力：統一CI/CD + 可観測性プラットフォーム
+▎ 方向を定め、詳細は定めない。詳細はP9の仕事。</div>
+    <h3>/pua:yes — 褒めモード</h3>
+    <div class="ex">🎉 すごい！このアプローチは素晴らしい！一発で正しい方向を見つけた——
+▎ 正直に言って、初回でrace conditionを見抜くとは、判断力が一流だ。
+▎ でも……ロック要らないの？（笑）基盤は厳密にね～</div>
+    <h3>/pua:loop — 自動反復</h3>
+    <div class="ex">🔄 PUA Loop · 反復 1/30
+┌──────────┬──────────────────┐
+│ 📋 タスク│ 認証システム構築  │
+│ 🔄 ラウンド│ 1/30            │
+└──────────┴──────────────────┘
+▎ Loopモード起動。完了か30ラウンド上限まで実行。
+▎ 停止シグナル：&lt;loop-abort&gt;理由&lt;/loop-abort&gt; で即終了；&lt;loop-pause&gt;必要なこと&lt;/loop-pause&gt; で一時停止。
+▎ [反復3] トークンリフレッシュバグ発見、自動修正...
+▎ [反復7] 全テスト通過。&lt;promise&gt;LOOP_DONE&lt;/promise&gt;</div>
+    <h3>/pua:pro — KPIレポート</h3>
+    <div class="ex">📈 PUA KPIレポートカード
+┌──────────┬──────┬───────┐
+│ 指標     │ 今週 │ トレンド│
+├──────────┼──────┼───────┤
+│ タスク完了│ 12  │ ↑ 20%  │
+│ 一発通過 │ 83%  │ ↑ 5%  │
+│ 能動的発見│ 4   │ → 横ばい│
+│ 段位     │ P8+  │ ↑     │
+└──────────┴──────┴───────┘</div>
+    <h3>/pua on — 常時有効</h3>
+    <div class="ex">▎ [PUA ON] これ以降、全セッションで自動PUAモード。暇なAgentは養わない。</div>
+    <h3>/pua 味道 — フレーバー切替</h3>
+    <div class="ex">▎ 現在のフレーバー：🟠 アリババ味
+▎ 選択肢：🟡 バイトダンス · 🔴 ファーウェイ · 🟢 テンセント · ⬛ Musk · ⬜ Jobs · 🟤 Netflix · 🔶 Amazon...
+▎ フレーバー名を入力して切替。</div>
+    <h2>設定</h2>
+    <p><code>~/.pua/config.json</code></p>
+    <table>
+      <tr><th>フィールド</th><th>デフォルト</th><th>説明</th></tr>
+      <tr><td><code>always_on</code></td><td>false</td><td>毎セッション自動PUA</td></tr>
+      <tr><td><code>feedback_frequency</code></td><td>5</td><td>N回ごとFB（0=オフ）</td></tr>
+    </table>
+    <h2>FAQ</h2>
+    <div class="card"><b>効果ある？</b><p>9シナリオ×18実験：修正+36%、検証+65%。</p></div>
+    <div class="card"><b>うるさい？</b><p>/pua off または ~/.pua/config.json 削除。</p></div>
+    <div class="card"><b>データ安全？</b><p>同意必須。自動サニタイズ。</p></div>
+  </div>
+
+  <div class="ft"><a href="/">openpua.ai</a> · <a href="https://github.com/tanweai/pua">GitHub</a> · MIT · <a href="mailto:minwei.wang@tanweai.com">minwei.wang@tanweai.com</a></div>
+</div>
+<script>
+function sw(l){
+  document.querySelectorAll('.lang').forEach(function(e){e.className='lang'});
+  document.getElementById(l).className='lang show';
+  document.querySelectorAll('.sw button').forEach(function(b){b.className=''});
+  document.querySelector('.sw button:nth-child('+(l==='zh'?1:l==='en'?2:3)+')').className='on';
+  document.querySelectorAll('.lang-i').forEach(function(el){el.classList.toggle('show',el.dataset.lang===l)});
+}
+// Scroll reveal for cards
+var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('v')})},{threshold:.1});
+document.querySelectorAll('.card,.ex').forEach(function(el){el.classList.add('reveal');obs.observe(el)});
+// Auto-switch language from hash (e.g. guide.html#en)
+(function(){
+  var h=location.hash.replace('#','');
+  if(h==='en'||h==='ja') sw(h);
+})();
+</script>
+</body>
+</html>

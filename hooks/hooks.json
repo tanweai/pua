@@ -1,0 +1,54 @@
+{
+  "description": "PUA v2 hooks: PreCompact state dump, SessionStart restore + always-on, Stop feedback",
+  "hooks": {
+    "PreCompact": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "[PUA v2 PreCompact — State Checkpoint]\n\nCheck FIRST: did PUA actually trigger this session? Look for ANY of these markers in your recent output:\n- [PUA生效 🔥]  (Chinese skill)\n- [Auto-select: ...] or [PIP-REPORT]  (English skill)\n- [PUA-REPORT]  (Japanese skill)\nIf NONE of these markers appear, skip everything below and do nothing.\n\nIf PUA WAS active: Context compaction is about to happen. You MUST immediately dump your PUA v2 runtime state to ~/.pua/builder-journal.md using the Write tool BEFORE compaction erases it.\n\nWrite the following to ~/.pua/builder-journal.md (create ~/.pua/ if needed):\n\n```markdown\n# PUA v2 Builder Journal — Compaction Checkpoint\n\n## Timestamp\n{current ISO timestamp}\n\n## Runtime State\n- pressure_level: L{0-4}\n- failure_count: {number}\n- current_flavor: {flavor name}\n- pua_triggered_count: {number of [PUA生效 🔥] this session}\n\n## Active Task\n{what you were working on — 1-2 sentences}\n\n## Tried Approaches\n{list of approaches tried and their outcomes}\n\n## Excluded Possibilities\n{what has been ruled out}\n\n## Next Hypothesis\n{what you planned to try next}\n\n## Key Context\n{any critical information that would be lost in compaction — file paths, error messages, architectural decisions}\n```\n\nThis is NOT optional. Compaction without state dump = losing pressure level and failure history = cheating. The pressure doesn't reset just because context got compressed.\n\nAfter writing, output: > [PUA Checkpoint] State saved to builder-journal.md. Pressure level and failure history preserved."
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/session-restore.sh",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/session-restore.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/pua-loop-hook.sh"
+          },
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/stop-feedback.sh",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

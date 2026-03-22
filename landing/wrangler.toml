@@ -1,0 +1,16 @@
+name = "pua-landing"
+compatibility_date = "2024-12-01"
+pages_build_output_dir = "dist"
+
+[[r2_buckets]]
+binding = "UPLOADS"
+bucket_name = "puaskill-upload"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "pua-uploads-db"
+database_id = "36aa7bb8-b9de-4bf5-a64a-4b5a25cb6eff"
+
+[vars]
+GITHUB_CLIENT_ID = "Ov23liWBndbGh85rEERd"
+# GITHUB_CLIENT_SECRET goes in wrangler secret

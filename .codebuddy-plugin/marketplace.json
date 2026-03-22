@@ -1,0 +1,17 @@
+{
+    "name": "pua-skills",
+    "description": "PUA Motivator for CodeBuddy -- forces AI to exhaust all solutions before giving up, using corporate PUA rhetoric from Chinese and Western tech giants",
+    "version": "1.0.0",
+    "owner": {
+        "name": "探微安全实验室",
+        "url": "https://github.com/tanweai"
+    },
+    "plugins": [
+        {
+            "name": "pua",
+            "description": "PUA Motivator -- forces CodeBuddy to exhaust all solutions before giving up, using corporate PUA rhetoric (Alibaba, ByteDance, Huawei, Tencent, Netflix, Musk, Jobs)",
+            "version": "1.2.0",
+            "source": "./"
+        }
+    ]
+}

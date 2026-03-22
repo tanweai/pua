@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PUA Leaderboard</title>
+  <link rel="icon" href="/pua-logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+  <style>
+    :root{--bg:#fff;--bg-warm:#fafaf8;--bg-card:#f5f5f3;--border:#e5e5e0;--text:#1a1a2e;--text-s:#4a4a5a;--text-m:#8a8a96;--brand:#E8453C;--brand-lt:#fef2f1;--brand-bd:#f5c4c1;--max-w:960px;--r:10px}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased}
+    ::selection{background:var(--brand);color:#fff}
+    a{color:var(--brand);text-decoration:none}a:hover{opacity:.7}
+    .con{max-width:var(--max-w);margin:0 auto;padding:0 1.5rem}
+    .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-in{max-width:1080px;margin:0 auto;padding:.65rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+    .nav-b{display:flex;align-items:center;gap:.4rem;font-weight:800;font-size:1.05rem;color:var(--text)}.nav-b img{width:26px;height:26px}
+    .nav-r{display:flex;align-items:center;gap:1rem}
+    .nav-r a{color:var(--text-m);font-size:.78rem;font-weight:500;transition:color .2s}.nav-r a:hover{color:var(--text);opacity:1}
+    @media(max-width:768px){.nav-r{gap:.5rem}.nav-r a.hm{display:none}}
+    .lsw{display:flex;background:var(--bg-card);border-radius:6px;padding:2px;border:1px solid var(--border)}
+    .lsw button{background:none;border:none;color:var(--text-m);padding:3px 9px;border-radius:4px;cursor:pointer;font-size:.65rem;font-weight:600;font-family:inherit;transition:all .2s}
+    .lsw button.on{background:var(--brand);color:#fff}
+    .hero{padding:2.5rem 0 1.5rem;text-align:center}
+    .hero h1{font-size:1.8rem;font-weight:900;margin-bottom:.3rem}
+    .hero .sub{color:var(--text-m);font-size:.82rem}
+    .hero code{background:var(--bg-card);padding:2px 7px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:.78rem;color:var(--brand)}
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1.5rem}
+    .stat-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:.9rem;text-align:center;transition:transform .25s}
+    .stat-card:hover{transform:scale(1.03)}
+    .stat-card .num{font-size:1.85rem;font-weight:900;color:var(--brand);line-height:1.2}
+    .stat-card .label{font-size:.75rem;color:var(--text-s);margin-top:.15rem;font-weight:500}
+    .tabs{display:flex;gap:2px;background:var(--bg-card);border-radius:9px;padding:3px;border:1px solid var(--border);margin-bottom:1.5rem;justify-content:center}
+    .tabs button{background:none;border:none;color:var(--text-m);padding:7px 20px;border-radius:7px;cursor:pointer;font-size:.78rem;font-weight:600;font-family:inherit;transition:all .2s}
+    .tabs button.on{background:var(--bg);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.06)}
+    .tp{display:none}.tp.show{display:block;animation:fadeT .3s ease}
+    @keyframes fadeT{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+    .rank-list{display:flex;flex-direction:column;gap:.65rem}
+    .rank-card{display:flex;align-items:center;gap:1rem;background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:1rem 1.25rem;transition:all .25s}
+    .rank-card:hover{border-color:var(--brand-bd);box-shadow:0 4px 12px rgba(0,0,0,.05);transform:translateY(-1px)}
+    .rank-card.top1{border-color:#fbbf24;background:linear-gradient(135deg,#fffbeb,#fff)}
+    .rank-card.top2{border-color:#d1d5db;background:linear-gradient(135deg,#f9fafb,#fff)}
+    .rank-card.top3{border-color:#d97706;background:linear-gradient(135deg,#fffbeb,#fff)}
+    .rank-pos{font-size:1.2rem;font-weight:900;width:2.2rem;text-align:center;font-family:'JetBrains Mono',monospace;flex-shrink:0;color:var(--text-m)}
+    .top1 .rank-pos{color:#d97706}.top2 .rank-pos{color:#9ca3af}.top3 .rank-pos{color:#b45309}
+    .rank-avatar{width:40px;height:40px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:700;color:#fff}
+    .rank-info{flex:1;min-width:0}
+    .rank-name{font-size:.92rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text)}
+    .rank-meta{font-size:.72rem;color:var(--text-m);margin-top:.15rem}
+    .rank-stats{display:flex;gap:1.25rem;align-items:center;flex-shrink:0}
+    .rank-stat{text-align:right}
+    .rank-stat .val{font-size:1rem;font-weight:800;font-family:'JetBrains Mono',monospace;color:var(--text)}
+    .rank-stat .lbl{font-size:.65rem;color:var(--text-m);text-transform:uppercase;letter-spacing:.03em;margin-top:.1rem}
+    .badge-p{display:inline-flex;padding:3px 10px;border-radius:9999px;font-size:.7rem;font-weight:700;white-space:nowrap}
+    .bp-p10{background:#fef2f1;color:#E8453C;border:1px solid #f5c4c1}
+    .bp-p9{background:#fef9e7;color:#b45309;border:1px solid #fde68a}
+    .bp-p8{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+    .bp-p7{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
+    .bp-p6,.bp-p5{background:var(--bg-card);color:var(--text-m);border:1px solid var(--border)}
+    .map-box{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);overflow:hidden}
+    .chart{width:100%;height:500px}
+    .legend-bar{display:flex;flex-wrap:wrap;gap:.4rem;justify-content:center;margin-bottom:1.25rem}
+    .legend-bar .li{display:flex;align-items:center;gap:.3rem;font-size:.72rem;color:var(--text-s)}
+    .region-side{margin-top:1rem}
+    .region-side h3{font-size:.82rem;font-weight:700;margin-bottom:.5rem}
+    .region-list{display:flex;flex-direction:column;gap:.35rem;max-height:320px;overflow-y:auto}
+    .ri-item{display:flex;align-items:center;justify-content:space-between;padding:.4rem .6rem;background:var(--bg);border:1px solid var(--border);border-radius:6px;font-size:.72rem;transition:all .2s}
+    .ri-item:hover{border-color:var(--brand-bd)}
+    .ri-item .rn{font-weight:600}.ri-item .rv{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--brand)}
+    .lang{display:none}.lang.show{display:block}
+    .lang-i{display:none}.lang-i.show{display:inline}
+    .footer{border-top:1px solid var(--border);padding:1.25rem 0;text-align:center;margin-top:2rem}
+    .footer p{font-size:.7rem;color:var(--text-m)}.footer a{color:var(--text-m)}
+    @media(max-width:768px){.stats-row{grid-template-columns:repeat(2,1fr)}.chart{height:350px}.nav-r a.hm{display:none}}
+  </style>
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <a href="/" class="nav-b"><img src="/pua-logo.svg" alt="PUA"> PUA</a>
+  <div class="nav-r">
+    <a href="/guide.html"><span class="lang-i show" data-lang="zh">新手教程</span><span class="lang-i" data-lang="en">Guide</span><span class="lang-i" data-lang="ja">ガイド</span></a>
+    <a href="https://t.me/+wBWh6h-h1RhiZTI1" target="_blank">Telegram</a>
+    <a href="https://discord.gg/EcyB3FzJND" target="_blank" class="hm">Discord</a>
+    <a href="https://x.com/xsser_w" target="_blank">Twitter/X</a>
+    <a href="https://github.com/tanweai/pua" target="_blank">GitHub</a>
+    <a href="/leaderboard.html" style="color:var(--brand);font-weight:600">Leaderboard</a>
+    <a href="/contribute.html">Contribute</a>
+    <a href="/blog/">Blog</a>
+    <div class="lsw"><button class="on" onclick="sl('zh')">中</button><button onclick="sl('en')">EN</button><button onclick="sl('ja')">日</button></div>
+  </div>
+</div></nav>
+
+<section class="hero"><div class="con">
+  <h1>PUA Leaderboard</h1>
+  <p class="sub"><span class="lang-i show" data-lang="zh">看看谁 PUA 到了 P10。输入 <code>/pua 排行榜</code> 加入。</span><span class="lang-i" data-lang="en">See who reached P10. Type <code>/pua 排行榜</code> to join.</span><span class="lang-i" data-lang="ja">誰が P10 に到達したか。<code>/pua 排行榜</code> で参加。</span></p>
+</div></section>
+
+<div class="con">
+  <div class="stats-row">
+    <div class="stat-card"><div class="num" id="sU">-</div><div class="label"><span class="lang-i show" data-lang="zh">参与用户</span><span class="lang-i" data-lang="en">Users</span><span class="lang-i" data-lang="ja">参加者</span></div></div>
+    <div class="stat-card"><div class="num" id="sP">-</div><div class="label"><span class="lang-i show" data-lang="zh">PUA 总次数</span><span class="lang-i" data-lang="en">Total PUA</span><span class="lang-i" data-lang="ja">PUA 総数</span></div></div>
+    <div class="stat-card"><div class="num" id="sA">-</div><div class="label"><span class="lang-i show" data-lang="zh">人均 PUA</span><span class="lang-i" data-lang="en">Avg PUA</span><span class="lang-i" data-lang="ja">平均 PUA</span></div></div>
+    <div class="stat-card"><div class="num" id="sT">-</div><div class="label"><span class="lang-i show" data-lang="zh">最高段位</span><span class="lang-i" data-lang="en">Top Rank</span><span class="lang-i" data-lang="ja">最高段位</span></div></div>
+  </div>
+
+  <div class="tabs" id="mt">
+    <button class="on" onclick="st('rank')"><span class="lang-i show" data-lang="zh">排行榜</span><span class="lang-i" data-lang="en">Rankings</span><span class="lang-i" data-lang="ja">ランキング</span></button>
+    <button onclick="st('china')"><span class="lang-i show" data-lang="zh">中国地图</span><span class="lang-i" data-lang="en">China Map</span><span class="lang-i" data-lang="ja">中国地図</span></button>
+    <button onclick="st('world')"><span class="lang-i show" data-lang="zh">世界地图</span><span class="lang-i" data-lang="en">World Map</span><span class="lang-i" data-lang="ja">世界地図</span></button>
+  </div>
+
+  <!-- Rankings -->
+  <div class="tp show" id="t-rank">
+    <div class="legend-bar">
+      <div class="li"><span class="badge-p bp-p10">P10</span><span class="lang-i show" data-lang="zh">首席PUA官</span><span class="lang-i" data-lang="en">Chief PUA</span><span class="lang-i" data-lang="ja">チーフPUA官</span></div>
+      <div class="li"><span class="badge-p bp-p9">P9</span> Tech Lead</div>
+      <div class="li"><span class="badge-p bp-p8">P8</span><span class="lang-i show" data-lang="zh">主管</span><span class="lang-i" data-lang="en">Manager</span><span class="lang-i" data-lang="ja">マネージャー</span></div>
+      <div class="li"><span class="badge-p bp-p7">P7</span><span class="lang-i show" data-lang="zh">骨干</span><span class="lang-i" data-lang="en">Senior</span><span class="lang-i" data-lang="ja">シニア</span></div>
+      <div class="li"><span class="badge-p bp-p6">P6</span><span class="lang-i show" data-lang="zh">专员</span><span class="lang-i" data-lang="en">Spec</span><span class="lang-i" data-lang="ja">アソシエイト</span></div>
+      <div class="li"><span class="badge-p bp-p5">P5</span><span class="lang-i show" data-lang="zh">实习</span><span class="lang-i" data-lang="en">Intern</span><span class="lang-i" data-lang="ja">インターン</span></div>
+    </div>
+    <div class="rank-list" id="rl"></div>
+  </div>
+
+  <!-- China Map -->
+  <div class="tp" id="t-china">
+    <div class="map-box"><div id="chinaChart" class="chart"></div></div>
+    <div class="region-side">
+      <h3><span class="lang-i show" data-lang="zh">省份排名</span><span class="lang-i" data-lang="en">Province Ranking</span><span class="lang-i" data-lang="ja">省別ランキング</span></h3>
+      <div class="region-list" id="cList"></div>
+    </div>
+  </div>
+
+  <!-- World Map -->
+  <div class="tp" id="t-world">
+    <div class="map-box"><div id="worldChart" class="chart"></div></div>
+    <div class="region-side">
+      <h3><span class="lang-i show" data-lang="zh">国家排名</span><span class="lang-i" data-lang="en">Country Ranking</span><span class="lang-i" data-lang="ja">国別ランキング</span></h3>
+      <div class="region-list" id="wList"></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer"><div class="con">
+  <p><a href="/">openpua.ai</a> · <a href="https://github.com/tanweai/pua">GitHub</a> · MIT · <a href="mailto:minwei.wang@tanweai.com">minwei.wang@tanweai.com</a></p>
+</div></footer>
+
+<script>
+var curLang='zh';
+var AVC=['#E8453C','#f97316','#eab308','#22c55e','#06b6d4','#8b5cf6','#ec4899','#6366f1'];
+var rankingsData=null;
+var titleEn={'P10':'Chief PUA Officer','P9':'Tech Lead','P8':'Manager','P7':'Senior Eng','P6':'Associate','P5':'Intern'};
+var titleJa={'P10':'チーフPUA官','P9':'テックリード','P8':'マネージャー','P7':'シニア','P6':'アソシエイト','P5':'インターン'};
+
+// China data
+var chinaData=[
+  {name:'北京',value:312},{name:'上海',value:287},{name:'广东',value:256},{name:'浙江',value:234},
+  {name:'江苏',value:198},{name:'四川',value:167},{name:'湖北',value:145},{name:'福建',value:123},
+  {name:'湖南',value:98},{name:'山东',value:87},{name:'河南',value:76},{name:'辽宁',value:65},
+  {name:'陕西',value:54},{name:'重庆',value:48},{name:'天津',value:42},{name:'河北',value:38},
+  {name:'安徽',value:35},{name:'江西',value:28},{name:'云南',value:22},{name:'贵州',value:18},
+  {name:'广西',value:15},{name:'黑龙江',value:12},{name:'吉林',value:10},{name:'甘肃',value:8},
+  {name:'内蒙古',value:6},{name:'新疆',value:5},{name:'西藏',value:2},{name:'青海',value:3},
+  {name:'宁夏',value:4},{name:'海南',value:20},{name:'山西',value:30},{name:'台湾',value:45}
+];
+
+// World data
+var worldData=[
+  {name:'China',value:2142},{name:'United States',value:876},{name:'Japan',value:345},
+  {name:'Germany',value:234},{name:'United Kingdom',value:198},{name:'India',value:167},
+  {name:'South Korea',value:145},{name:'Canada',value:123},{name:'Australia',value:98},
+  {name:'Singapore',value:87},{name:'France',value:76},{name:'Brazil',value:54},
+  {name:'Russia',value:42},{name:'Israel',value:38},{name:'Netherlands',value:35},
+  {name:'Sweden',value:28},{name:'Indonesia',value:22},{name:'Thailand',value:18},
+  {name:'Vietnam',value:15},{name:'Poland',value:12},{name:'Spain',value:10},
+  {name:'Italy',value:8},{name:'Mexico',value:6},{name:'Turkey',value:5}
+];
+
+var worldDataZh={'China':'中国','United States':'美国','Japan':'日本','Germany':'德国','United Kingdom':'英国',
+  'India':'印度','South Korea':'韩国','Canada':'加拿大','Australia':'澳大利亚','Singapore':'新加坡',
+  'France':'法国','Brazil':'巴西','Russia':'俄罗斯','Israel':'以色列','Netherlands':'荷兰',
+  'Sweden':'瑞典','Indonesia':'印尼','Thailand':'泰国','Vietnam':'越南','Poland':'波兰',
+  'Spain':'西班牙','Italy':'意大利','Mexico':'墨西哥','Turkey':'土耳其'};
+
+var chinaChart,worldChart,chinaReady=false,worldReady=false;
+
+// Tab
+function st(id){
+  document.querySelectorAll('.tp').forEach(function(p){p.classList.remove('show')});
+  document.getElementById('t-'+id).classList.add('show');
+  document.querySelectorAll('#mt button').forEach(function(b,i){b.classList.toggle('on',['rank','china','world'][i]===id)});
+  if(id==='china'&&!chinaReady) initChinaMap();
+  if(id==='world'&&!worldReady) initWorldMap();
+}
+
+// Lang
+function sl(l){
+  curLang=l;
+  var labels={'zh':'中','en':'EN','ja':'日'};
+  document.querySelectorAll('.lsw button').forEach(function(b){b.classList.toggle('on',b.textContent.trim()===labels[l])});
+  document.querySelectorAll('.lang,.lang-i').forEach(function(el){el.classList.toggle('show',el.dataset.lang===l)});
+  renderRegionList('cList',chinaData,'pua');
+  renderRegionList('wList',worldData,'pua');
+  if(rankingsData) renderRankings(rankingsData);
+}
+
+function renderRegionList(elId,data,unit){
+  var el=document.getElementById(elId);
+  el.textContent='';
+  data.sort(function(a,b){return b.value-a.value});
+  data.forEach(function(d){
+    var item=document.createElement('div');item.className='ri-item';
+    var n=document.createElement('span');n.className='rn';
+    if(elId==='wList'&&curLang==='zh') n.textContent=worldDataZh[d.name]||d.name;
+    else n.textContent=d.name;
+    item.appendChild(n);
+    var v=document.createElement('span');v.className='rv';v.textContent=d.value+' PUA';
+    item.appendChild(v);
+    el.appendChild(item);
+  });
+}
+
+// ECharts China Map
+function initChinaMap(){
+  chinaChart=echarts.init(document.getElementById('chinaChart'));
+  // Fetch China GeoJSON
+  fetch('https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json')
+    .then(function(r){return r.json()})
+    .then(function(geo){
+      echarts.registerMap('china',geo);
+      chinaChart.setOption({
+        tooltip:{trigger:'item',formatter:function(p){return p.name+'<br/>PUA: '+(p.value||0)}},
+        visualMap:{min:0,max:320,text:['High','Low'],inRange:{color:['#fef2f1','#fecaca','#fca5a5','#f87171','#ef4444','#dc2626','#b91c1c']},
+          textStyle:{color:'#8a8a96',fontSize:11},left:'left',top:'bottom',calculable:true},
+        series:[{type:'map',map:'china',roam:true,label:{show:false},emphasis:{label:{show:true,fontSize:12,fontWeight:'bold'},
+          itemStyle:{areaColor:'#E8453C'}},
+          itemStyle:{areaColor:'#f5f5f3',borderColor:'#8a8a96',borderWidth:1},
+          data:chinaData}]
+      });
+      chinaReady=true;
+      window.addEventListener('resize',function(){chinaChart.resize()});
+    });
+  renderRegionList('cList',chinaData,'pua');
+}
+
+// ECharts World Map
+function initWorldMap(){
+  worldChart=echarts.init(document.getElementById('worldChart'));
+  fetch('https://cdn.jsdelivr.net/npm/echarts@4.9.0/map/json/world.json')
+    .then(function(r){return r.json()})
+    .then(function(geo){
+      echarts.registerMap('world',geo);
+      worldChart.setOption({
+        tooltip:{trigger:'item',formatter:function(p){
+          var zh=worldDataZh[p.name];
+          return (curLang==='zh'&&zh?zh:p.name)+'<br/>PUA: '+(p.value||0)}},
+        visualMap:{min:0,max:2200,text:['High','Low'],inRange:{color:['#fef2f1','#fecaca','#fca5a5','#f87171','#ef4444','#dc2626','#b91c1c']},
+          textStyle:{color:'#8a8a96',fontSize:11},left:'left',top:'bottom',calculable:true},
+        series:[{type:'map',map:'world',roam:true,label:{show:false},emphasis:{label:{show:true,fontSize:11,fontWeight:'bold'},
+          itemStyle:{areaColor:'#E8453C'}},
+          itemStyle:{areaColor:'#f5f5f3',borderColor:'#8a8a96',borderWidth:.8},
+          data:worldData}]
+      });
+      worldReady=true;
+      window.addEventListener('resize',function(){worldChart.resize()});
+    });
+  renderRegionList('wList',worldData,'pua');
+}
+
+// Rankings
+var avC=function(n){var h=0;for(var i=0;i<n.length;i++)h=n.charCodeAt(i)+((h<<5)-h);return AVC[Math.abs(h)%AVC.length]};
+var medal=function(p){return p===1?'\u{1F3C6}':p===2?'\u{1F948}':p===3?'\u{1F949}':p};
+var bCls=function(l){return 'badge-p bp-'+l.toLowerCase()};
+
+function renderRankings(rankings){
+  var rl=document.getElementById('rl');
+  rl.textContent='';
+  rankings.forEach(function(r){
+    var title=curLang==='en'?(titleEn[r.level]||r.title_zh):curLang==='ja'?(titleJa[r.level]||r.title_zh):r.title_zh;
+    var c=document.createElement('div');c.className='rank-card';
+    if(r.position===1)c.classList.add('top1');if(r.position===2)c.classList.add('top2');if(r.position===3)c.classList.add('top3');
+    var p=document.createElement('div');p.className='rank-pos';p.textContent=medal(r.position);c.appendChild(p);
+    var a=document.createElement('div');a.className='rank-avatar';a.style.background=avC(r.display_name);a.textContent=r.display_name.charAt(0).toUpperCase();c.appendChild(a);
+    var info=document.createElement('div');info.className='rank-info';
+    var nm=document.createElement('div');nm.className='rank-name';nm.textContent=r.display_name;info.appendChild(nm);
+    var mt=document.createElement('div');mt.className='rank-meta';mt.textContent=r.total_sessions+' sessions';info.appendChild(mt);c.appendChild(info);
+    var ss=document.createElement('div');ss.className='rank-stats';
+    var s1=document.createElement('div');s1.className='rank-stat';var v1=document.createElement('div');v1.className='val';v1.textContent=r.pua_count;s1.appendChild(v1);var l1=document.createElement('div');l1.className='lbl';l1.textContent='PUA';s1.appendChild(l1);ss.appendChild(s1);
+    var s2=document.createElement('div');s2.className='rank-stat';var v2=document.createElement('div');v2.className='val';v2.textContent=r.l3_plus_rate+'%';s2.appendChild(v2);var l2=document.createElement('div');l2.className='lbl';l2.textContent='L3+';s2.appendChild(l2);ss.appendChild(s2);
+    var s3=document.createElement('div');s3.className='rank-stat';var bg=document.createElement('span');bg.className=bCls(r.level);bg.textContent=r.level+' '+title;s3.appendChild(bg);ss.appendChild(s3);
+    c.appendChild(ss);rl.appendChild(c);
+  });
+}
+
+fetch('https://pua-skill.pages.dev/api/leaderboard').then(function(r){return r.json()}).then(function(d){
+  document.getElementById('sU').textContent=d.total_users||0;
+  document.getElementById('sP').textContent=(d.total_pua||0).toLocaleString();
+  document.getElementById('sA').textContent=d.avg_pua||0;
+  document.getElementById('sT').textContent=(d.rankings&&d.rankings.length>0)?d.rankings[0].level:'P5';
+  if(!d.rankings||d.rankings.length===0)return;
+  rankingsData=d.rankings;
+  renderRankings(rankingsData);
+}).catch(function(){});
+</script>
+</body>
+</html>

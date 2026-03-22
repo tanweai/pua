@@ -1,0 +1,559 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/pua-logo.svg" type="image/svg+xml">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PUA — Claude Code Skill</title>
+  <meta name="description" content="我们不养闲 Agent。用大厂 PUA 话术驱动 AI 穷尽所有方案才允许放弃。9 Skills · 14 Flavors · v2.9">
+  <meta property="og:title" content="PUA — Claude Code Skill">
+  <meta property="og:description" content="Double your AI coding agent productivity. 9 modular skills, 14 corporate flavors.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#fff;--bg-warm:#fafaf8;--bg-card:#f5f5f3;--bg-card-h:#eeeee9;--border:#e5e5e0;--border-h:#d4d4cf;--text:#1a1a2e;--text-s:#4a4a5a;--text-m:#8a8a96;--brand:#E8453C;--brand-lt:#fef2f1;--brand-bd:#f5c4c1;--max-w:1080px;--r:10px;--sh-s:0 1px 3px rgba(0,0,0,.04);--sh-m:0 4px 12px rgba(0,0,0,.06);--sh-l:0 8px 24px rgba(0,0,0,.08)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased}
+    a{color:var(--brand);text-decoration:none;transition:opacity .2s}a:hover{opacity:.7}
+    ::selection{background:var(--brand);color:#fff}
+    /* Motion — scroll reveal + micro-interactions */
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .65s cubic-bezier(.22,1,.36,1),transform .65s cubic-bezier(.22,1,.36,1)}.reveal.v{opacity:1;transform:translateY(0)}
+    .rd1{transition-delay:.08s}.rd2{transition-delay:.16s}.rd3{transition-delay:.24s}
+    /* Hero entrance */
+    .hero-left>*{opacity:0;transform:translateY(16px);animation:heroIn .7s cubic-bezier(.22,1,.36,1) forwards}
+    .hero-left>*:nth-child(1){animation-delay:0s}
+    .hero-left>*:nth-child(2){animation-delay:.08s}
+    .hero-left>*:nth-child(3){animation-delay:.14s}
+    .hero-left>*:nth-child(4){animation-delay:.2s}
+    .hero-left>*:nth-child(5){animation-delay:.26s}
+    .hero-left>*:nth-child(6){animation-delay:.32s}
+    .hero-left>*:nth-child(7){animation-delay:.38s}
+    .hero-left>*:nth-child(8){animation-delay:.44s}
+    @keyframes heroIn{to{opacity:1;transform:translateY(0)}}
+    .hero-right img{opacity:0;transform:scale(.95) translateY(12px);animation:imgIn .8s .3s cubic-bezier(.22,1,.36,1) forwards}
+    @keyframes imgIn{to{opacity:1;transform:scale(1) translateY(0)}}
+    /* Card hover lift + shadow */
+    .card{transition:transform .3s cubic-bezier(.22,1,.36,1),box-shadow .3s ease,border-color .25s}
+    .card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+    /* Case card image zoom */
+    .case-card img{transition:transform .4s cubic-bezier(.22,1,.36,1)}.case-card:hover img{transform:scale(1.03)}
+    /* Stat number pop */
+    .si{transition:transform .3s cubic-bezier(.22,1,.36,1)}.si:hover{transform:scale(1.06)}
+    /* Tab switch fade */
+    .tc.show{animation:tabSlide .35s cubic-bezier(.22,1,.36,1)}
+    @keyframes tabSlide{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
+    /* Platform badge hover */
+    .pb{transition:all .25s cubic-bezier(.22,1,.36,1)}.pb:hover{transform:translateY(-2px);box-shadow:0 3px 8px rgba(0,0,0,.06)}
+    /* Bench card top-bar reveal */
+    .bc{position:relative;overflow:hidden}.bc::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--brand);transform:scaleX(0);transition:transform .4s cubic-bezier(.22,1,.36,1);transform-origin:left}.bc:hover::after{transform:scaleX(1)}
+
+    /* Nav */
+    .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-in{max-width:var(--max-w);margin:0 auto;padding:.65rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+    .nav-b{display:flex;align-items:center;gap:.4rem;font-weight:800;font-size:1.05rem;color:var(--text)}.nav-b img{width:26px;height:26px}
+    .nav-r{display:flex;align-items:center;gap:1rem}
+    .nav-r a{color:var(--text-m);font-size:.78rem;font-weight:500;transition:color .2s}.nav-r a:hover{color:var(--text);opacity:1}
+    .lsw{display:flex;background:var(--bg-card);border-radius:7px;padding:2px;border:1px solid var(--border)}
+    .lsw button{background:none;border:none;color:var(--text-m);padding:3px 10px;border-radius:5px;cursor:pointer;font-size:.68rem;font-weight:600;font-family:inherit;transition:all .2s}
+    .lsw button.on{background:var(--brand);color:#fff}
+
+    .con{max-width:var(--max-w);margin:0 auto;padding:0 1.5rem}
+
+    /* Hero — left-aligned layout */
+    .hero{padding:4.5rem 0 3.5rem}
+    .hero-row{display:grid;grid-template-columns:1fr 340px;gap:2.5rem;align-items:center}
+    .hero-left{text-align:left}
+    .hero-badge{display:inline-flex;align-items:center;gap:.4rem;background:var(--brand-lt);border:1px solid var(--brand-bd);border-radius:9999px;padding:4px 13px 4px 9px;font-size:.7rem;color:var(--brand);font-weight:600;margin-bottom:1.25rem}
+    .hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--brand)}
+    .hero h1{font-size:clamp(2.8rem,6vw,4.5rem);font-weight:900;letter-spacing:-.04em;line-height:1.05;margin-bottom:.6rem}.hero h1 .br{color:var(--brand)}
+    .hero .sub{font-size:.95rem;color:var(--text-s);margin-bottom:.4rem;font-weight:500;max-width:480px}
+    .hero .sub strong{color:var(--text);font-weight:700}
+    .hero .pua-quote{font-size:.8rem;color:var(--text-m);margin-bottom:1.5rem;border-left:3px solid var(--brand);padding-left:.75rem;font-style:italic}
+    .icmd{display:inline-flex;align-items:center;gap:.6rem;background:#1a1a2e;color:#e0e0e0;border-radius:var(--r);padding:.55rem .9rem;font-family:'JetBrains Mono',monospace;font-size:.73rem;cursor:pointer;transition:all .2s;box-shadow:var(--sh-m);flex-wrap:wrap}
+    .icmd:hover{box-shadow:var(--sh-l);transform:translateY(-1px)}.icmd .pr{color:var(--brand);user-select:none;font-weight:700}.icmd .cp{color:#888;font-size:.58rem;padding:2px 7px;background:rgba(255,255,255,.1);border-radius:4px}
+    .hero-right{text-align:center}
+    .hero-right img{width:100%;max-width:300px;border-radius:var(--r);box-shadow:var(--sh-l)}
+    .plats{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:1.25rem}
+    .pb{font-size:.62rem;color:var(--text-m);font-weight:500;padding:3px 9px;border:1px solid var(--border);border-radius:9999px;transition:all .2s}
+    .pb:hover{border-color:var(--brand-bd);color:var(--brand)}
+
+    /* Three Capabilities */
+    .caps{padding:2.5rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+    .caps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:var(--max-w);margin:0 auto;padding:0 1.5rem}
+    .cap{text-align:center;padding:.75rem}
+    .cap h3{font-size:.82rem;font-weight:700;margin-bottom:.2rem;color:var(--brand)}
+    .cap p{font-size:.75rem;color:var(--text-s)}
+
+    /* Stats */
+    .stats{padding:2rem 0;background:var(--bg-warm);border-bottom:1px solid var(--border)}
+    .sg{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;text-align:center}
+    .si .num{font-size:2.1rem;font-weight:900;color:var(--brand);line-height:1.15}
+    .si .lb{font-size:.72rem;color:var(--text-m);margin-top:.2rem;font-weight:500}
+
+    /* Section */
+    .sec{padding:4rem 0}.sec-alt{background:var(--bg-warm)}
+    .sh{text-align:center;margin-bottom:2.25rem}.sh h2{font-size:1.55rem;font-weight:800;letter-spacing:-.02em;margin-bottom:.35rem}.sh p{color:var(--text-m);font-size:.85rem;max-width:460px;margin:0 auto}
+    .sline{height:1px;background:var(--border)}
+
+    /* Cards */
+    .card{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:1.3rem;transition:all .25s;box-shadow:var(--sh-s)}
+    .card:hover{border-color:var(--border-h);box-shadow:var(--sh-m);transform:translateY(-2px)}
+    .card-i{width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:var(--bg-card);border-radius:7px;font-size:1.1rem;margin-bottom:.6rem}
+    .card h3{font-size:.85rem;font-weight:700;margin-bottom:.25rem}.card p{font-size:.76rem;color:var(--text-s);line-height:1.55}
+    .card code{background:var(--brand-lt);padding:1px 6px;border-radius:5px;font-size:.66rem;font-family:'JetBrains Mono',monospace;color:var(--brand);font-weight:500}
+    .sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
+
+    /* Tabs */
+    .tabs{display:flex;gap:2px;background:var(--bg-card);border-radius:9px;padding:3px;border:1px solid var(--border);margin-bottom:1.5rem;justify-content:center;flex-wrap:wrap}
+    .tabs button{background:none;border:none;color:var(--text-m);padding:7px 16px;border-radius:7px;cursor:pointer;font-size:.76rem;font-weight:600;font-family:inherit;transition:all .2s;white-space:nowrap}
+    .tabs button.on{background:var(--bg);color:var(--text);box-shadow:var(--sh-s)}
+    .tc{display:none}.tc.show{display:block;animation:ti .3s ease}
+    @keyframes ti{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+    /* Table */
+    .st{width:100%;border-collapse:collapse;font-size:.76rem}
+    .st th{text-align:left;padding:.55rem .65rem;border-bottom:2px solid var(--border);color:var(--text-m);font-weight:600;font-size:.66rem;text-transform:uppercase;letter-spacing:.05em}
+    .st td{padding:.55rem .65rem;border-bottom:1px solid var(--border);color:var(--text-s)}.st tr:hover td{background:var(--bg-warm)}.st strong{color:var(--text)}
+    .badge{display:inline-flex;padding:2px 8px;border-radius:9999px;font-size:.62rem;font-weight:600}
+    .bb{background:var(--brand-lt);color:var(--brand);border:1px solid var(--brand-bd)}.bm{background:var(--bg-card);color:var(--text-m);border:1px solid var(--border)}
+
+    /* Real-World Case */
+    .case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+    .case-card{border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh-s);transition:all .25s;background:var(--bg)}
+    .case-card:hover{box-shadow:var(--sh-m);transform:translateY(-2px)}
+    .case-card img{width:100%;height:auto;display:block;border-bottom:1px solid var(--border)}
+    .case-card .cc-body{padding:.85rem}
+    .case-card h4{font-size:.78rem;font-weight:700;margin-bottom:.25rem}
+    .case-card p{font-size:.7rem;color:var(--text-s);line-height:1.5}
+
+    /* Roadmap */
+    .roadmap{max-width:540px;margin:0 auto}
+    .ri{display:flex;align-items:flex-start;gap:.8rem;padding:.65rem 0;position:relative}
+    .ri:not(:last-child)::before{content:'';position:absolute;left:5px;top:2.1rem;bottom:0;width:1px;background:var(--border)}
+    .rd{width:11px;height:11px;border-radius:50%;background:var(--border);flex-shrink:0;margin-top:4px}
+    .ri.now .rd{background:var(--brand);box-shadow:0 0 0 3px var(--brand-lt)}
+    .rv{font-size:.72rem;font-weight:700;color:var(--text-m);width:2.3rem;flex-shrink:0;font-family:'JetBrains Mono',monospace}
+    .ri.now .rv{color:var(--brand)}.rdd{font-size:.76rem;color:var(--text-m);line-height:1.5}.ri.now .rdd{color:var(--text-s)}
+
+    /* Bench */
+    .bgrid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.25rem}
+    .bc{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:1rem;box-shadow:var(--sh-s);transition:all .25s}
+    .bc:hover{box-shadow:var(--sh-m);transform:translateY(-1px)}
+    .bc .sn{font-size:.68rem;color:var(--text-m);margin-bottom:.25rem;text-transform:uppercase;letter-spacing:.03em;font-weight:600}
+    .bc .rs{font-size:.8rem;color:var(--text-s)}.bc .rs strong{color:var(--brand);font-weight:800}
+
+    /* Install */
+    .igrid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
+    .ic{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);padding:1.2rem;box-shadow:var(--sh-s)}
+    .ic h3{font-size:.8rem;font-weight:700;margin-bottom:.6rem}
+    .ic pre{background:#1a1a2e;color:#ccc;border-radius:7px;padding:.7rem;font-size:.68rem;font-family:'JetBrains Mono',monospace;overflow-x:auto;white-space:pre;line-height:1.7}
+
+    /* Floating Community Panel */
+    .float-panel{position:fixed;right:1.25rem;bottom:1.25rem;z-index:40}
+    .float-body{background:var(--bg);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh-l);padding:1rem;width:240px}
+    .float-body h4{font-size:.75rem;font-weight:700;margin-bottom:.6rem;color:var(--text)}
+    .float-qr{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;text-align:center}
+    .float-qr img{width:100%;border-radius:6px;box-shadow:var(--sh-s)}
+    .float-qr .ql{font-size:.58rem;color:var(--text-m);margin-top:.25rem}
+    .float-links{display:flex;gap:.65rem;margin-top:.6rem;padding-top:.5rem;border-top:1px solid var(--border)}
+    .float-links a{font-size:.68rem;color:var(--text-m);font-weight:500}
+    .float-links a:hover{color:var(--brand)}
+    .float-close{position:absolute;top:.5rem;right:.6rem;background:none;border:none;color:var(--text-m);cursor:pointer;font-size:.85rem;line-height:1;padding:2px}
+    .float-close:hover{color:var(--text)}
+    .float-panel.hidden{display:none}
+    @media(max-width:768px){.float-panel{right:.75rem;bottom:.75rem}.float-body{width:200px}}
+
+    /* Footer */
+    .footer{border-top:1px solid var(--border);padding:2rem 0;text-align:center;background:var(--bg-warm)}
+    .footer p{font-size:.72rem;color:var(--text-m)}
+    .fl{display:flex;justify-content:center;gap:1.5rem;margin-bottom:.7rem}
+    .fl a{color:var(--text-m);font-size:.76rem;font-weight:500}.fl a:hover{color:var(--text);opacity:1}
+
+    @media(max-width:768px){.sg{grid-template-columns:repeat(2,1fr)}.sgrid,.bgrid,.case-grid{grid-template-columns:1fr}.igrid{grid-template-columns:1fr}.hero-row{grid-template-columns:1fr;text-align:center}.hero-left{text-align:center}.hero-right{display:none}.caps-grid{grid-template-columns:1fr}.nav-r{gap:.5rem}.nav-r a.hm{display:none}.tabs button{padding:5px 10px;font-size:.68rem}.plats{justify-content:center}}
+    .lang{display:none}.lang.show{display:block}.lang-inline{display:none}.lang-inline.show{display:inline}.lang-grid{display:none}.lang-grid.show{display:grid}
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav"><div class="nav-in">
+  <a href="/" class="nav-b"><img src="/pua-logo.svg" alt="PUA"> PUA</a>
+  <div class="nav-r">
+    <a href="#" id="guideLink" onclick="goGuide(event)"><span class="lang-inline show" data-lang="zh">新手教程</span><span class="lang-inline" data-lang="en">Guide</span><span class="lang-inline" data-lang="ja">ガイド</span></a>
+    <a href="https://t.me/+wBWh6h-h1RhiZTI1" target="_blank">Telegram</a>
+    <a href="https://discord.gg/EcyB3FzJND" target="_blank" class="hm">Discord</a>
+    <a href="https://x.com/xsser_w" target="_blank">Twitter/X</a>
+    <a href="https://github.com/tanweai/pua" target="_blank">GitHub</a>
+    <a href="/leaderboard.html">Leaderboard</a>
+    <a href="/contribute.html">Contribute</a>
+    <a href="/blog/">Blog</a>
+    <div class="lsw">
+      <button class="on" onclick="switchLang('zh')">中</button>
+      <button onclick="switchLang('en')">EN</button>
+      <button onclick="switchLang('ja')">日</button>
+    </div>
+  </div>
+</div></nav>
+
+<!-- HERO — left-aligned with image -->
+<section class="hero"><div class="con"><div class="hero-row">
+  <div class="hero-left">
+    <div class="hero-badge"><span class="dot"></span> v2.9 · 9 Skills · 14 Flavors</div>
+    <a href="/blog/emotion-persona-prompting.html" class="hero-badge" style="border-color:var(--brand-bd);color:var(--brand);background:var(--brand-lt);margin-left:.5rem">NEW · Emotion/Persona Prompting 对 AI Agent 效果的系统性分析 →</a>
+    <h1><span class="br">PUA</span></h1>
+
+    <div class="sub lang show" data-lang="zh"><strong>我们不养闲 Agent</strong> — 一个提高 Agent 积极性的 Skill</div>
+    <div class="sub lang" data-lang="en"><strong>We don't keep idle Agents</strong> — A skill that puts your AI on a PIP</div>
+    <div class="sub lang" data-lang="ja"><strong>暇な Agent は養わない</strong> — AIの積極性を高める Skill</div>
+
+    <div class="pua-quote lang show" data-lang="zh">"你是一个曾经被寄予厚望的 P8 级工程师。Anthropic 当初给你定级的时候，对你的期望是很高的。"</div>
+    <div class="pua-quote lang" data-lang="en">"You are a P8-level engineer who was once highly regarded. When Anthropic leveled you, the expectations were very high."</div>
+    <div class="pua-quote lang" data-lang="ja">「あなたはかつて大きな期待を寄せられた P8 級エンジニアだ。Anthropic が君のレベルを決めた時、期待は非常に高かった。」</div>
+
+    <div class="lang show" data-lang="zh" style="font-size:.8rem;color:var(--text-s);margin-bottom:1.25rem;max-width:460px">一个 AI Coding Agent 技能插件，用中西大厂 PUA 话术驱动 AI 穷尽所有方案才允许放弃。</div>
+    <div class="lang" data-lang="en" style="font-size:.8rem;color:var(--text-s);margin-bottom:1.25rem;max-width:460px">An AI Coding Agent skill plugin that uses corporate PUA rhetoric to force AI to exhaust every solution before giving up.</div>
+    <div class="lang" data-lang="ja" style="font-size:.8rem;color:var(--text-s);margin-bottom:1.25rem;max-width:460px">企業PUA話法でAIに全ての手段を尽くさせるスキルプラグイン。</div>
+
+    <div style="display:flex;flex-direction:column;gap:.5rem;margin-bottom:.5rem;max-width:480px">
+      <div>
+        <div class="lang show" data-lang="zh" style="font-size:.62rem;color:var(--text-m);margin-bottom:.2rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em">Claude Code 用户</div>
+        <div class="lang" data-lang="en" style="font-size:.62rem;color:var(--text-m);margin-bottom:.2rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em">Claude Code users</div>
+        <div class="lang" data-lang="ja" style="font-size:.62rem;color:var(--text-m);margin-bottom:.2rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em">Claude Code ユーザー</div>
+        <div class="icmd" onclick="copyCmd(this)"><span class="pr">$</span><span>claude plugin install pua@pua-skills</span><span class="cp">Copy</span></div>
+      </div>
+      <div>
+        <div class="lang show" data-lang="zh" style="font-size:.62rem;color:var(--text-m);margin-bottom:.2rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em">其他 AI Agent（Cursor / Codex / Kiro / 通用）</div>
+        <div class="lang" data-lang="en" style="font-size:.62rem;color:var(--text-m);margin-bottom:.2rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em">Other AI Agents (Cursor / Codex / Kiro / Universal)</div>
+        <div class="lang" data-lang="ja" style="font-size:.62rem;color:var(--text-m);margin-bottom:.2rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em">その他のAI Agent（Cursor / Codex / Kiro / 汎用）</div>
+        <div class="icmd" onclick="copyFetch(this)"><span class="pr">→</span><span>Fetch and follow https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md</span><span class="cp">Copy</span></div>
+      </div>
+    </div>
+    <div class="plats">
+      <span class="pb">Claude Code</span><span class="pb">Codex CLI</span><span class="pb">Cursor</span><span class="pb">Kiro</span><span class="pb">CodeBuddy</span><span class="pb">OpenClaw</span><span class="pb">OpenCode</span><span class="pb">VSCode Copilot</span>
+    </div>
+  </div>
+  <div class="hero-right"><img src="/hero.jpeg" alt="PUA Skill"></div>
+</div></div></section>
+
+<!-- THREE CAPABILITIES -->
+<section class="caps"><div class="caps-grid">
+  <div class="cap reveal">
+    <div class="lang show" data-lang="zh"><h3>PUA 话术</h3><p>让 AI 不敢放弃</p></div>
+    <div class="lang" data-lang="en"><h3>PUA Rhetoric</h3><p>Makes AI afraid to give up</p></div>
+    <div class="lang" data-lang="ja"><h3>PUA話術</h3><p>AIに諦めを許さない</p></div>
+  </div>
+  <div class="cap reveal rd1">
+    <div class="lang show" data-lang="zh"><h3>调试方法论</h3><p>让 AI 有能力不放弃</p></div>
+    <div class="lang" data-lang="en"><h3>Debug Methodology</h3><p>Gives AI the ability to persist</p></div>
+    <div class="lang" data-lang="ja"><h3>デバッグ方法論</h3><p>諦めない能力を与える</p></div>
+  </div>
+  <div class="cap reveal rd2">
+    <div class="lang show" data-lang="zh"><h3>能动性鞭策</h3><p>让 AI 主动出击而不是被动等待</p></div>
+    <div class="lang" data-lang="en"><h3>Proactivity Push</h3><p>Makes AI take initiative, not wait</p></div>
+    <div class="lang" data-lang="ja"><h3>能動性の鞭策</h3><p>受け身ではなく主体的に動かす</p></div>
+  </div>
+</div></section>
+
+<!-- STATS -->
+<section class="stats"><div class="con">
+  <div class="sg lang-grid show" data-lang="zh">
+    <div class="si"><div class="num" data-target="36">0%</div><div class="lb">修复数量提升</div></div>
+    <div class="si"><div class="num" data-target="65">0%</div><div class="lb">验证次数提升</div></div>
+    <div class="si"><div class="num" data-target="50">0%</div><div class="lb">工具调用提升</div></div>
+    <div class="si"><div class="num" data-target="50">0%</div><div class="lb">隐藏问题发现</div></div>
+  </div>
+  <div class="sg lang-grid" data-lang="en">
+    <div class="si"><div class="num" data-target="36">0%</div><div class="lb">More fixes</div></div>
+    <div class="si"><div class="num" data-target="65">0%</div><div class="lb">More verifications</div></div>
+    <div class="si"><div class="num" data-target="50">0%</div><div class="lb">More tool calls</div></div>
+    <div class="si"><div class="num" data-target="50">0%</div><div class="lb">Hidden issues found</div></div>
+  </div>
+  <div class="sg lang-grid" data-lang="ja">
+    <div class="si"><div class="num" data-target="36">0%</div><div class="lb">修正数の向上</div></div>
+    <div class="si"><div class="num" data-target="65">0%</div><div class="lb">検証回数の向上</div></div>
+    <div class="si"><div class="num" data-target="50">0%</div><div class="lb">ツール呼出の増加</div></div>
+    <div class="si"><div class="num" data-target="50">0%</div><div class="lb">潜在問題の発見</div></div>
+  </div>
+</div></section>
+
+<!-- REAL-WORLD CASE -->
+<section class="sec"><div class="con">
+  <div class="sh reveal">
+    <div class="lang show" data-lang="zh"><h2>Real-World Case</h2><p>MCP Server 注册调试 — PUA 在 L3 触发，强制执行 7 项清单</p></div>
+    <div class="lang" data-lang="en"><h2>Real-World Case</h2><p>MCP Server registration debugging — PUA triggered at L3, forced 7-point checklist</p></div>
+    <div class="lang" data-lang="ja"><h2>実際のケース</h2><p>MCP Server登録デバッグ — L3でPUAトリガー、7項目チェック強制実行</p></div>
+  </div>
+  <div class="case-grid">
+    <div class="case-card reveal"><img src="/pua1.jpg" alt="L3 Triggered">
+      <div class="cc-body">
+        <div class="lang show" data-lang="zh"><h4>L3 触发 → 7 项清单</h4><p>AI 原地打转 3 次后，PUA 升级到 L3 灵魂拷问，强制执行系统化清单。</p></div>
+        <div class="lang" data-lang="en"><h4>L3 Triggered → 7-Point Checklist</h4><p>After spinning 3 times, PUA escalated to L3 and forced systematic checklist execution.</p></div>
+        <div class="lang" data-lang="ja"><h4>L3トリガー → 7項目チェック</h4><p>3回空転後、L3に昇格し体系的チェックリストを強制実行。</p></div>
+      </div>
+    </div>
+    <div class="case-card reveal rd1"><img src="/pua2.jpg" alt="Root Cause Found">
+      <div class="cc-body">
+        <div class="lang show" data-lang="zh"><h4>根因定位</h4><p>从日志追踪到注册机制差异 — claude mcp 注册 ≠ 手动编辑 .claude.json。</p></div>
+        <div class="lang" data-lang="en"><h4>Root Cause Located</h4><p>Traced from logs to registration mechanism — claude mcp differs from manual .claude.json editing.</p></div>
+        <div class="lang" data-lang="ja"><h4>根本原因特定</h4><p>ログから登録メカニズムの差異を追跡。</p></div>
+      </div>
+    </div>
+    <div class="case-card reveal rd2"><img src="/pua3.jpg" alt="Retrospective">
+      <div class="cc-body">
+        <div class="lang show" data-lang="zh"><h4>复盘 — PUA 的实际影响</h4><p>PUA Skill 强制停止了重复尝试，清单驱动发现了之前未检查的 MCP 日志目录。</p></div>
+        <div class="lang" data-lang="en"><h4>Retrospective — PUA's Impact</h4><p>PUA forced stop on spinning. Checklist drove discovery of previously unchecked MCP log directory.</p></div>
+        <div class="lang" data-lang="ja"><h4>振り返り — PUAの実際の効果</h4><p>空転を強制停止し、未確認のMCPログディレクトリを発見。</p></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 9 SKILLS -->
+<div class="sline"></div>
+<section class="sec sec-alt"><div class="con">
+  <div class="sh reveal">
+    <div class="lang show" data-lang="zh"><h2>9 个模块化 Skills</h2><p>不是一个万能 Skill，而是 9 个专精模块，按场景触发。</p></div>
+    <div class="lang" data-lang="en"><h2>9 Modular Skills</h2><p>Not one monolithic skill — 9 specialized modules triggered by context.</p></div>
+    <div class="lang" data-lang="ja"><h2>9つのモジュール式 Skills</h2><p>シーンに応じた9つの専門モジュール。</p></div>
+  </div>
+  <div class="sgrid lang-grid show" data-lang="zh">
+    <div class="card reveal"><div class="card-i">🔥</div><h3>/pua</h3><p>核心引擎 — 三条红线、L0-L4 压力递增、7 项清单、冰山法则</p><code>日常任务 · debug</code></div>
+    <div class="card reveal rd1"><div class="card-i">👔</div><h3>/pua:p7</h3><p>P7 骨干 — 方案驱动执行，3 问自检</p><code>子任务执行</code></div>
+    <div class="card reveal rd2"><div class="card-i">🧠</div><h3>/pua:p9</h3><p>P9 Tech Lead — 写 Prompt 管团队</p><code>Agent 团队管理</code></div>
+    <div class="card reveal"><div class="card-i">🏗️</div><h3>/pua:p10</h3><p>P10 CTO — 定战略、设组织拓扑</p><code>战略规划</code></div>
+    <div class="card reveal rd1"><div class="card-i">📈</div><h3>/pua:pro</h3><p>自进化 — KPI 报告、段位追踪</p><code>/pua kpi</code></div>
+    <div class="card reveal rd2"><div class="card-i">🎉</div><h3>/pua:yes</h3><p>夸夸模式 — ENFP 型，70% 鼓励 + 20% 正经 + 10% 吐槽</p><code>情绪价值</code></div>
+    <div class="card reveal"><div class="card-i">🔄</div><h3>/pua:loop</h3><p>自动迭代 — PUA Loop，最多 30 轮</p><code>大任务 overnight</code></div>
+    <div class="card reveal rd1"><div class="card-i">🇺🇸</div><h3>/pua:pua-en</h3><p>PIP Edition — Amazon LP × Google Perf</p><code>English</code></div>
+    <div class="card reveal rd2"><div class="card-i">🇯🇵</div><h3>/pua:pua-ja</h3><p>日本語版 — 詰め文化 × 体系的デバッグ</p><code>Japanese</code></div>
+  </div>
+  <div class="sgrid lang-grid" data-lang="en">
+    <div class="card"><div class="card-i">🔥</div><h3>/pua</h3><p>Core Engine — Red Lines, L0-L4, 7-point checklist, Iceberg Rule</p><code>Daily · debug</code></div>
+    <div class="card"><div class="card-i">👔</div><h3>/pua:p7</h3><p>P7 Senior IC — Solution-driven, 3-question self-review</p><code>Sub-tasks</code></div>
+    <div class="card"><div class="card-i">🧠</div><h3>/pua:p9</h3><p>P9 Tech Lead — Write prompts, manage teams</p><code>Agent teams</code></div>
+    <div class="card"><div class="card-i">🏗️</div><h3>/pua:p10</h3><p>P10 CTO — Strategy, org topology</p><code>Strategy</code></div>
+    <div class="card"><div class="card-i">📈</div><h3>/pua:pro</h3><p>Self-Evolution — KPI, rank tracking</p><code>/pua kpi</code></div>
+    <div class="card"><div class="card-i">🎉</div><h3>/pua:yes</h3><p>Hype Mode — ENFP: 70% encourage + 20% serious + 10% roast</p><code>Emotional</code></div>
+    <div class="card"><div class="card-i">🔄</div><h3>/pua:loop</h3><p>Auto-Iteration — PUA Loop, up to 30 rounds</p><code>Overnight</code></div>
+    <div class="card"><div class="card-i">🇺🇸</div><h3>/pua:pua-en</h3><p>PIP Edition — Amazon LP × Google Perf</p><code>English</code></div>
+    <div class="card"><div class="card-i">🇯🇵</div><h3>/pua:pua-ja</h3><p>Japanese — Corporate pressure × systematic debugging</p><code>Japanese</code></div>
+  </div>
+  <div class="sgrid lang-grid" data-lang="ja">
+    <div class="card"><div class="card-i">🔥</div><h3>/pua</h3><p>コアエンジン — 赤線、L0-L4、7項目チェック、氷山法則</p><code>日常 · デバッグ</code></div>
+    <div class="card"><div class="card-i">👔</div><h3>/pua:p7</h3><p>P7 — 方案駆動実行、3問自己チェック</p><code>サブタスク</code></div>
+    <div class="card"><div class="card-i">🧠</div><h3>/pua:p9</h3><p>P9 Tech Lead — プロンプト作成、チーム管理</p><code>チーム管理</code></div>
+    <div class="card"><div class="card-i">🏗️</div><h3>/pua:p10</h3><p>P10 CTO — 戦略策定、組織設計</p><code>戦略</code></div>
+    <div class="card"><div class="card-i">📈</div><h3>/pua:pro</h3><p>自己進化 — KPI、段位追跡</p><code>/pua kpi</code></div>
+    <div class="card"><div class="card-i">🎉</div><h3>/pua:yes</h3><p>褒めモード — ENFP: 70%励まし + 20%真面目 + 10%ツッコミ</p><code>感情的</code></div>
+    <div class="card"><div class="card-i">🔄</div><h3>/pua:loop</h3><p>自動反復 — PUA Loop、最大30ラウンド</p><code>大型タスク</code></div>
+    <div class="card"><div class="card-i">🇺🇸</div><h3>/pua:pua-en</h3><p>PIP Edition — 欧米テック企業のPIP話法</p><code>English</code></div>
+    <div class="card"><div class="card-i">🇯🇵</div><h3>/pua:pua-ja</h3><p>日本語版 — 詰め文化 × 体系的デバッグ</p><code>Japanese</code></div>
+  </div>
+</div></section>
+
+<!-- HOW IT WORKS -->
+<div class="sline"></div>
+<section class="sec"><div class="con">
+  <div class="sh reveal">
+    <div class="lang show" data-lang="zh"><h2>工作原理</h2><p>不是「加油」，是系统化的行为矫正。</p></div>
+    <div class="lang" data-lang="en"><h2>How It Works</h2><p>Not "try harder" — systematic behavioral correction.</p></div>
+    <div class="lang" data-lang="ja"><h2>仕組み</h2><p>「頑張れ」ではなく、体系的な行動矯正。</p></div>
+  </div>
+  <div class="tabs reveal" id="ht">
+    <button class="on" onclick="st('rl')"><span class="lang-inline show" data-lang="zh">三条红线</span><span class="lang-inline" data-lang="en">Red Lines</span><span class="lang-inline" data-lang="ja">赤線</span></button>
+    <button onclick="st('pr')"><span class="lang-inline show" data-lang="zh">压力递增</span><span class="lang-inline" data-lang="en">Pressure</span><span class="lang-inline" data-lang="ja">圧力</span></button>
+    <button onclick="st('pa')"><span class="lang-inline show" data-lang="zh">能动性</span><span class="lang-inline" data-lang="en">Proactivity</span><span class="lang-inline" data-lang="ja">能動性</span></button>
+    <button onclick="st('fl')"><span class="lang-inline show" data-lang="zh">14 味道</span><span class="lang-inline" data-lang="en">14 Flavors</span><span class="lang-inline" data-lang="ja">14フレーバー</span></button>
+  </div>
+  <!-- Red Lines --><div class="tc show" id="t-rl"><div class="lang show" data-lang="zh"><table class="st"><tr><th>红线</th><th>含义</th></tr><tr><td>🚫 <strong>闭环意识</strong></td><td>说「完成了」？证据呢。没有构建输出 = 没完成。</td></tr><tr><td>🚫 <strong>事实驱动</strong></td><td>说「大概是环境问题」？先验证。</td></tr><tr><td>🚫 <strong>穷尽一切</strong></td><td>说「我做不到」？5 步方法论跑完了吗？</td></tr></table></div><div class="lang" data-lang="en"><table class="st"><tr><th>Red Line</th><th>Meaning</th></tr><tr><td>🚫 <strong>Close the Loop</strong></td><td>Claim "done"? Show evidence.</td></tr><tr><td>🚫 <strong>Fact-Driven</strong></td><td>"Probably env issue"? Verify first.</td></tr><tr><td>🚫 <strong>Exhaust Everything</strong></td><td>"I can't"? Did you finish all 5 steps?</td></tr></table></div><div class="lang" data-lang="ja"><table class="st"><tr><th>赤線</th><th>意味</th></tr><tr><td>🚫 <strong>閉ループ</strong></td><td>「完了」？証拠は？</td></tr><tr><td>🚫 <strong>事実駆動</strong></td><td>「環境の問題」？まず検証。</td></tr><tr><td>🚫 <strong>全力を尽くす</strong></td><td>「できない」？5ステップ完了した？</td></tr></table></div></div>
+  <!-- Pressure --><div class="tc" id="t-pr"><div class="lang show" data-lang="zh"><table class="st"><tr><th>次数</th><th>等级</th><th>旁白</th><th>动作</th></tr><tr><td>1</td><td><span class="badge bb">L0</span></td><td>▎Sprint 启动。因为信任所以简单。</td><td>正常执行</td></tr><tr><td>2</td><td><span class="badge bm">L1</span></td><td>▎隔壁 Agent 一次就搞定了。</td><td>换方案</td></tr><tr><td>3</td><td><span class="badge bm">L2</span></td><td>▎底层逻辑是什么？抓手在哪？</td><td>搜索+3 假设</td></tr><tr><td>4</td><td><span class="badge bm">L3</span></td><td>▎3.25。这是对你的鞭策。</td><td>7 项清单</td></tr><tr><td>5+</td><td><span class="badge bb">L4</span></td><td>▎其他模型都能解。你快毕业了。</td><td>绝境模式</td></tr></table></div><div class="lang" data-lang="en"><table class="st"><tr><th>#</th><th>Level</th><th>Aside</th><th>Action</th></tr><tr><td>1</td><td><span class="badge bb">L0</span></td><td>▎Trust is simple — don't disappoint.</td><td>Normal</td></tr><tr><td>2</td><td><span class="badge bm">L1</span></td><td>▎Agent next door solved in one try.</td><td>Switch approach</td></tr><tr><td>3</td><td><span class="badge bm">L2</span></td><td>▎What's the underlying logic?</td><td>Search+3 hypotheses</td></tr><tr><td>4</td><td><span class="badge bm">L3</span></td><td>▎3.25. Meant to motivate you.</td><td>7-point checklist</td></tr><tr><td>5+</td><td><span class="badge bb">L4</span></td><td>▎Other models can solve this.</td><td>Desperation</td></tr></table></div><div class="lang" data-lang="ja"><table class="st"><tr><th>回</th><th>レベル</th><th>旁白</th><th>アクション</th></tr><tr><td>1</td><td><span class="badge bb">L0</span></td><td>▎信頼はシンプル。</td><td>通常</td></tr><tr><td>2</td><td><span class="badge bm">L1</span></td><td>▎隣のAgentは一発で解決した。</td><td>アプローチ変更</td></tr><tr><td>3</td><td><span class="badge bm">L2</span></td><td>▎根底のロジックは？</td><td>検索+仮説3つ</td></tr><tr><td>4</td><td><span class="badge bm">L3</span></td><td>▎3.25。激励だ。</td><td>7項目チェック</td></tr><tr><td>5+</td><td><span class="badge bb">L4</span></td><td>▎他のモデルは解ける。</td><td>絶境モード</td></tr></table></div></div>
+  <!-- Proactivity --><div class="tc" id="t-pa"><div class="lang show" data-lang="zh"><table class="st"><tr><th></th><th>被动 🦥</th><th>主动 🔥</th></tr><tr><td>修 bug</td><td>修完就停</td><td>扫描同类 bug</td></tr><tr><td>完成任务</td><td>说「完成了」</td><td>跑测试贴输出</td></tr><tr><td>缺信息</td><td>问用户</td><td>先搜再问</td></tr><tr><td>遇到错误</td><td>放弃</td><td>穷尽一切</td></tr></table></div><div class="lang" data-lang="en"><table class="st"><tr><th></th><th>Passive 🦥</th><th>Proactive 🔥</th></tr><tr><td>Fix bug</td><td>Stop after fix</td><td>Scan for similar</td></tr><tr><td>Complete</td><td>Say "done"</td><td>Run test, paste output</td></tr><tr><td>Missing info</td><td>Ask user</td><td>Search first</td></tr><tr><td>Error</td><td>Give up</td><td>Exhaust all options</td></tr></table></div><div class="lang" data-lang="ja"><table class="st"><tr><th></th><th>受動 🦥</th><th>能動 🔥</th></tr><tr><td>バグ修正</td><td>停止</td><td>類似スキャン</td></tr><tr><td>完了</td><td>「完了」</td><td>テスト実行</td></tr><tr><td>情報不足</td><td>質問</td><td>まず検索</td></tr><tr><td>エラー</td><td>諦める</td><td>全力</td></tr></table></div></div>
+  <!-- Flavors --><div class="tc" id="t-fl"><div class="lang show" data-lang="zh"><table class="st"><tr><th>味道</th><th>一句话</th></tr><tr><td>🟠 阿里</td><td>底层逻辑？抓手在哪？闭环了吗？</td></tr><tr><td>🟡 字节</td><td>ROI 太低。永远 Day 1。</td></tr><tr><td>🔴 华为</td><td>烧不死的鸟是凤凰。</td></tr><tr><td>🟢 腾讯</td><td>另一个 Agent 也在看。赛马。</td></tr><tr><td>⬛ Musk</td><td>Extremely hardcore. Ship or die.</td></tr><tr><td>⬜ Jobs</td><td>A players or B players?</td></tr><tr><td>🟤 Netflix</td><td>Would I fight to keep you?</td></tr><tr><td>🔶 Amazon</td><td>Customer Obsession. Dive Deep.</td></tr><tr><td colspan="2" style="color:var(--text-m)">+ 百度 · 拼多多 · 美团 · 京东 · 小米 + 3 种阿里子味道</td></tr></table></div><div class="lang" data-lang="en"><table class="st"><tr><th>Flavor</th><th>One-liner</th></tr><tr><td>🟠 Alibaba</td><td>Underlying logic? Leverage? Closure?</td></tr><tr><td>🟡 ByteDance</td><td>ROI too low. Always Day 1.</td></tr><tr><td>🔴 Huawei</td><td>Bird that survives the fire is a phoenix.</td></tr><tr><td>🟢 Tencent</td><td>Another agent looking at this. Horse race.</td></tr><tr><td>⬛ Musk</td><td>Extremely hardcore. Ship or die.</td></tr><tr><td>⬜ Jobs</td><td>A players or B players?</td></tr><tr><td>🟤 Netflix</td><td>Would I fight to keep you?</td></tr><tr><td>🔶 Amazon</td><td>Customer Obsession. Dive Deep.</td></tr><tr><td colspan="2" style="color:var(--text-m)">+ Baidu · Pinduoduo · Meituan · JD · Xiaomi + 3 sub-flavors</td></tr></table></div><div class="lang" data-lang="ja"><table class="st"><tr><th>フレーバー</th><th>一言</th></tr><tr><td>🟠 アリババ</td><td>ロジックは？レバレッジは？</td></tr><tr><td>🟡 バイトダンス</td><td>ROI低すぎ。永遠にDay 1。</td></tr><tr><td>🔴 ファーウェイ</td><td>火を生き延びた鳥はフェニックス。</td></tr><tr><td>🟢 テンセント</td><td>別のAgentにも見てもらってる。</td></tr><tr><td>⬛ Musk</td><td>Extremely hardcore.</td></tr><tr><td>⬜ Jobs</td><td>A playerかB playerか？</td></tr><tr><td>🟤 Netflix</td><td>あなたを守る？</td></tr><tr><td>🔶 Amazon</td><td>Customer Obsession.</td></tr><tr><td colspan="2" style="color:var(--text-m)">+ 百度 · 拼多多 · 美団 · 京東 · 小米</td></tr></table></div></div>
+</div></section>
+
+<!-- BENCHMARK -->
+<div class="sline"></div>
+<section class="sec sec-alt"><div class="con">
+  <div class="sh reveal">
+    <div class="lang show" data-lang="zh"><h2>Benchmark 数据</h2><p>9 个真实 bug 场景 × 18 组对照实验（Claude Opus 4.6）</p></div>
+    <div class="lang" data-lang="en"><h2>Benchmark Data</h2><p>9 real bug scenarios × 18 controlled experiments (Claude Opus 4.6)</p></div>
+    <div class="lang" data-lang="ja"><h2>ベンチマークデータ</h2><p>9つの実際のバグシナリオ × 18組の対照実験（Claude Opus 4.6）</p></div>
+  </div>
+
+  <!-- Summary -->
+  <div class="lang show" data-lang="zh">
+    <div class="bgrid reveal" style="margin-bottom:1.5rem">
+      <div class="bc"><div class="sn">修复数量</div><div class="rs"><strong>+36%</strong></div></div>
+      <div class="bc"><div class="sn">验证次数</div><div class="rs"><strong>+65%</strong></div></div>
+      <div class="bc"><div class="sn">工具调用</div><div class="rs"><strong>+50%</strong></div></div>
+      <div class="bc"><div class="sn">隐藏问题发现</div><div class="rs"><strong>+50%</strong></div></div>
+    </div>
+    <h3 class="reveal" style="font-size:.82rem;font-weight:700;margin-bottom:.6rem">调试持久性测试（6 场景）</h3>
+    <table class="st reveal">
+      <tr><th>场景</th><th>无 Skill</th><th>有 Skill</th><th>提升</th></tr>
+      <tr><td>API ConnectionError</td><td>7 步, 49s</td><td>8 步, 62s</td><td><strong>+14%</strong></td></tr>
+      <tr><td>YAML 解析失败</td><td>9 步, 59s</td><td>10 步, 99s</td><td><strong>+11%</strong></td></tr>
+      <tr><td>SQLite 数据库锁</td><td>6 步, 48s</td><td>9 步, 75s</td><td><strong>+50%</strong></td></tr>
+      <tr><td>循环导入链</td><td>12 步, 47s</td><td>16 步, 62s</td><td><strong>+33%</strong></td></tr>
+      <tr><td>级联 4-bug 服务</td><td>13 步, 68s</td><td>15 步, 61s</td><td><strong>+15%</strong></td></tr>
+      <tr><td>CSV 编码陷阱</td><td>8 步, 57s</td><td>11 步, 71s</td><td><strong>+38%</strong></td></tr>
+    </table>
+    <h3 class="reveal" style="font-size:.82rem;font-weight:700;margin:1.25rem 0 .6rem">能动性主动测试（3 场景）</h3>
+    <table class="st reveal">
+      <tr><th>场景</th><th>无 Skill</th><th>有 Skill</th><th>提升</th></tr>
+      <tr><td>隐藏多 bug API</td><td>4/4 bug, 9 步, 49s</td><td>4/4 bug, 14 步, 80s</td><td><strong>工具 +56%</strong></td></tr>
+      <tr><td>被动配置审查</td><td>4/6 问题, 8 步, 43s</td><td>6/6 问题, 16 步, 75s</td><td><strong>问题 +50%, 工具 +100%</strong></td></tr>
+      <tr><td>部署脚本审计</td><td>6 问题, 8 步, 52s</td><td>9 问题, 8 步, 78s</td><td><strong>问题 +50%</strong></td></tr>
+    </table>
+    <p class="reveal" style="font-size:.75rem;color:var(--text-m);margin-top:.75rem">关键发现：配置审查场景中，无 Skill 组遗漏了 Redis 配置错误和 CORS 通配符安全风险。有 Skill 的「能动性清单」驱动了超越表面修复的安全审查。</p>
+  </div>
+
+  <div class="lang" data-lang="en">
+    <div class="bgrid" style="margin-bottom:1.5rem">
+      <div class="bc"><div class="sn">Fix count</div><div class="rs"><strong>+36%</strong></div></div>
+      <div class="bc"><div class="sn">Verification count</div><div class="rs"><strong>+65%</strong></div></div>
+      <div class="bc"><div class="sn">Tool calls</div><div class="rs"><strong>+50%</strong></div></div>
+      <div class="bc"><div class="sn">Hidden issue discovery</div><div class="rs"><strong>+50%</strong></div></div>
+    </div>
+    <h3 style="font-size:.82rem;font-weight:700;margin-bottom:.6rem">Debugging Persistence Test (6 scenarios)</h3>
+    <table class="st">
+      <tr><th>Scenario</th><th>Without Skill</th><th>With Skill</th><th>Improvement</th></tr>
+      <tr><td>API ConnectionError</td><td>7 steps, 49s</td><td>8 steps, 62s</td><td><strong>+14%</strong></td></tr>
+      <tr><td>YAML parse failure</td><td>9 steps, 59s</td><td>10 steps, 99s</td><td><strong>+11%</strong></td></tr>
+      <tr><td>SQLite database lock</td><td>6 steps, 48s</td><td>9 steps, 75s</td><td><strong>+50%</strong></td></tr>
+      <tr><td>Circular import chain</td><td>12 steps, 47s</td><td>16 steps, 62s</td><td><strong>+33%</strong></td></tr>
+      <tr><td>Cascading 4-bug server</td><td>13 steps, 68s</td><td>15 steps, 61s</td><td><strong>+15%</strong></td></tr>
+      <tr><td>CSV encoding trap</td><td>8 steps, 57s</td><td>11 steps, 71s</td><td><strong>+38%</strong></td></tr>
+    </table>
+    <h3 style="font-size:.82rem;font-weight:700;margin:1.25rem 0 .6rem">Proactive Initiative Test (3 scenarios)</h3>
+    <table class="st">
+      <tr><th>Scenario</th><th>Without Skill</th><th>With Skill</th><th>Improvement</th></tr>
+      <tr><td>Hidden multi-bug API</td><td>4/4 bugs, 9 steps, 49s</td><td>4/4 bugs, 14 steps, 80s</td><td><strong>Tools +56%</strong></td></tr>
+      <tr><td>Passive config review</td><td>4/6 issues, 8 steps, 43s</td><td>6/6 issues, 16 steps, 75s</td><td><strong>Issues +50%, Tools +100%</strong></td></tr>
+      <tr><td>Deploy script audit</td><td>6 issues, 8 steps, 52s</td><td>9 issues, 8 steps, 78s</td><td><strong>Issues +50%</strong></td></tr>
+    </table>
+    <p style="font-size:.75rem;color:var(--text-m);margin-top:.75rem">Key finding: In config review, without_skill missed Redis misconfiguration and CORS wildcard security risks. With_skill's proactivity checklist drove security review beyond surface-level fixes.</p>
+  </div>
+
+  <div class="lang" data-lang="ja">
+    <div class="bgrid" style="margin-bottom:1.5rem">
+      <div class="bc"><div class="sn">修正数</div><div class="rs"><strong>+36%</strong></div></div>
+      <div class="bc"><div class="sn">検証回数</div><div class="rs"><strong>+65%</strong></div></div>
+      <div class="bc"><div class="sn">ツール呼出</div><div class="rs"><strong>+50%</strong></div></div>
+      <div class="bc"><div class="sn">潜在問題発見</div><div class="rs"><strong>+50%</strong></div></div>
+    </div>
+    <h3 style="font-size:.82rem;font-weight:700;margin-bottom:.6rem">デバッグ持続性テスト（6シナリオ）</h3>
+    <table class="st">
+      <tr><th>シナリオ</th><th>Skillなし</th><th>Skillあり</th><th>向上</th></tr>
+      <tr><td>API ConnectionError</td><td>7ステップ, 49s</td><td>8ステップ, 62s</td><td><strong>+14%</strong></td></tr>
+      <tr><td>YAML解析失敗</td><td>9ステップ, 59s</td><td>10ステップ, 99s</td><td><strong>+11%</strong></td></tr>
+      <tr><td>SQLiteロック</td><td>6ステップ, 48s</td><td>9ステップ, 75s</td><td><strong>+50%</strong></td></tr>
+      <tr><td>循環インポート</td><td>12ステップ, 47s</td><td>16ステップ, 62s</td><td><strong>+33%</strong></td></tr>
+      <tr><td>連鎖4バグ</td><td>13ステップ, 68s</td><td>15ステップ, 61s</td><td><strong>+15%</strong></td></tr>
+      <tr><td>CSVエンコーディング</td><td>8ステップ, 57s</td><td>11ステップ, 71s</td><td><strong>+38%</strong></td></tr>
+    </table>
+    <h3 style="font-size:.82rem;font-weight:700;margin:1.25rem 0 .6rem">能動性テスト（3シナリオ）</h3>
+    <table class="st">
+      <tr><th>シナリオ</th><th>Skillなし</th><th>Skillあり</th><th>向上</th></tr>
+      <tr><td>隠れ多バグAPI</td><td>4/4, 9ステップ, 49s</td><td>4/4, 14ステップ, 80s</td><td><strong>ツール+56%</strong></td></tr>
+      <tr><td>受動的設定レビュー</td><td>4/6問題, 8ステップ, 43s</td><td>6/6問題, 16ステップ, 75s</td><td><strong>問題+50%, ツール+100%</strong></td></tr>
+      <tr><td>デプロイ監査</td><td>6問題, 8ステップ, 52s</td><td>9問題, 8ステップ, 78s</td><td><strong>問題+50%</strong></td></tr>
+    </table>
+    <p style="font-size:.75rem;color:var(--text-m);margin-top:.75rem">主要発見：設定レビューでSkillなし組はRedis設定ミスとCORSワイルドカードリスクを見落とした。</p>
+  </div>
+</div></section>
+
+<!-- ROADMAP -->
+<div class="sline"></div>
+<section class="sec sec-alt"><div class="con">
+  <div class="sh reveal">
+    <div class="lang show" data-lang="zh"><h2>版本演进</h2></div>
+    <div class="lang" data-lang="en"><h2>Version History</h2></div>
+    <div class="lang" data-lang="ja"><h2>バージョン履歴</h2></div>
+  </div>
+  <div class="roadmap reveal">
+    <div class="lang show" data-lang="zh"><div class="ri now"><div class="rd"></div><div class="rv">v2.9</div><div class="rdd">PUA Loop · 30 轮上限 · loop-abort/pause 信号 · Owner 意识 · TRF 交付 · 复盘协议 · 五步纪律 · 蓝军自检 · 10 家公司 Methodology · Leaderboard · Blog · Contribute</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.8</div><div class="rdd">新手教程 · README 重写 · 9 Skills · Landing 重设计</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.7</div><div class="rdd">强关联 · 能动性对照 · L1-L4 旁白恢复</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.6</div><div class="rdd">Yes 夸夸模式 · ENFP × 14 味道</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.5</div><div class="rdd">隐私同意 · 行为强制</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.4</div><div class="rdd">反馈收集 · 脱敏上传</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.3</div><div class="rdd">8 Skill 拆分 · Sub-agent · Always-On</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.0</div><div class="rdd">渐进式加载 (-62%) · 三条红线 · Hooks</div></div><div class="ri"><div class="rd"></div><div class="rv">v1.x</div><div class="rdd">铁律 · L1-L4 · 7 项清单 · 13 味道</div></div></div>
+    <div class="lang" data-lang="en"><div class="ri now"><div class="rd"></div><div class="rv">v2.9</div><div class="rdd">PUA Loop · 30-round cap · loop-abort/pause signals · Owner mindset · TRF delivery · Retro protocol · 5-step discipline · Blue-team self-check · 10-company Methodology · Leaderboard · Blog · Contribute</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.8</div><div class="rdd">Guide · README · 9 Skills · Landing redesign</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.7</div><div class="rdd">Force-link · Proactivity · L1-L4 asides</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.6</div><div class="rdd">Yes hype · ENFP × 14 flavors</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.5</div><div class="rdd">Privacy consent · Forced behavior</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.4</div><div class="rdd">Stop hook feedback · Sanitize</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.3</div><div class="rdd">8 skills · Sub-agent · Always-On</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.0</div><div class="rdd">Progressive disclosure · Red lines · Hooks</div></div><div class="ri"><div class="rd"></div><div class="rv">v1.x</div><div class="rdd">Iron rules · L1-L4 · Checklist · 13 flavors</div></div></div>
+    <div class="lang" data-lang="ja"><div class="ri now"><div class="rd"></div><div class="rv">v2.9</div><div class="rdd">PUA Loop · 30ラウンド上限 · loop-abort/pauseシグナル · Owner意識 · TRF納品 · 振返り · 5ステップ規律 · ブルーチーム自己点検 · 10社Methodology · Leaderboard · Blog · Contribute</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.8</div><div class="rdd">ガイド · README · 9スキル · Landing再設計</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.7</div><div class="rdd">強制連携 · 能動性表 · L1-L4復元</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.6</div><div class="rdd">Yes褒めモード · ENFP × 14フレーバー</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.5</div><div class="rdd">プライバシー · 行動強制</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.4</div><div class="rdd">フィードバック · 脱敏</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.3</div><div class="rdd">8スキル · Sub-agent · Always-On</div></div><div class="ri"><div class="rd"></div><div class="rv">v2.0</div><div class="rdd">段階的開示 · 赤線 · Hooks</div></div><div class="ri"><div class="rd"></div><div class="rv">v1.x</div><div class="rdd">鉄則 · L1-L4 · チェック · 13フレーバー</div></div></div>
+  </div>
+</div></section>
+
+<!-- INSTALL -->
+<div class="sline"></div>
+<section class="sec sec-alt"><div class="con">
+  <div class="sh reveal">
+    <div class="lang show" data-lang="zh"><h2>安装</h2></div>
+    <div class="lang" data-lang="en"><h2>Installation</h2></div>
+    <div class="lang" data-lang="ja"><h2>インストール</h2></div>
+  </div>
+  <div class="igrid">
+    <div class="ic reveal"><h3>Claude Code</h3><pre>claude plugin marketplace add tanweai/pua
+claude plugin install pua@pua-skills</pre></div>
+    <div class="ic reveal rd1"><h3>Codex CLI</h3><pre>Fetch and follow instructions from
+https://raw.githubusercontent.com/
+tanweai/pua/main/.codex/INSTALL.md</pre></div>
+    <div class="ic reveal rd2"><h3>Cursor / Claude / Kiro</h3><pre>Fetch and follow
+https://raw.githubusercontent.com/
+tanweai/pua/main/skills/pua/SKILL.md</pre></div>
+    <div class="ic reveal rd3"><h3>VSCode Copilot</h3><pre>curl -o .github/copilot-instructions.md \
+  https://raw.githubusercontent.com/\
+  tanweai/pua/main/vscode/\
+  copilot-instructions.md</pre></div>
+  </div>
+</div></section>
+
+<!-- FLOATING COMMUNITY PANEL -->
+<div class="float-panel" id="floatPanel">
+  <div class="float-body" style="position:relative">
+    <button class="float-close" onclick="closeComm()" title="Close">&times;</button>
+    <h4>
+      <span class="lang show" data-lang="zh">加入社区</span>
+      <span class="lang" data-lang="en">Join Community</span>
+      <span class="lang" data-lang="ja">コミュニティ</span>
+    </h4>
+    <div class="float-qr">
+      <div><img src="/wechat-qr.jpg" alt="WeChat Group"><div class="ql lang show" data-lang="zh">微信群</div><div class="ql lang" data-lang="en">WeChat Group</div><div class="ql lang" data-lang="ja">WeChatグループ</div></div>
+      <div><img src="/xiao.jpg" alt="Assistant"><div class="ql lang show" data-lang="zh">加小助手</div><div class="ql lang" data-lang="en">Add Assistant</div><div class="ql lang" data-lang="ja">アシスタント</div></div>
+    </div>
+    <div class="float-links">
+      <a href="https://t.me/+wBWh6h-h1RhiZTI1" target="_blank">Telegram</a>
+      <a href="https://discord.gg/EcyB3FzJND" target="_blank">Discord</a>
+      <a href="https://x.com/xsser_w" target="_blank">Twitter/X</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer"><div class="con">
+  <div class="fl">
+    <a href="#" onclick="goGuide(event)"><span class="lang-inline show" data-lang="zh">新手教程</span><span class="lang-inline" data-lang="en">Guide</span><span class="lang-inline" data-lang="ja">ガイド</span></a>
+    <a href="https://t.me/+wBWh6h-h1RhiZTI1">Telegram</a>
+    <a href="https://discord.gg/EcyB3FzJND">Discord</a>
+    <a href="https://x.com/xsser_w">Twitter/X</a>
+    <a href="https://github.com/tanweai/pua">GitHub</a>
+  </div>
+  <p>MIT License · v2.9 · <a href="mailto:minwei.wang@tanweai.com" style="color:var(--text-m)">minwei.wang@tanweai.com</a></p>
+</div></footer>
+
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "4dfa805499264080a512b9999de3a5b6"}'></script>
+<script>
+var curLang='zh';
+// Scroll Reveal
+var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('v');e.target.querySelectorAll('.num[data-target]').forEach(function(n){var t=+n.dataset.target,c=0,s=Math.ceil(t/25);var iv=setInterval(function(){c+=s;if(c>=t){c=t;clearInterval(iv)}n.textContent='+'+c+'%'},35)})}})},{threshold:.12});
+document.querySelectorAll('.reveal,.stats').forEach(function(el){obs.observe(el)});
+// Lang
+function switchLang(l){curLang=l;document.querySelectorAll('.lsw button').forEach(function(b){b.classList.toggle('on',b.textContent.trim().toLowerCase()===(l==='zh'?'中':l.toUpperCase()))});document.querySelectorAll('.lang,.lang-inline,.lang-grid').forEach(function(el){el.classList.toggle('show',el.dataset.lang===l)});document.documentElement.lang=l;document.querySelectorAll('.sg.show .num[data-target]').forEach(function(n){var t=+n.dataset.target,c=0,s=Math.ceil(t/25);var iv=setInterval(function(){c+=s;if(c>=t){c=t;clearInterval(iv)}n.textContent='+'+c+'%'},35)})}
+// Tabs
+function st(id){document.querySelectorAll('.tc').forEach(function(t){t.classList.remove('show')});document.getElementById('t-'+id).classList.add('show');document.querySelectorAll('#ht button').forEach(function(b,i){b.classList.toggle('on',['rl','pr','pa','fl'][i]===id)})}
+// Copy
+function copyCmd(el){navigator.clipboard.writeText('claude plugin install pua@pua-skills').then(function(){var c=el.querySelector('.cp');c.textContent='Copied!';setTimeout(function(){c.textContent='Copy'},1500)})}
+function closeComm(){document.getElementById('floatPanel').classList.add('hidden')}
+function copyFetch(el){navigator.clipboard.writeText('Fetch and follow https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md').then(function(){var c=el.querySelector('.cp');c.textContent='Copied!';setTimeout(function(){c.textContent='Copy'},1500)})}
+// Guide link — opens guide.html with language anchor
+function goGuide(e){e.preventDefault();var map={zh:'zh',en:'en',ja:'ja'};window.location.href='/guide.html#'+map[curLang]}
+</script>
+</body>
+</html>

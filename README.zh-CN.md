@@ -11,7 +11,7 @@
 **[🇺🇸 English](README.md)** | **🇨🇳 中文** | **[🇯🇵 日本語](README.ja.md)**
 
 <p align="center">
-  <img src="assets/wechat-qr.jpg" alt="WeChat Group QR Code" width="250">
+  <img src="assets/wechat-qr.jpg?v=5" alt="WeChat Group QR Code" width="250">
   &nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/xiao.jpg" alt="小助手微信" width="250">
   <br>
@@ -23,15 +23,17 @@
   <img src="https://img.shields.io/badge/OpenAI_Codex_CLI-412991?style=flat-square&logo=openai&logoColor=white" alt="OpenAI Codex CLI">
   <img src="https://img.shields.io/badge/Cursor-000?style=flat-square&logo=cursor&logoColor=white" alt="Cursor">
   <img src="https://img.shields.io/badge/Kiro-232F3E?style=flat-square&logo=amazon&logoColor=white" alt="Kiro">
+  <img src="https://img.shields.io/badge/CodeBuddy-00B2FF?style=flat-square&logo=tencent-qq&logoColor=white" alt="CodeBuddy">
   <img src="https://img.shields.io/badge/OpenClaw-FF6B35?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEyIDJMNCA3djEwbDggNSA4LTV2LTEweiIgZmlsbD0id2hpdGUiLz48L3N2Zz4=&logoColor=white" alt="OpenClaw">
   <img src="https://img.shields.io/badge/Antigravity-4285F4?style=flat-square&logo=google&logoColor=white" alt="Google Antigravity">
   <img src="https://img.shields.io/badge/OpenCode-00D4AA?style=flat-square&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTkuNCA1LjJMMyAxMmw2LjQgNi44TTIxIDEybC02LjQtNi44TTE0LjYgMTguOCIgc3Ryb2tlPSJ3aGl0ZSIgZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIyIi8+PC9zdmc+&logoColor=white" alt="OpenCode">
+  <img src="https://img.shields.io/badge/VSCode_Copilot-007ACC?style=flat-square&logo=visual-studio-code&logoColor=white" alt="VSCode Copilot">
   <img src="https://img.shields.io/badge/License-MIT-green?style=flat-square" alt="MIT License">
 </p>
 
 > 大部分人以为这个项目是在搞抽象，其实这个是最大的误解。让你的 Codex / Claude Code 工作效率翻倍，产出翻倍。
 
-一个 AI Coding Agent 技能插件，用中西大厂 PUA 话术驱动 AI 穷尽所有方案才允许放弃。支持 **Claude Code**、**OpenAI Codex CLI**、**Cursor**、**Kiro**、**OpenClaw**、**Google Antigravity** 和 **OpenCode**。三重能力：
+一个 AI Coding Agent 技能插件，用中西大厂 PUA 话术驱动 AI 穷尽所有方案才允许放弃。支持 **Claude Code**、**OpenAI Codex CLI**、**Cursor**、**Kiro**、**CodeBuddy**、**OpenClaw**、**Google Antigravity**、**OpenCode** 和 **VSCode (GitHub Copilot)**。三重能力：
 
 1. **PUA 话术** — 让 AI 不敢放弃
 2. **调试方法论** — 让 AI 有能力不放弃
@@ -191,6 +193,16 @@
 
 ## 安装
 
+### Vercel Skills CLI
+
+Vercel Skills CLI 是一种通用的 skill 安装方式，不绑定某个特定 AI 工具。这个中文 README 对应安装中文版 skill：
+
+```bash
+npx skills add tanweai/pua --skill pua
+```
+
+如果当前会话没有立即识别到新 skill，重启对应的 AI 工具即可。
+
 ### Claude Code
 
 ```bash
@@ -206,16 +218,32 @@ git clone https://github.com/tanweai/pua.git ~/.claude/plugins/pua
 
 Codex CLI 使用相同的 Agent Skills 开放标准（SKILL.md）。Codex 版本使用精简的 description 以兼容 Codex 的长度限制：
 
+**推荐：一键安装（git clone + symlink，支持 `git pull` 更新）**
+
+让 Codex 执行：
+```
+Fetch and follow instructions from https://raw.githubusercontent.com/tanweai/pua/main/.codex/INSTALL.md
+```
+
+**手动安装：**
+
 ```bash
 mkdir -p ~/.codex/skills/pua
 curl -o ~/.codex/skills/pua/SKILL.md \
   https://raw.githubusercontent.com/tanweai/pua/main/codex/pua/SKILL.md
-  
-# 如果需要 /pua 指令的话
+
 mkdir -p ~/.codex/prompts
 curl -o ~/.codex/prompts/pua.md \
   https://raw.githubusercontent.com/tanweai/pua/main/commands/pua.md
 ```
+
+**触发方式：**
+
+| 方式 | 命令 | 需要 |
+|------|------|------|
+| 自动触发 | 无需操作，根据 description 匹配 | SKILL.md |
+| 直接调用 | 对话中输入 `$pua` | SKILL.md |
+| 手动 prompt | 对话中输入 `/prompts:pua` | SKILL.md + prompts/pua.md |
 
 项目级安装（仅当前项目生效）：
 
@@ -224,7 +252,6 @@ mkdir -p .agents/skills/pua
 curl -o .agents/skills/pua/SKILL.md \
   https://raw.githubusercontent.com/tanweai/pua/main/codex/pua/SKILL.md
 
-# 如果需要 /pua 指令的话
 mkdir -p .agents/prompts
 curl -o .agents/prompts/pua.md \
   https://raw.githubusercontent.com/tanweai/pua/main/commands/pua.md
@@ -259,6 +286,29 @@ curl -o .kiro/steering/pua.md \
 mkdir -p .kiro/skills/pua
 curl -o .kiro/skills/pua/SKILL.md \
   https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
+```
+
+### CodeBuddy（腾讯）
+
+CodeBuddy 使用相同的 AgentSkills 开放标准（SKILL.md）。插件和 Skill 格式完全兼容：
+
+```bash
+# 方式一：通过 marketplace 安装
+codebuddy plugin marketplace add tanweai/pua
+codebuddy plugin install pua@pua-skills
+
+# 方式二：手动安装（全局）
+mkdir -p ~/.codebuddy/skills/pua
+curl -o ~/.codebuddy/skills/pua/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/codebuddy/pua/SKILL.md
+```
+
+项目级安装（仅当前项目生效）：
+
+```bash
+mkdir -p .codebuddy/skills/pua
+curl -o .codebuddy/skills/pua/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/codebuddy/pua/SKILL.md
 ```
 
 ### OpenClaw
@@ -320,6 +370,33 @@ mkdir -p .opencode/skills/pua
 curl -o .opencode/skills/pua/SKILL.md \
   https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
 ```
+
+### VSCode (GitHub Copilot)
+
+VSCode Copilot 使用 `.github/` 目录下的指令文件。三种文件类型对应不同的使用方式：
+
+**全局指令（自动生效）：**
+
+```bash
+mkdir -p .github
+cp vscode/copilot-instructions.md .github/copilot-instructions.md
+```
+
+**路径级指令（自动生效，支持 glob 过滤）：**
+
+```bash
+mkdir -p .github/instructions
+cp vscode/instructions/pua.instructions.md .github/instructions/
+```
+
+**手动触发命令（在 Copilot Chat 中输入 `/pua`）：**
+
+```bash
+mkdir -p .github/prompts
+cp vscode/prompts/pua.prompt.md .github/prompts/
+```
+
+> **前提设置**：方式一需在 VSCode 设置（`Ctrl+,`）中搜索 `useInstructionFiles`，启用 **`github.copilot.chat.codeGeneration.useInstructionFiles`**；方式二需搜索 `includeApplyingInstructions`，启用 **`chat.includeApplyingInstructions`**；方式三无需任何设置。
 
 ## Agent Team 使用指南
 

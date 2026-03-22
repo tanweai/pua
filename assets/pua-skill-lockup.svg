@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 100" width="360" height="100">
+  <!-- PUA Skill Logo - Horizontal Lockup - Dark on transparent -->
+  <g transform="translate(10, 10) scale(0.48)">
+    <circle cx="92" cy="52" r="18" fill="#E8453C"/>
+    <path d="M92 70 Q92 88, 82 102 Q72 116, 56 126" fill="none" stroke="#E8453C" stroke-width="7" stroke-linecap="round"/>
+    <path d="M84 86 Q100 74, 120 66 Q132 62, 146 58" fill="none" stroke="#E8453C" stroke-width="6.5" stroke-linecap="round"/>
+    <path d="M78 102 Q66 122, 48 134 Q40 140, 32 144" fill="none" stroke="#E8453C" stroke-width="6" stroke-linecap="round"/>
+    <path d="M80 108 Q96 120, 116 138 Q126 148, 134 160" fill="none" stroke="#E8453C" stroke-width="6" stroke-linecap="round"/>
+    <path d="M146 58 L156 48" stroke="#E8453C" stroke-width="3.5" stroke-linecap="round" opacity="0.55"/>
+    <path d="M150 52 L162 42" stroke="#E8453C" stroke-width="2.5" stroke-linecap="round" opacity="0.3"/>
+    <path d="M154 46 L168 38" stroke="#E8453C" stroke-width="1.5" stroke-linecap="round" opacity="0.14"/>
+  </g>
+  <text x="115" y="44" font-family="'Helvetica Neue', 'Arial', sans-serif" font-size="28" font-weight="600" letter-spacing="6" fill="#1a1a1a">PUA</text>
+  <text x="115" y="70" font-family="'Helvetica Neue', 'Arial', sans-serif" font-size="13" font-weight="400" letter-spacing="4" fill="#888888">SKILL</text>
+</svg>

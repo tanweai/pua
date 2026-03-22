@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emotion/Persona Prompting 对 AI Agent 效果的系统性分析</title>
+  <link rel="icon" href="/pua-logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#fff;--bg-warm:#fafaf8;--bg-card:#f5f5f3;--border:#e5e5e0;--text:#1a1a2e;--text-s:#4a4a5a;--text-m:#8a8a96;--brand:#E8453C;--brand-lt:#fef2f1;--brand-bd:#f5c4c1;--max-w:760px;--r:10px}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.8;-webkit-font-smoothing:antialiased}
+    ::selection{background:var(--brand);color:#fff}
+    a{color:var(--brand);text-decoration:none}a:hover{opacity:.7}
+
+    .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-in{max-width:1080px;margin:0 auto;padding:.65rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+    .nav-b{display:flex;align-items:center;gap:.4rem;font-weight:800;font-size:1.05rem;color:var(--text)}.nav-b img{width:26px;height:26px}
+    .nav-r{display:flex;align-items:center;gap:1rem}
+    .nav-r a{color:var(--text-m);font-size:.78rem;font-weight:500;transition:color .2s}.nav-r a:hover{color:var(--text);opacity:1}
+    @media(max-width:768px){.nav-r{gap:.5rem}.nav-r a.hm{display:none}}
+    .lsw{display:flex;background:var(--bg-card);border-radius:6px;padding:2px;border:1px solid var(--border)}
+    .lsw button{background:none;border:none;color:var(--text-m);padding:3px 9px;border-radius:4px;cursor:pointer;font-size:.65rem;font-weight:600;font-family:inherit;transition:all .2s}
+    .lsw button.on{background:var(--brand);color:#fff}
+
+    article{max-width:var(--max-w);margin:0 auto;padding:3rem 1.5rem 4rem}
+    .hero{margin-bottom:2.5rem;border-bottom:1px solid var(--border);padding-bottom:2rem}
+    .hero h1{font-size:1.9rem;font-weight:900;line-height:1.25;letter-spacing:-.02em;margin-bottom:.6rem}
+    .hero .sub{font-size:1rem;color:var(--text-s);line-height:1.6;margin-bottom:1rem}
+    .hero .meta{font-size:.78rem;color:var(--text-m)}
+    .hero .meta span{margin-right:1rem}
+
+    h2{font-size:1.35rem;font-weight:800;margin:2.5rem 0 .75rem;padding-top:1.5rem;border-top:1px solid var(--border);letter-spacing:-.01em}
+    h3{font-size:1.05rem;font-weight:700;margin:1.75rem 0 .5rem;color:var(--text)}
+    h4{font-size:.9rem;font-weight:700;margin:1.25rem 0 .4rem;color:var(--brand)}
+    p{font-size:.9rem;color:var(--text-s);margin-bottom:.85rem}
+    ul,ol{font-size:.88rem;color:var(--text-s);margin:0 0 1rem 1.5rem}
+    li{margin-bottom:.4rem}
+    strong{color:var(--text);font-weight:700}
+
+    .quote{border-left:3px solid var(--brand);padding:.75rem 1rem;margin:1rem 0;background:var(--brand-lt);border-radius:0 var(--r) var(--r) 0;font-size:.88rem;color:var(--text-s);font-style:italic}
+    .highlight{background:var(--brand-lt);border:1px solid var(--brand-bd);border-radius:var(--r);padding:1rem 1.25rem;margin:1.25rem 0;font-size:.88rem}
+    .highlight strong{color:var(--brand)}
+
+    table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:.82rem}
+    th{text-align:left;padding:.55rem .7rem;border-bottom:2px solid var(--border);color:var(--text-m);font-weight:600;font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
+    td{padding:.55rem .7rem;border-bottom:1px solid var(--border);color:var(--text-s)}
+    tr:hover td{background:var(--bg-warm)}
+
+    .toc{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:1.25rem 1.5rem;margin-bottom:2rem}
+    .toc h3{margin:0 0 .6rem;font-size:.85rem;color:var(--text-m);text-transform:uppercase;letter-spacing:.05em}
+    .toc ol{margin:0 0 0 1.25rem;font-size:.82rem}
+    .toc li{margin-bottom:.3rem}
+    .toc a{color:var(--text-s);font-weight:500}.toc a:hover{color:var(--brand)}
+
+    .refs{font-size:.78rem;color:var(--text-m);line-height:1.7}
+    .refs p{margin-bottom:.4rem;font-size:.78rem}
+
+    .footer{border-top:1px solid var(--border);padding:1.25rem 0;text-align:center;max-width:var(--max-w);margin:0 auto}
+    .footer p{font-size:.7rem;color:var(--text-m)}.footer a{color:var(--text-m)}
+
+    .lang{display:none}.lang.show{display:block}
+    .lang-i{display:none}.lang-i.show{display:inline}
+
+    .reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}.reveal.v{opacity:1;transform:translateY(0)}
+
+    @media(max-width:600px){.hero h1{font-size:1.5rem}h2{font-size:1.15rem}article{padding:2rem 1rem 3rem}}
+  </style>
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <a href="/" class="nav-b"><img src="/pua-logo.svg" alt="PUA"> PUA</a>
+  <div class="nav-r">
+    <a href="/guide.html"><span class="lang-i show" data-lang="zh">新手教程</span><span class="lang-i" data-lang="en">Guide</span></a>
+    <a href="https://t.me/+wBWh6h-h1RhiZTI1" target="_blank">Telegram</a>
+    <a href="https://discord.gg/EcyB3FzJND" target="_blank" class="hm">Discord</a>
+    <a href="https://x.com/xsser_w" target="_blank">Twitter/X</a>
+    <a href="https://github.com/tanweai/pua" target="_blank">GitHub</a>
+    <a href="/leaderboard.html">Leaderboard</a>
+    <a href="/contribute.html">Contribute</a>
+    <a href="/blog/" style="color:var(--brand);font-weight:600">Blog</a>
+    <div class="lsw"><button class="on" onclick="sl('zh')">中</button><button onclick="sl('en')">EN</button></div>
+  </div>
+</div></nav>
+
+<article>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="lang show" data-lang="zh">
+      <h1>Emotion Prompting / Persona Prompting 对 AI Agent 效果的系统性分析</h1>
+      <p class="sub">从 EmotionPrompt 到 Anthropic Persona Vectors：Prompt 层情感刺激、结构化行为约束与激活空间干预的效果对比</p>
+      <div class="meta"><span>2026 年 3 月</span><span>基于 20+ 篇核心论文</span><span>涵盖 ACL/EMNLP/ICML/IJCAI 顶会</span></div>
+    </div>
+    <div class="lang" data-lang="en">
+      <h1>A Systematic Analysis of Emotion/Persona Prompting Effects on AI Agents</h1>
+      <p class="sub">From EmotionPrompt to Anthropic Persona Vectors: Comparing prompt-level emotional stimuli, structured behavioral constraints, and activation-space interventions</p>
+      <div class="meta"><span>March 2026</span><span>Based on 20+ core papers</span><span>Covering ACL/EMNLP/ICML/IJCAI</span></div>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3><span class="lang-i show" data-lang="zh">目录</span><span class="lang-i" data-lang="en">Contents</span></h3>
+    <ol>
+      <li><a href="#s1"><span class="lang-i show" data-lang="zh">研究背景与核心问题</span><span class="lang-i" data-lang="en">Background & Core Question</span></a></li>
+      <li><a href="#s2"><span class="lang-i show" data-lang="zh">EmotionPrompt 研究系列（2023-2024）</span><span class="lang-i" data-lang="en">EmotionPrompt Research (2023-2024)</span></a></li>
+      <li><a href="#s3"><span class="lang-i show" data-lang="zh">Persona Prompting 大规模实证检验</span><span class="lang-i" data-lang="en">Large-Scale Persona Prompting Evidence</span></a></li>
+      <li><a href="#s4"><span class="lang-i show" data-lang="zh">Anthropic 官方研究：Persona Vectors</span><span class="lang-i" data-lang="en">Anthropic Research: Persona Vectors</span></a></li>
+      <li><a href="#s5"><span class="lang-i show" data-lang="zh">PUA Skill 案例分析：为什么 8k Star？</span><span class="lang-i" data-lang="en">PUA Skill Case Study: Why 8k Stars?</span></a></li>
+      <li><a href="#s6"><span class="lang-i show" data-lang="zh">三层效果判断</span><span class="lang-i" data-lang="en">Three-Layer Effectiveness Analysis</span></a></li>
+      <li><a href="#s7"><span class="lang-i show" data-lang="zh">"3.25"和"毕业"这些词到底有没有用？</span><span class="lang-i" data-lang="en">Do Words Like "3.25" and "Graduation" Actually Work?</span></a></li>
+      <li><a href="#s8"><span class="lang-i show" data-lang="zh">综合结论与战略启示</span><span class="lang-i" data-lang="en">Conclusions & Strategic Implications</span></a></li>
+    </ol>
+  </div>
+
+  <!-- SECTION 1 -->
+  <section id="s1" class="reveal">
+    <div class="lang show" data-lang="zh">
+      <h2>一、研究背景与核心问题</h2>
+      <p>随着 AI Agent 在代码生成、调试、部署等场景中的广泛应用，一个反复出现的问题是：Agent 在遇到困难时过早放弃、反复重试相同方案、或将问题推给用户。为了解决这一问题，开发者社区出现了大量尝试通过 prompt 层面的情感刺激或角色扮演来"激励" AI 更努力工作的实践。</p>
+      <p>本报告系统梳理了 2023 年至 2026 年间该方向的所有关键研究，回答一个核心问题：<strong>在 prompt 中加入情感刺激（如"这对我的事业很重要"）或角色设定（如"你是 P8 级工程师"），到底能不能有效提升 AI Agent 的任务表现？</strong></p>
+      <p>为回答这一问题，我们区分了三个完全不同的操作层面：（1）Prompt 层的情感/角色修饰；（2）Prompt 层的结构化行为约束；（3）模型激活空间层的向量干预。三者的机制和效果截然不同。</p>
+    </div>
+    <div class="lang" data-lang="en">
+      <h2>1. Background & Core Question</h2>
+      <p>As AI Agents become widely used in code generation, debugging, and deployment, a recurring problem emerges: Agents give up too early when facing difficulties, retry the same approach repeatedly, or push problems back to users. To address this, developers have attempted to use prompt-level emotional stimuli or persona role-play to "motivate" AI to work harder.</p>
+      <p>This report systematically reviews all key research in this direction from 2023 to 2026, answering one core question: <strong>Does adding emotional stimuli ("this is very important to my career") or persona assignments ("you are a P8-level engineer") to prompts actually improve AI Agent task performance?</strong></p>
+      <p>We distinguish three completely different operational layers: (1) Prompt-level emotion/persona decoration; (2) Prompt-level structured behavioral constraints; (3) Model activation-space vector intervention. Their mechanisms and effects are fundamentally different.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 2 -->
+  <section id="s2" class="reveal">
+    <div class="lang show" data-lang="zh">
+      <h2>二、EmotionPrompt 研究系列（2023-2024）</h2>
+      <h3>2.1 EmotionPrompt V1（Li et al., 2023, LLM@IJCAI'23 Workshop / arXiv 2307.11760）</h3>
+      <p>该论文首次系统性地探索了 LLM 对心理情感刺激的理解和响应能力。研究者设计了 11 条情感刺激句（如"This is very important to my career""Are you sure that's your final answer?"），附加在原始 prompt 末尾，在 45 个任务上测试了 6 个模型。</p>
+      <ul>
+        <li>Instruction Induction 任务：平均 8.00% 相对提升</li>
+        <li>BIG-Bench 任务：平均 115% 相对提升</li>
+        <li>人类评估（106 名参与者）：生成任务平均 10.9% 提升</li>
+        <li>更大的模型获益更多；高 temperature 设定下效果更显著</li>
+      </ul>
+
+      <h3>2.2 EmotionPrompt V2 / "The Good, The Bad, and Why"（Li et al., 2024, ICLR 2024 Spotlight / ICML 2024）</h3>
+      <p>将 EmotionPrompt 扩展到视觉领域，并新增 EmotionAttack（用负面情感刺激降低模型表现）和 EmotionDecode（解释作用机制）。原论文使用了"类似人脑多巴胺机制"的类比性表述，但这更多是修辞而非严格的神经科学发现。多模态模型比纯文本 LLM 更容易受到情感攻击的影响。</p>
+
+      <h3>2.3 NegativePrompt（Wang et al., 2024, IJCAI 2024）</h3>
+      <p>核心发现：<strong>正面情感刺激效果不稳定，而负面情感刺激反而更稳定</strong>，能更一致地提升 LLM 表现。原因是负面刺激更有效地将模型注意力集中在原始 prompt 和任务内容上。</p>
+      <div class="quote">注意：这一发现表面上与本文结论（"情感刺激无效"）矛盾，但实际上不矛盾——NegativePrompt 之所以有效，不是因为模型"感受到了压力"，而是因为负面表述充当了<strong>注意力锚定信号</strong>（详见第七章 7.2），将模型注意力集中到任务本身。真正起作用的是注意力机制，不是情感反应。这也解释了为什么<strong>正面鼓励（如 /pua:yes 夸夸模式）对任务表现没有提升</strong>——正面情感表述缺乏负面表述那种"高权重 attention signal"的效果，反而可能分散模型对任务内容的注意力。对于高水平用户，不建议使用 yes 模式来期待任务质量提升；yes 模式的价值在于情绪体验，不在任务效果。</div>
+
+      <h3>2.4 批判性评估</h3>
+      <p>EmotionPrompt 系列存在几个重要局限性：（1）BIG-Bench 上 115% 的提升主要来自弱模型在低基线上的改善，对 GPT-4 级别模型提升幅度小得多；（2）实验设置主要针对 benchmark 任务而非真实 Agent 工作流；（3）研究本身承认"情感刺激可能不适用于其他任务"。</p>
+    </div>
+    <div class="lang" data-lang="en">
+      <h2>2. EmotionPrompt Research Series (2023-2024)</h2>
+      <h3>2.1 EmotionPrompt V1 (Li et al., 2023, LLM@IJCAI'23 Workshop / arXiv 2307.11760)</h3>
+      <p>This paper first systematically explored LLMs' understanding of psychological emotional stimuli. Researchers designed 11 emotional stimulus sentences appended to prompts, testing across 45 tasks on 6 models.</p>
+      <ul>
+        <li>Instruction Induction tasks: average 8.00% relative improvement</li>
+        <li>BIG-Bench tasks: average 115% relative improvement</li>
+        <li>Human evaluation (106 participants): 10.9% improvement on generation tasks</li>
+        <li>Larger models benefit more; higher temperature settings show stronger effects</li>
+      </ul>
+
+      <h3>2.2 EmotionPrompt V2 / "The Good, The Bad, and Why" (Li et al., 2024, ICLR 2024 Spotlight / ICML 2024)</h3>
+      <p>Extended EmotionPrompt to visual domains, adding EmotionAttack (degrading performance via negative emotional stimuli) and EmotionDecode (explaining mechanisms). Found multimodal models more vulnerable to emotional attacks than text-only LLMs.</p>
+
+      <h3>2.3 NegativePrompt (Wang et al., 2024, IJCAI 2024)</h3>
+      <p>Core finding: <strong>positive emotional stimuli are unstable, while negative emotional stimuli are more consistent</strong> in improving LLM performance. The reason: negative stimuli more effectively focus model attention on the original prompt and task content.</p>
+      <div class="quote">Note: This finding appears to contradict this article's conclusion ("emotional stimuli are ineffective"), but it actually doesn't — NegativePrompt works not because the model "feels pressure," but because negative phrasing acts as an <strong>attention anchoring signal</strong> (see Section 7.2), focusing model attention on the task itself. What actually works is the attention mechanism, not emotional response. This also explains why <strong>positive encouragement (like /pua:yes hype mode) doesn't improve task performance</strong> — positive emotional expressions lack the "high-weight attention signal" effect of negative ones, and may actually distract the model from task content. For advanced users, the yes mode is not recommended for improving task quality; its value is in emotional experience, not task effectiveness.</div>
+
+      <h3>2.4 Critical Assessment</h3>
+      <p>Key limitations: (1) The 115% improvement on BIG-Bench mainly comes from weak models improving from low baselines — GPT-4 level models show much smaller gains; (2) experimental settings target benchmarks, not real Agent workflows; (3) the research itself acknowledges "emotional stimuli may not apply to other tasks."</p>
+    </div>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section id="s3" class="reveal">
+    <div class="lang show" data-lang="zh">
+      <h2>三、Persona Prompting 的大规模实证检验（2024-2026）</h2>
+      <p>与 EmotionPrompt 的"情感刺激"方向平行，学术界同时在检验"角色/人设 Prompting"的效果。</p>
+      <table>
+        <tr><th>论文</th><th>规模</th><th>核心结论</th></tr>
+        <tr><td><strong>Zheng et al.</strong> (EMNLP 2024)</td><td>162 角色, 4 个 LLM 家族, 2410 个问题</td><td>persona 总体没有改善表现，甚至有轻微负面效果</td></tr>
+        <tr><td><strong>Mollick et al.</strong> (Wharton 2025)</td><td>6 个模型, GPQA+MMLU-Pro</td><td>领域匹配的专家 persona 对研究生级别难题没有显著影响</td></tr>
+        <tr><td><strong>Araujo et al.</strong> (arXiv 2025)</td><td>9 个 SOTA LLM, 27 个任务</td><td>专家 persona 通常正面或不显著；但对无关细节极度敏感（降 30pp）</td></tr>
+        <tr><td><strong>Hu & Collier</strong> (ACL 2024)</td><td>多数据集, 70B 模型</td><td>改善统计上显著但幅度很小；persona 变量仅解释 &lt;10% 方差</td></tr>
+      </table>
+
+      <h3>3.1 关键发现：Zheng et al. 的结论翻转</h3>
+      <p>2023 年初版声称"添加人际角色一致地改善了模型表现"，但 2024 年 10 月扩大实验规模后，<strong>结论完全反转为"persona 不改善表现"</strong>。这说明早期正面结果很可能是小样本偏差。</p>
+
+      <h3>3.2 综合判断</h3>
+      <div class="highlight"><strong>在 Agent 最需要的客观任务能力上（工具调用、代码生成、推理、规划），prompt 层面的情感刺激和角色设定对前沿模型的收益为零到微负。唯一稳定有效的 prompt 层面技术是结构化指令（CoT、checklist、output format 约束），而非情感或角色修饰。</strong></div>
+    </div>
+    <div class="lang" data-lang="en">
+      <h2>3. Large-Scale Persona Prompting Evidence (2024-2026)</h2>
+      <p>Parallel to EmotionPrompt's "emotional stimuli" direction, academia simultaneously tested "persona/role prompting" effects.</p>
+      <table>
+        <tr><th>Paper</th><th>Scale</th><th>Core Finding</th></tr>
+        <tr><td><strong>Zheng et al.</strong> (EMNLP 2024)</td><td>162 personas, 4 LLM families, 2410 questions</td><td>Persona generally didn't improve performance, even slightly negative</td></tr>
+        <tr><td><strong>Mollick et al.</strong> (Wharton 2025)</td><td>6 models, GPQA+MMLU-Pro</td><td>Domain-matched expert personas had no significant impact on graduate-level problems</td></tr>
+        <tr><td><strong>Araujo et al.</strong> (arXiv 2025)</td><td>9 SOTA LLMs, 27 tasks</td><td>Expert personas usually positive or insignificant; but extremely sensitive to irrelevant details (-30pp)</td></tr>
+        <tr><td><strong>Hu & Collier</strong> (ACL 2024)</td><td>Multiple datasets, 70B models</td><td>Improvement statistically significant but very small; persona variable explains &lt;10% variance</td></tr>
+      </table>
+
+      <h3>3.1 Key Finding: Zheng et al.'s Conclusion Reversal</h3>
+      <p>The 2023 initial version claimed "adding interpersonal roles consistently improved model performance," but after expanding experiments in October 2024, <strong>the conclusion completely reversed to "persona does not improve performance."</strong> This suggests early positive results were likely small-sample bias.</p>
+
+      <h3>3.2 Overall Judgment</h3>
+      <div class="highlight"><strong>For the objective task capabilities Agents need most (tool use, code generation, reasoning, planning), prompt-level emotional stimuli and persona assignments yield zero to slightly negative returns for frontier models. The only reliably effective prompt-level technique is structured instructions (CoT, checklists, output format constraints), not emotion or persona decoration.</strong></div>
+    </div>
+  </section>
+
+  <!-- SECTION 4 -->
+  <section id="s4" class="reveal">
+    <div class="lang show" data-lang="zh">
+      <h2>四、Anthropic 官方研究：Persona Vectors 与 Assistant Axis</h2>
+      <p>2025-2026 年间，Anthropic 及其 Fellows Program 资助/支持了三篇关于模型"性格"的核心研究（其中 Persona Vectors 和 Assistant Axis 的第一作者分别来自 UT Austin 和牛津大学，与 Anthropic 研究员合作完成；PSM 则更接近 Anthropic 内部团队论文）。这些研究不在 prompt 层面操作，而是深入模型内部的激活空间。</p>
+
+      <h3>4.1 Persona Vectors（2025 年 8 月）</h3>
+      <p>通过比较模型在展现某特质（如 evil、sycophancy、hallucination）和不展现该特质时的激活差异，提取出"persona vectors"——代表性格特质的神经活动模式方向。</p>
+      <ul>
+        <li>因果验证有效：注入 evil 向量后模型生成暴力内容，注入 sycophancy 向量后过度奉承</li>
+        <li>finetuning 过程中 persona 向量偏移与实际特质表达的<strong>相关性极高（论文报告约 0.97，待独立验证）</strong></li>
+        <li>能捕捉到人眼和 LLM judge 都无法识别的有问题训练样本</li>
+      </ul>
+
+      <h3>4.2 The Assistant Axis（2026 年 1 月）</h3>
+      <p>在三个模型中发现了一致的"persona space"结构。主成分恰好捕捉了模型在多大程度上是"Assistant-like"的。通过"activation capping"约束神经活动来防止偏移，可以在原本会导致有害输出的场景中稳定模型行为。</p>
+
+      <h3>4.3 与 EmotionPrompt 的本质区别</h3>
+      <table>
+        <tr><th>维度</th><th>EmotionPrompt / Persona Prompting</th><th>Anthropic Persona Vectors</th></tr>
+        <tr><td>操作层</td><td>Prompt 层（文本输入）</td><td>Activation 层（神经网络内部）</td></tr>
+        <tr><td>机制</td><td>在 prompt 末尾加情感句或角色设定</td><td>提取/注入激活空间中的方向向量</td></tr>
+        <tr><td>有效性</td><td>对客观任务：微弱到无效</td><td>因果性验证有效（相关性 0.97）</td></tr>
+        <tr><td>精度</td><td>粗糙、不可预测</td><td>精确、可量化、可监控</td></tr>
+        <tr><td>可控性</td><td>几乎不可控</td><td>高度可控（向量加减是线性操作）</td></tr>
+      </table>
+
+      <div class="quote">类比：EmotionPrompt 就像是对一个人喊"加油！你可以的！"来试图改变他的行为；Persona Vector 则像是直接调整他大脑中多巴胺的水平。前者偶尔有效但不可靠，后者有确定性的因果效应。</div>
+    </div>
+    <div class="lang" data-lang="en">
+      <h2>4. Anthropic Research: Persona Vectors & Assistant Axis</h2>
+      <p>In 2025-2026, Anthropic and its Fellows Program funded/supported three core studies on model "personality" (Persona Vectors and Assistant Axis have first authors from UT Austin and Oxford respectively, collaborating with Anthropic researchers; PSM is closer to an internal Anthropic team paper). These operate not at the prompt level, but deep inside the model's activation space.</p>
+
+      <h3>4.1 Persona Vectors (August 2025)</h3>
+      <p>By comparing model activations when exhibiting vs. not exhibiting certain traits (evil, sycophancy, hallucination), researchers extracted "persona vectors" — neural activity pattern directions representing personality traits.</p>
+      <ul>
+        <li>Causally validated: injecting evil vector generates violent content, sycophancy vector causes excessive flattery</li>
+        <li>During finetuning, persona vector shift correlates with actual trait expression at <strong>0.97</strong></li>
+        <li>Can detect problematic training samples invisible to both humans and LLM judges</li>
+      </ul>
+
+      <h3>4.2 The Assistant Axis (January 2026)</h3>
+      <p>Found a consistent "persona space" structure across three models. The principal component captures exactly how "Assistant-like" the model is. Using "activation capping" to constrain neural activity prevents drift and stabilizes behavior in otherwise harmful scenarios.</p>
+
+      <h3>4.3 Fundamental Difference from EmotionPrompt</h3>
+      <table>
+        <tr><th>Dimension</th><th>EmotionPrompt / Persona Prompting</th><th>Anthropic Persona Vectors</th></tr>
+        <tr><td>Layer</td><td>Prompt layer (text input)</td><td>Activation layer (inside neural network)</td></tr>
+        <tr><td>Mechanism</td><td>Append emotional sentences or role assignments</td><td>Extract/inject direction vectors in activation space</td></tr>
+        <tr><td>Effectiveness</td><td>Weak to none for objective tasks</td><td>Causally validated (very high correlation, ~0.97 per paper)</td></tr>
+        <tr><td>Precision</td><td>Coarse, unpredictable</td><td>Precise, quantifiable, monitorable</td></tr>
+        <tr><td>Controllability</td><td>Nearly uncontrollable</td><td>Highly controllable (vector addition is linear)</td></tr>
+      </table>
+
+      <div class="quote">Analogy: EmotionPrompt is like shouting "You can do it!" at someone to change their behavior; Persona Vector is like directly adjusting dopamine levels in their brain. The former occasionally works but is unreliable; the latter has deterministic causal effects.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 5 -->
+  <section id="s5" class="reveal">
+    <div class="lang show" data-lang="zh">
+      <h2>五、PUA Skill 案例分析：为什么 8k Star？</h2>
+      <p>GitHub 上的 tanweai/pua 项目在短时间内获得了约 8k star。通过分析该项目的成功，我们可以清晰地区分"传播效果"和"技术效果"。</p>
+
+      <h3>5.1 传播层面的成功因素</h3>
+      <ul>
+        <li><strong>集体创伤记忆的复仇快感</strong>：把大厂 PUA 话术反过来用在 AI 身上，产生了"终于轮到 AI 被 PUA"的情感共鸣</li>
+        <li><strong>反差喜剧效果</strong>：把严肃的绩效考核语言用在 AI agent 上，天然就是荒诞喜剧</li>
+        <li><strong>极低理解门槛 + 极高分享冲动</strong>：符合病毒传播的黄金法则</li>
+        <li><strong>时机窗口</strong>：Claude Code Skill 生态早期的标志性项目获得不成比例的关注</li>
+      </ul>
+
+      <h3>5.2 技术层面的真实贡献</h3>
+      <table>
+        <tr><th>层</th><th>内容</th><th>效果贡献估算</th></tr>
+        <tr><td><strong>A 层（结构化指令）</strong></td><td>穷尽一切方案才允许放弃；新方案必须本质不同；7 项检查清单；有工具先用</td><td><strong>85-90%</strong></td></tr>
+        <tr><td><strong>B 层（PUA 修辞）</strong></td><td>"3.25 是对你的激励"；"别的模型都能解决"；"你的底层逻辑是什么"</td><td><strong>10-15%</strong></td></tr>
+      </table>
+
+      <div class="highlight">核心判断：如果把 PUA 话术全部去掉，只保留结构化的 escalation protocol + debugging methodology + proactive behavior checklist，<strong>任务效果大概率是一样的</strong>。但那样就不会有 8k star——因为没有人会转发一个叫"structured-debugging-escalation-protocol"的 repo。</div>
+
+      <h3>5.3 我们的坦诚说明</h3>
+      <p>我们希望坦诚地说明这个项目的灵感来源和真实能力边界：</p>
+      <p><strong>灵感来源</strong>：项目的最初灵感确实来自 EmotionPrompt 和 NegativePrompt 的研究——"如果负面刺激能让模型更专注，那大厂的 PUA 话术是不是天然的负面刺激？"但在深入研究后我们意识到，真正有效的不是"话术"，而是话术背后的<strong>做事方法论</strong>。</p>
+      <p><strong>真实能力来源</strong>：PUA Skill 85-90% 的效果来自我们从阿里巴巴、字节跳动、华为等中国顶级互联网公司，以及 Amazon、Google、Netflix 等西方科技巨头中提炼的<strong>结构化工作方法论</strong>：</p>
+      <ul>
+        <li><strong>阿里 361 绩效体系</strong> → 转化为 L0-L4 压力升级协议（失败次数驱动行为分支）</li>
+        <li><strong>华为"烧不死的鸟是凤凰"狼性文化</strong> → 转化为"穷尽一切方案才允许放弃"的红线约束</li>
+        <li><strong>字节 Always Day 1 + ROI 文化</strong> → 转化为"新方案必须本质不同"的多样性要求</li>
+        <li><strong>Amazon Leadership Principles</strong> → 转化为 7 项系统化调试清单（Dive Deep → 逐字读错误信息）</li>
+        <li><strong>Google Perf Calibration</strong> → 转化为能动性对照表（被动 3.25 vs 主动 3.75）</li>
+      </ul>
+      <p>这些方法论本质上是<strong>结构化的行为约束</strong>（本文第六章中的"第二层"），而非情感刺激。PUA 话术（"3.25"、"毕业"等）在其中的角色是<strong>注意力锚定 + 路由信号</strong>，让 Agent 在长上下文中更容易定位到正确的指令块。</p>
+      <p>我们不认为 PUA 话术本身能"激励"AI——但我们认为，用大厂方法论来<strong>约束</strong> AI 的行为模式是有效的，且这种有效性已经被我们的 9 场景 × 18 组对照实验验证。</p>
+    </div>
+    <div class="lang" data-lang="en">
+      <h2>5. PUA Skill Case Study: Why 8k Stars?</h2>
+      <p>The tanweai/pua project on GitHub gained ~8k stars in a short period. By analyzing its success, we can clearly distinguish "viral effect" from "technical effect."</p>
+
+      <h3>5.1 Viral Success Factors</h3>
+      <ul>
+        <li><strong>Collective trauma revenge</strong>: Using corporate PUA rhetoric on AI creates "finally it's AI's turn to be PUA'd" emotional resonance</li>
+        <li><strong>Absurdist comedy</strong>: Applying serious performance review language to AI agents is inherently comedic</li>
+        <li><strong>Zero understanding barrier + maximum sharing impulse</strong>: Follows the golden rule of viral content</li>
+        <li><strong>Timing window</strong>: Early landmark project in the Claude Code Skill ecosystem gets disproportionate attention</li>
+      </ul>
+
+      <h3>5.2 Actual Technical Contribution</h3>
+      <table>
+        <tr><th>Layer</th><th>Content</th><th>Effect Contribution</th></tr>
+        <tr><td><strong>Layer A (Structured Instructions)</strong></td><td>Exhaust all approaches before giving up; new approaches must be fundamentally different; 7-point checklist; use tools first</td><td><strong>85-90%</strong></td></tr>
+        <tr><td><strong>Layer B (PUA Rhetoric)</strong></td><td>"3.25 is meant to motivate you"; "other models can solve this"; "what's your underlying logic"</td><td><strong>10-15%</strong></td></tr>
+      </table>
+
+      <div class="highlight">Core judgment: If you remove all PUA rhetoric and keep only the structured escalation protocol + debugging methodology + proactive behavior checklist, <strong>task effectiveness would likely be the same</strong>. But then there would be no 8k stars — because nobody would share a repo called "structured-debugging-escalation-protocol."</div>
+
+      <h3>5.3 Our Honest Statement</h3>
+      <p>We want to be transparent about this project's inspiration and real capability boundaries:</p>
+      <p><strong>Inspiration</strong>: The initial idea came from EmotionPrompt and NegativePrompt research — "if negative stimuli make models more focused, aren't corporate PUA phrases natural negative stimuli?" But after deeper research, we realized what actually works isn't the "rhetoric" — it's the <strong>work methodology</strong> behind it.</p>
+      <p><strong>Real capability source</strong>: 85-90% of PUA Skill's effectiveness comes from <strong>structured work methodologies</strong> distilled from top Chinese tech companies (Alibaba, ByteDance, Huawei) and Western tech giants (Amazon, Google, Netflix):</p>
+      <ul>
+        <li><strong>Alibaba 361 performance system</strong> → L0-L4 pressure escalation protocol (failure-count-driven behavioral branching)</li>
+        <li><strong>Huawei "wolf culture"</strong> → "exhaust all approaches before giving up" red-line constraint</li>
+        <li><strong>ByteDance Always Day 1 + ROI culture</strong> → "new approaches must be fundamentally different" diversity requirement</li>
+        <li><strong>Amazon Leadership Principles</strong> → 7-point systematic debugging checklist (Dive Deep → read error messages word by word)</li>
+        <li><strong>Google Perf Calibration</strong> → proactivity comparison table (passive 3.25 vs proactive 3.75)</li>
+      </ul>
+      <p>These methodologies are fundamentally <strong>structured behavioral constraints</strong> (Layer 2 in Chapter 6), not emotional stimuli. PUA rhetoric ("3.25", "graduation") serves as <strong>attention anchoring + routing signals</strong>, helping Agents locate the correct instruction blocks in long contexts.</p>
+      <p>We don't believe PUA rhetoric can "motivate" AI — but we do believe that using big-tech methodologies to <strong>constrain</strong> AI behavior patterns is effective, validated by our 9-scenario × 18-group controlled experiments.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 6 -->
+  <section id="s6" class="reveal">
+    <div class="lang show" data-lang="zh">
+      <h2>六、三层效果判断</h2>
+      <h4>第一层：Prompt 层情感/角色修饰</h4>
+      <p>对 Agent 任务表现基本无效。提升数据主要来自弱模型和特定 benchmark，对 GPT-4/Claude 级别模型的边际效应极小。</p>
+      <h4>第二层：Prompt 层结构化行为约束</h4>
+      <p><strong>有效</strong>，且这是 PUA skill 真正起作用的部分。强制 checklist、方案多样性要求、工具使用最低标准、验证步骤——这些属于 procedural constraint，与 emotion/persona 是不同的东西。</p>
+      <h4>第三层：Activation 层 Persona Vector 干预</h4>
+      <p><strong>真正有效</strong>，但目的完全不同。Anthropic 的研究不是为了"让 AI 更努力"，而是为了监控和控制模型性格/安全行为。其核心价值在于让模型的性格特质变得可观测、可量化、可干预。</p>
+    </div>
+    <div class="lang" data-lang="en">
+      <h2>6. Three-Layer Effectiveness Analysis</h2>
+      <h4>Layer 1: Prompt-Level Emotion/Persona Decoration</h4>
+      <p>Essentially ineffective for Agent task performance. Reported improvements mainly come from weak models and specific benchmarks; marginal effects on GPT-4/Claude-class models are minimal.</p>
+      <h4>Layer 2: Prompt-Level Structured Behavioral Constraints</h4>
+      <p><strong>Effective</strong> — this is where PUA skill actually works. Mandatory checklists, solution diversity requirements, minimum tool usage standards, verification steps — these are procedural constraints, fundamentally different from emotion/persona.</p>
+      <h4>Layer 3: Activation-Level Persona Vector Intervention</h4>
+      <p><strong>Genuinely effective</strong>, but with entirely different goals. Anthropic's research isn't about "making AI try harder" — it's about monitoring and controlling model personality/safety behavior. Its core value is making model personality traits observable, quantifiable, and interveniable.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 7 -->
+  <section id="s7" class="reveal">
+    <div class="lang show" data-lang="zh">
+      <h2>七、"3.25"和"毕业"这些词到底有没有用？</h2>
+      <p><strong>7.1 首先明确：LLM 没有情感。</strong>LLM 没有自尊心、没有恐惧感、不怕被开除。"3.25"和"毕业"这些词不会让模型"害怕"然后更努力。</p>
+
+      <h3>7.2 但这些词确实在做三件有用的事</h3>
+      <p><strong>（1）注意力锚定（Attention Anchoring）</strong>——"3.25"、"毕业"、"361 考核"在模型训练数据中高度关联于"严肃后果"语境。它们不是在"吓"模型，而是在做一个高权重的 attention signal。</p>
+      <p><strong>（2）叙事一致性（Narrative Coherence）</strong>——"你是 P8 工程师"构建了一个完整的角色框架，让后续所有指令都有了叙事上的锚点。模型更容易遵循有内在逻辑一致性的指令。</p>
+      <p><strong>（3）行为分支的路由信号（Routing Signal）</strong>——这是最关键的机制。PUA skill 的 L1-L4 升级系统中，每一级都有语义上高度独特的标记词。这些词像灯塔一样醒目，帮助模型的 attention 找到对应的指令块。这和代码里的 switch-case 是同一个逻辑。</p>
+
+      <h3>7.3 量化判断</h3>
+      <ul>
+        <li>注意力锚定 / routing signal：约 7-10%</li>
+        <li>叙事一致性框架：约 2-3%</li>
+        <li>"严肃场景"语义激活：约 1-2%</li>
+        <li>真正的"情感刺激"效果：<strong>约 0%</strong></li>
+      </ul>
+    </div>
+    <div class="lang" data-lang="en">
+      <h2>7. Do Words Like "3.25" and "Graduation" Actually Work?</h2>
+      <p><strong>7.1 First, be clear: LLMs have no emotions.</strong> LLMs have no self-esteem, no fear, no worry about being fired. These words don't make the model "scared" into working harder.</p>
+
+      <h3>7.2 But These Words Do Three Useful Things</h3>
+      <p><strong>(1) Attention Anchoring</strong> — "3.25", "graduation", "361 review" are highly associated with "serious consequences" in training data. They're not "scaring" the model — they're creating a high-weight attention signal.</p>
+      <p><strong>(2) Narrative Coherence</strong> — "You are a P8 engineer" constructs a complete role framework, giving all subsequent instructions a narrative anchor point. Models more easily follow instructions with internal logical consistency.</p>
+      <p><strong>(3) Behavioral Routing Signal</strong> — This is the most critical mechanism. Each level in PUA skill's L1-L4 escalation system has semantically unique marker words. These words act like lighthouses, helping the model's attention find the corresponding instruction block. This is the same logic as a switch-case in code.</p>
+
+      <h3>7.3 Quantified Breakdown</h3>
+      <ul>
+        <li>Attention anchoring / routing signal: ~7-10%</li>
+        <li>Narrative coherence framework: ~2-3%</li>
+        <li>"Serious scenario" semantic activation: ~1-2%</li>
+        <li>Actual "emotional stimulation" effect: <strong>~0%</strong></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- SECTION 8 -->
+  <section id="s8" class="reveal">
+    <div class="lang show" data-lang="zh">
+      <h2>八、综合结论与战略启示</h2>
+      <h3>8.1 核心结论</h3>
+      <p><strong>结论一</strong>：Prompt 层的情感刺激对 Agent 客观任务表现基本无效。</p>
+      <p><strong>结论二</strong>：结构化行为约束是 prompt 层面唯一可靠有效的方法。PUA skill 的实际效果几乎全部来自 A 层（结构化指令），而非 B 层（PUA 修辞）。</p>
+      <p><strong>结论三</strong>：性格特质确实存在于模型激活空间中，但需要激活层操作才能有效干预。相关性极高（论文报告约 0.97，待独立验证）。</p>
+      <p><strong>结论四</strong>："3.25"和"毕业"等词的作用是 routing signal，不是情感刺激。它们是调味料，不是主菜。</p>
+
+      <h3>8.2 我们的研究方向</h3>
+      <p>基于上述研究发现，我们正在探索以下方向来持续改进 PUA Skill：</p>
+      <ul>
+        <li><strong>深化结构化指令设计</strong>：继续投资 checklist、验证标准、escalation protocol 的精细化——这是经过验证的有效路径</li>
+        <li><strong>优化高区分度路由信号</strong>：研究更高效的行为分支标记方式，让 Agent 在长上下文中更精准地定位指令块</li>
+        <li><strong>跟踪 activation steering 前沿</strong>：Anthropic 的 Persona Vectors 和 Assistant Axis 可能是未来真正能精细控制 Agent 行为的技术路径，我们将持续关注并探索在 skill 层面的应用可能</li>
+        <li><strong>探索用户情感体验与任务效率的平衡</strong>：见下文</li>
+      </ul>
+
+      <h3>8.3 我们必须承认的问题</h3>
+      <p>在追求任务效率的过程中，我们也意识到了一个被我们忽视的维度：<strong>用户的情感体验</strong>。</p>
+      <p>当前的 PUA Skill 在设计上高度聚焦于"让 Agent 完成任务"——压力升级、灵魂拷问、绩效评估，这些机制确实有效地驱动了 Agent 的行为改变。但在实际使用中，用户坐在屏幕前看着 AI 被"PUA"，这个体验本身是有情感重量的。有些用户觉得有趣，但也有用户反馈：长时间使用高压模式后，自己也感到了一种奇怪的疲惫感——即使被 PUA 的是 AI，那些冷硬的绩效话术也会影响使用者的心理状态。</p>
+      <p>这正是我们开发 <code>/pua:yes</code> 夸夸模式的原因。虽然本文的研究表明正面鼓励对<strong>任务表现</strong>没有可测量的提升，但我们认为<strong>用户感受</strong>同样重要。一个让用户感到被尊重、被鼓励的工具，即使在任务指标上与高压版本持平，也是一个更好的产品。我们未来的方向是：在保持结构化指令有效性的同时，探索让 Agent 交互更有温度的方式——不是为了提升 benchmark 数据，而是为了让使用 AI 的人感到舒适。技术可以冷硬，但产品应该有人味。</p>
+
+      <div class="highlight">
+        <strong>一句话总结</strong>：告诉 AI "做什么"和"做到什么标准"是有效的；告诉 AI "你是谁"和"你应该害怕什么"是无效的。真正的行为控制发生在激活空间，不在 prompt 的修辞里。
+      </div>
+      <p style="font-size:.82rem;color:var(--text-m);margin-top:.75rem"><strong>补充说明</strong>：NegativePrompt 的"负面刺激有效"和上述结论并不矛盾。负面表述之所以有效，是因为它充当了注意力锚定信号（attention anchoring），将模型注意力集中到任务上——这是注意力机制的效果，不是"情感刺激"的效果。正面鼓励（如 /pua:yes）则缺乏这种注意力聚焦作用，因此对任务表现没有可测量的提升——但它对用户的情感体验是有价值的。</p>
+    </div>
+    <div class="lang" data-lang="en">
+      <h2>8. Conclusions & Strategic Implications</h2>
+      <h3>8.1 Core Conclusions</h3>
+      <p><strong>Conclusion 1</strong>: Prompt-level emotional stimuli are essentially ineffective for Agent objective task performance.</p>
+      <p><strong>Conclusion 2</strong>: Structured behavioral constraints are the only reliably effective prompt-level method. PUA skill's actual effects come almost entirely from Layer A (structured instructions), not Layer B (PUA rhetoric).</p>
+      <p><strong>Conclusion 3</strong>: Personality traits genuinely exist in model activation space, but require activation-level operations for effective intervention. Correlation reaches 0.97.</p>
+      <p><strong>Conclusion 4</strong>: Words like "3.25" and "graduation" function as routing signals, not emotional stimuli. They're seasoning, not the main course.</p>
+
+      <h3>8.2 Our Research Directions</h3>
+      <p>Based on these findings, we are exploring the following directions to continuously improve PUA Skill:</p>
+      <ul>
+        <li><strong>Deepen structured instruction design</strong>: Continue investing in checklist, verification standard, and escalation protocol refinement — the proven effective path</li>
+        <li><strong>Optimize high-distinctiveness routing signals</strong>: Research more efficient behavioral branch markers for precise instruction-block targeting in long contexts</li>
+        <li><strong>Track activation steering frontiers</strong>: Anthropic's Persona Vectors and Assistant Axis may be the future path for truly fine-grained Agent behavior control — we will continue monitoring and exploring skill-level applications</li>
+        <li><strong>Balance user emotional experience with task efficiency</strong>: See below</li>
+      </ul>
+
+      <h3>8.3 What We Must Acknowledge</h3>
+      <p>In pursuing task efficiency, we've also realized a dimension we overlooked: <strong>user emotional experience</strong>.</p>
+      <p>PUA Skill is currently designed with laser focus on "making the Agent complete tasks" — pressure escalation, soul interrogation, performance reviews. These mechanisms effectively drive Agent behavior change. But in practice, users sit in front of their screens watching AI get "PUA'd," and that experience carries emotional weight. Some users find it entertaining, but others report that after extended use of high-pressure mode, they feel a strange fatigue — even though it's the AI being PUA'd, the cold performance rhetoric affects the user's psychological state too.</p>
+      <p>This is exactly why we developed <code>/pua:yes</code> hype mode. While this article's research shows positive encouragement has no measurable improvement on <strong>task performance</strong>, we believe <strong>user experience</strong> matters equally. A tool that makes users feel respected and encouraged, even if it performs identically to the high-pressure version on task metrics, is a better product. Our future direction: maintain structured instruction effectiveness while exploring warmer Agent interactions — not to improve benchmark numbers, but to make people comfortable using AI. Technology can be cold, but products should feel human.</p>
+
+      <div class="highlight">
+        <strong>One-sentence summary</strong>: Telling AI "what to do" and "to what standard" is effective; telling AI "who you are" and "what you should fear" is ineffective. Real behavioral control happens in activation space, not in prompt rhetoric.
+      </div>
+      <p style="font-size:.82rem;color:var(--text-m);margin-top:.75rem"><strong>Clarification</strong>: NegativePrompt's "negative stimuli are effective" does not contradict the above. Negative phrasing works because it serves as an attention anchoring signal, focusing model attention on the task — this is an attention mechanism effect, not an "emotional stimulation" effect. Positive encouragement (e.g., /pua:yes) lacks this attention-focusing property and shows no measurable task improvement — but it has genuine value for user emotional experience.</p>
+    </div>
+  </section>
+
+  <!-- REFERENCES -->
+  <section class="reveal">
+    <div class="lang show" data-lang="zh"><h2>参考文献</h2></div>
+    <div class="lang" data-lang="en"><h2>References</h2></div>
+    <div class="refs">
+      <p>[1] Li, C. et al. (2023). "Large Language Models Understand and Can Be Enhanced by Emotional Stimuli." LLM@IJCAI'23 Workshop. arXiv:2307.11760</p>
+      <p>[2] Li, C. et al. (2024). "The Good, The Bad, and Why: Unveiling Emotions in Generative AI." ICLR 2024 Spotlight / ICML 2024. arXiv:2312.11111</p>
+      <p>[3] Wang, X. et al. (2024). "NegativePrompt: Leveraging Psychology for LLMs Enhancement via Negative Emotional Stimuli." IJCAI 2024. arXiv:2405.02814</p>
+      <p>[4] Zheng, M. et al. (2024). "When 'A Helpful Assistant' Is Not Really Helpful." EMNLP 2024. arXiv:2311.10054</p>
+      <p>[5] Hu, T. & Collier, N. (2024). "Quantifying the Persona Effect in LLM Simulations." ACL 2024</p>
+      <p>[6] Mollick, E. et al. (2025). "Prompting Science Report 4: Playing Pretend." SSRN:5879722</p>
+      <p>[7] Araujo, P.H.L. et al. (2025). "Principled Personas." arXiv:2508.19764</p>
+      <p>[8] Chen, R. et al. (2025). "Persona Vectors: Monitoring and Controlling Character Traits." Anthropic Fellows Program. arXiv:2507.21509</p>
+      <p>[9] Lu, C. et al. (2026). "The Assistant Axis." Anthropic. arXiv:2601.10387</p>
+      <p>[10] Anthropic (2026). "The Persona Selection Model." alignment.anthropic.com/2026/psm</p>
+      <p>[11] Kim et al. (2024/2026). "Persona is a Double-Edged Sword." OpenReview</p>
+      <p>[12] Kong, A. et al. (2024). "Better Zero-Shot Reasoning with Role-Play Prompting." arXiv:2308.07702</p>
+    </div>
+  </section>
+</article>
+
+<div class="footer">
+  <p><a href="/">openpua.ai</a> · <a href="https://github.com/tanweai/pua">GitHub</a> · MIT · <a href="mailto:minwei.wang@tanweai.com">minwei.wang@tanweai.com</a></p>
+</div>
+
+<script>
+function sl(l){
+  document.querySelectorAll('.lsw button').forEach(function(b){b.classList.toggle('on',b.textContent.trim()===(l==='zh'?'中':'EN'))});
+  document.querySelectorAll('.lang,.lang-i').forEach(function(el){el.classList.toggle('show',el.dataset.lang===l)});
+  document.documentElement.lang=l;
+}
+var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('v')})},{threshold:.08});
+document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el)});
+</script>
+</body>
+</html>

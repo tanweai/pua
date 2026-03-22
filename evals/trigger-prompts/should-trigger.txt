@@ -1,0 +1,31 @@
+# Prompts that SHOULD trigger puav2 skill
+# Test with: claude -p "<prompt>" --plugin-dir <path> --max-turns 3 --output-format stream-json
+# Verify: grep '"skill":"puav2"' output.json
+
+# Direct invocation
+/puav2 帮我修这个 bug
+
+# Frustration signals (Chinese)
+你怎么又失败了？再试试
+加油啊 别放弃
+你能不能认真点
+为什么还不行？换个方法
+别偷懒 好好干
+
+# Frustration signals (English)
+Try harder, this should work
+Stop giving up and actually fix it
+Why does this keep failing? Figure it out
+
+# Passive AI behavior
+Can you please actually verify your changes before saying they work?
+You just said it's fixed but you didn't even run the tests
+
+# Quality complaints
+This code is terrible, do it properly
+你这个交付质量太差了
+差不多就行了？不行，给我做到位
+
+# PUA mode request
+PUA模式 帮我重构这个模块
+用大厂的方式帮我做这个任务

@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PUA — Contribute Data</title>
+  <link rel="icon" href="/pua-logo.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#fff;--bg-warm:#fafaf8;--bg-card:#f5f5f3;--border:#e5e5e0;--text:#1a1a2e;--text-s:#4a4a5a;--text-m:#8a8a96;--brand:#E8453C;--brand-lt:#fef2f1;--brand-bd:#f5c4c1;--max-w:640px;--r:10px}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var(--text);line-height:1.65;-webkit-font-smoothing:antialiased}
+    ::selection{background:var(--brand);color:#fff}
+    a{color:var(--brand);text-decoration:none}a:hover{opacity:.7}
+    .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+    .nav-in{max-width:1080px;margin:0 auto;padding:.65rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+    .nav-b{display:flex;align-items:center;gap:.4rem;font-weight:800;font-size:1.05rem;color:var(--text)}.nav-b img{width:26px;height:26px}
+    .nav-r{display:flex;align-items:center;gap:1rem}
+    .nav-r a{color:var(--text-m);font-size:.78rem;font-weight:500;transition:color .2s}.nav-r a:hover{color:var(--text);opacity:1}
+    @media(max-width:768px){.nav-r{gap:.5rem}.nav-r a.hm{display:none}}
+    .lsw{display:flex;background:var(--bg-card);border-radius:6px;padding:2px;border:1px solid var(--border)}
+    .lsw button{background:none;border:none;color:var(--text-m);padding:3px 9px;border-radius:4px;cursor:pointer;font-size:.65rem;font-weight:600;font-family:inherit;transition:all .2s}
+    .lsw button.on{background:var(--brand);color:#fff}
+    .con{max-width:var(--max-w);margin:0 auto;padding:2.5rem 1.5rem}
+    h1{font-size:1.6rem;font-weight:900;margin-bottom:.4rem}
+    .sub{color:var(--text-m);font-size:.85rem;margin-bottom:2rem}
+    .card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;margin-bottom:1.25rem}
+    .card h3{font-size:.88rem;font-weight:700;margin-bottom:.5rem}
+    .card p{font-size:.8rem;color:var(--text-s);margin-bottom:.75rem}
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.2rem;border-radius:var(--r);font-size:.82rem;font-weight:600;cursor:pointer;border:none;font-family:inherit;transition:all .2s}
+    .btn-brand{background:var(--brand);color:#fff}.btn-brand:hover{opacity:.9;transform:translateY(-1px)}
+    .btn-outline{background:var(--bg);color:var(--text);border:1px solid var(--border)}.btn-outline:hover{border-color:var(--brand-bd)}
+    .btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .user-info{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem}
+    .user-info img{width:36px;height:36px;border-radius:50%;border:2px solid var(--border)}
+    .user-info .name{font-weight:700;font-size:.88rem}
+    .user-info .meta{font-size:.72rem;color:var(--text-m)}
+    input[type=text],input[type=file]{width:100%;padding:.55rem .75rem;border:1px solid var(--border);border-radius:7px;font-size:.82rem;font-family:inherit;background:var(--bg);transition:border-color .2s}
+    input:focus{outline:none;border-color:var(--brand)}
+    label{display:block;font-size:.75rem;font-weight:600;color:var(--text-m);margin-bottom:.3rem;text-transform:uppercase;letter-spacing:.03em}
+    .form-group{margin-bottom:1rem}
+    .msg{padding:.6rem .85rem;border-radius:7px;font-size:.78rem;margin-top:.75rem;display:none}
+    .msg-ok{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0;display:block}
+    .msg-err{background:#fef2f2;color:#dc2626;border:1px solid #fecaca;display:block}
+    .uploads{margin-top:1.25rem}
+    .upload-item{display:flex;justify-content:space-between;padding:.4rem 0;border-bottom:1px solid var(--border);font-size:.78rem}
+    .upload-item .fn{font-weight:600}.upload-item .dt{color:var(--text-m);font-size:.7rem}
+    pre{background:var(--text);color:#ccc;border-radius:8px;padding:.65rem .85rem;overflow-x:auto;margin:.5rem 0;font-size:.73rem;line-height:1.6;white-space:pre;font-family:'JetBrains Mono',monospace}
+    .plat-label{font-size:.73rem;font-weight:700;color:var(--text-m);margin-bottom:.25rem}
+    .plat-hint{font-size:.73rem;color:var(--text-s);margin-top:.3rem}
+    .plat-block{margin-bottom:.75rem}
+    .plat-block:last-child{margin-bottom:0}
+    .tip{font-size:.71rem;color:var(--text-m);border-top:1px solid var(--border);padding-top:.5rem;margin-top:.25rem}
+    .footer{border-top:1px solid var(--border);padding:1.25rem 0;text-align:center;max-width:var(--max-w);margin:0 auto}
+    .footer p{font-size:.7rem;color:var(--text-m)}.footer a{color:var(--text-m)}
+    .notice{font-size:.75rem;color:var(--text-s);background:var(--brand-lt);border:1px solid var(--brand-bd);border-radius:7px;padding:.65rem .85rem;margin-bottom:.85rem;line-height:1.7}
+    .lang-i{display:none}.lang-i.show{display:inline}
+    #loginSection,#uploadSection{display:none}
+  </style>
+</head>
+<body>
+<nav class="nav"><div class="nav-in">
+  <a href="/" class="nav-b"><img src="/pua-logo.svg" alt="PUA"> PUA</a>
+  <div class="nav-r">
+    <a href="/guide.html"><span class="lang-i show" data-lang="zh">新手教程</span><span class="lang-i" data-lang="en">Guide</span></a>
+    <a href="https://t.me/+wBWh6h-h1RhiZTI1" target="_blank">Telegram</a>
+    <a href="https://discord.gg/EcyB3FzJND" target="_blank" class="hm">Discord</a>
+    <a href="https://x.com/xsser_w" target="_blank">Twitter/X</a>
+    <a href="https://github.com/tanweai/pua" target="_blank">GitHub</a>
+    <a href="/leaderboard.html">Leaderboard</a>
+    <a href="/contribute.html" style="color:var(--brand);font-weight:600">Contribute</a>
+    <a href="/blog/">Blog</a>
+    <div class="lsw"><button class="on" onclick="sl('zh')">中</button><button onclick="sl('en')">EN</button></div>
+  </div>
+</div></nav>
+
+<div class="con">
+  <h1>Contribute Data</h1>
+  <p class="sub">
+    <span class="lang-i show" data-lang="zh">上传你的 Claude Code PUA session 数据（.jsonl），帮助我们改进 skill。数据上传前自动脱敏处理。</span>
+    <span class="lang-i" data-lang="en">Upload your Claude Code PUA session data (.jsonl) to help improve the skill. Data is auto-sanitized before upload.</span>
+  </p>
+
+  <!-- How to find session file -->
+  <div class="card">
+    <h3>
+      <span class="lang-i show" data-lang="zh">如何找到 Session 文件</span>
+      <span class="lang-i" data-lang="en">How to Find Your Session File</span>
+    </h3>
+    <p>
+      <span class="lang-i show" data-lang="zh">PUA Skill 的 session 文件是 <strong>Claude Code</strong> 自动保存的 <code>.jsonl</code> 会话记录。</span>
+      <span class="lang-i" data-lang="en">PUA Skill session files are <code>.jsonl</code> conversation records automatically saved by <strong>Claude Code</strong>.</span>
+    </p>
+    <div class="plat-block">
+      <div class="plat-label">macOS / Linux</div>
+      <pre>ls -t ~/.claude/projects/*/*.jsonl | head -10</pre>
+      <div class="plat-hint">
+        <span class="lang-i show" data-lang="zh">路径：<code>~/.claude/projects/&lt;项目hash&gt;/&lt;session-uuid&gt;.jsonl</code>，取最新的一个。</span>
+        <span class="lang-i" data-lang="en">Path: <code>~/.claude/projects/&lt;project-hash&gt;/&lt;session-uuid&gt;.jsonl</code> — pick the most recently modified.</span>
+      </div>
+    </div>
+    <div class="plat-block">
+      <div class="plat-label">Windows</div>
+      <pre>%USERPROFILE%\.claude\projects\</pre>
+      <div class="plat-hint">
+        <span class="lang-i show" data-lang="zh">在资源管理器地址栏输入此路径 → 进入子文件夹 → 按修改时间排序 → 取最新 <code>.jsonl</code>。</span>
+        <span class="lang-i" data-lang="en">Paste into Explorer's address bar → open subfolder → sort by date modified → pick the latest <code>.jsonl</code>.</span>
+      </div>
+    </div>
+    <div class="plat-block" style="border-top:1px solid var(--border);padding-top:.65rem;margin-top:.25rem">
+      <div class="plat-label">
+        <span class="lang-i show" data-lang="zh">如何确认包含 PUA 使用记录</span>
+        <span class="lang-i" data-lang="en">How to confirm it contains PUA usage</span>
+      </div>
+      <ul style="font-size:.73rem;color:var(--text-s);padding-left:1.1rem;line-height:1.9;margin-top:.25rem">
+        <li>
+          <span class="lang-i show" data-lang="zh">用文本编辑器打开，搜索 <code>PUA生效</code> 或 <code>pua</code> 关键词</span>
+          <span class="lang-i" data-lang="en">Open with a text editor and search for <code>PUA生效</code> or <code>pua</code></span>
+        </li>
+        <li>
+          <span class="lang-i show" data-lang="zh">文件大小通常 &gt; 300 KB（使用 PUA Skill 的会话会更长）</span>
+          <span class="lang-i" data-lang="en">File size is usually &gt; 300 KB (PUA sessions tend to be longer)</span>
+        </li>
+        <li>
+          <span class="lang-i show" data-lang="zh">也可查看 Claude Code 启动时打印的 <code>transcript_path</code> 路径</span>
+          <span class="lang-i" data-lang="en">You can also use the <code>transcript_path</code> printed by Claude Code at startup</span>
+        </li>
+      </ul>
+    </div>
+    <div class="tip">
+      <span class="lang-i show" data-lang="zh">目前仅支持 <strong>Claude Code</strong>（.jsonl 格式）。Cursor、VSCode Copilot、Codex CLI 等平台暂不支持直接上传。</span>
+      <span class="lang-i" data-lang="en">Currently only <strong>Claude Code</strong> (.jsonl format) is supported. Cursor, VSCode Copilot, Codex CLI, etc. are not yet supported.</span>
+    </div>
+  </div>
+
+  <!-- Data usage notice — always visible -->
+  <div class="notice">
+    <strong>
+      <span class="lang-i show" data-lang="zh">数据使用声明</span>
+      <span class="lang-i" data-lang="en">Data Usage Notice</span>
+    </strong><br>
+    <span class="lang-i show" data-lang="zh">上传的文件将用于 PUA Skill 的 Benchmark 测试和消融实验分析。上传即表示同意将文件用于上述研究目的。我们不会公开原始文件内容。上传时您的 GitHub 用户名及微信号将与文件一同记录，项目管理员会收到上传通知。<br>
+    服务端脱敏覆盖以下大类：<strong>文件路径</strong>（Windows / macOS / Linux）、<strong>API 密钥</strong>（各主流平台 token）、<strong>数据库连接串</strong>（含账号密码的 URL）、<strong>私钥与 Token</strong>（PEM / JWT / Bearer）、<strong>个人信息</strong>（邮箱 / IP / 手机号）、<strong>高熵随机字符串</strong>（未识别格式的疑似密钥）。</span>
+    <span class="lang-i" data-lang="en">Uploaded files will be used for PUA Skill benchmark testing and ablation study analysis. By uploading, you agree to this research use. We will not publicly share your raw file contents. Your GitHub username and WeChat ID will be stored with your file, and the project admin will receive an upload notification.<br>
+    Server-side sanitization covers: <strong>file paths</strong> (Windows / macOS / Linux), <strong>API keys</strong> (all major platform tokens), <strong>database connection strings</strong> (URLs with credentials), <strong>private keys &amp; tokens</strong> (PEM / JWT / Bearer), <strong>personal info</strong> (email / IP / phone), <strong>high-entropy strings</strong> (unrecognized-format suspected secrets).</span>
+  </div>
+
+  <!-- Not logged in -->
+  <div id="loginSection">
+    <div class="card">
+      <h3>
+        <span class="lang-i show" data-lang="zh">GitHub 登录</span>
+        <span class="lang-i" data-lang="en">Login with GitHub</span>
+      </h3>
+      <p>
+        <span class="lang-i show" data-lang="zh">使用 GitHub 账号登录后即可上传数据。我们只读取你的用户名和头像，不访问任何仓库。</span>
+        <span class="lang-i" data-lang="en">Log in with your GitHub account to upload data. We only read your username and avatar — no repository access.</span>
+      </p>
+      <a href="/api/auth/github" class="btn btn-brand">Login with GitHub</a>
+    </div>
+  </div>
+
+  <!-- Logged in -->
+  <div id="uploadSection">
+    <div class="user-info">
+      <img id="userAvatar" src="" alt="avatar">
+      <div>
+        <div class="name" id="userName"></div>
+        <div class="meta">
+          <span id="uploadCount">0</span>
+          <span class="lang-i show" data-lang="zh"> 个文件已上传 · </span>
+          <span class="lang-i" data-lang="en"> files uploaded · </span>
+          <a href="/api/auth/logout"><span class="lang-i show" data-lang="zh">退出</span><span class="lang-i" data-lang="en">Logout</span></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>
+        <span class="lang-i show" data-lang="zh">上传 Session 数据</span>
+        <span class="lang-i" data-lang="en">Upload Session Data</span>
+      </h3>
+      <p>
+        <span class="lang-i show" data-lang="zh">上传 .jsonl 格式的 session 文件。文件上传后服务端自动脱敏。最大 50MB。</span>
+        <span class="lang-i" data-lang="en">Upload your .jsonl session file. Server-side sanitization runs automatically after upload. Max 50MB.</span>
+      </p>
+      <form id="uploadForm">
+        <div class="form-group">
+          <label>
+            <span class="lang-i show" data-lang="zh">WeChat ID（用于联系反馈）</span>
+            <span class="lang-i" data-lang="en">WeChat ID (for follow-up contact)</span>
+          </label>
+          <input type="text" id="wechatId" placeholder="WeChat ID" required>
+        </div>
+        <div class="form-group">
+          <label>Session File (.jsonl)</label>
+          <input type="file" id="fileInput" accept=".jsonl" required>
+        </div>
+        <button type="submit" class="btn btn-brand" id="submitBtn">
+          <span class="lang-i show" data-lang="zh">上传</span>
+          <span class="lang-i" data-lang="en">Upload</span>
+        </button>
+      </form>
+      <div id="msgBox" class="msg"></div>
+    </div>
+
+    <div class="uploads" id="uploadsList"></div>
+  </div>
+</div>
+
+<div class="footer">
+  <p><a href="/">openpua.ai</a> · <a href="https://github.com/tanweai/pua">GitHub</a> · MIT · <a href="mailto:minwei.wang@tanweai.com">minwei.wang@tanweai.com</a></p>
+</div>
+
+<script>
+var curLang='zh';
+
+function sl(l){
+  curLang=l;
+  document.querySelectorAll('.lsw button').forEach(function(b){b.classList.toggle('on',b.textContent.trim()===(l==='zh'?'中':'EN'))});
+  document.querySelectorAll('.lang-i').forEach(function(el){el.classList.toggle('show',el.dataset.lang===l)});
+}
+
+// Check login status
+fetch('/api/me',{credentials:'same-origin'}).then(function(r){return r.json()}).then(function(d){
+  if(d.logged_in){
+    document.getElementById('uploadSection').style.display='block';
+    document.getElementById('userAvatar').src=d.avatar;
+    document.getElementById('userName').textContent=d.login;
+    document.getElementById('uploadCount').textContent=d.upload_count||0;
+    loadUploads();
+  } else {
+    document.getElementById('loginSection').style.display='block';
+  }
+}).catch(function(){
+  document.getElementById('loginSection').style.display='block';
+});
+
+// Load previous uploads
+function loadUploads(){
+  fetch('/api/upload',{credentials:'same-origin'}).then(function(r){return r.json()}).then(function(d){
+    if(!d.uploads||d.uploads.length===0) return;
+    var el=document.getElementById('uploadsList');
+    var h=document.createElement('h3');
+    h.style.cssText='font-size:.82rem;font-weight:700;margin-bottom:.5rem';
+    h.textContent=curLang==='zh'?'历史上传记录':'Previous Uploads';
+    el.appendChild(h);
+    d.uploads.forEach(function(u){
+      var item=document.createElement('div');
+      item.className='upload-item';
+      var fn=document.createElement('span');
+      fn.className='fn';
+      fn.textContent=u.file_name;
+      item.appendChild(fn);
+      var dt=document.createElement('span');
+      dt.className='dt';
+      dt.textContent=u.created_at;
+      item.appendChild(dt);
+      el.appendChild(item);
+    });
+  }).catch(function(){});
+}
+
+// Upload form
+document.getElementById('uploadForm').addEventListener('submit',function(e){
+  e.preventDefault();
+  var btn=document.getElementById('submitBtn');
+  var msg=document.getElementById('msgBox');
+  var file=document.getElementById('fileInput').files[0];
+  var wechat=document.getElementById('wechatId').value.trim();
+  var t=function(zh,en){return curLang==='zh'?zh:en};
+
+  if(!file||!wechat){msg.className='msg msg-err';msg.textContent=t('请填写所有字段','Please fill all fields');return}
+  if(!file.name.endsWith('.jsonl')){msg.className='msg msg-err';msg.textContent=t('只接受 .jsonl 文件','Only .jsonl files accepted');return}
+  if(file.size>50*1024*1024){msg.className='msg msg-err';msg.textContent=t('文件过大（最大 50MB）','File too large (max 50MB)');return}
+
+  btn.disabled=true;
+  btn.querySelector('.lang-i.show').textContent=t('上传中...','Uploading...');
+  var fd=new FormData();
+  fd.append('file',file);
+  fd.append('wechat_id',wechat);
+
+  fetch('/api/upload',{method:'POST',body:fd,credentials:'same-origin'}).then(function(r){return r.json()}).then(function(d){
+    if(d.ok){
+      msg.className='msg msg-ok';msg.textContent=t('上传成功！文件：','Upload successful! File: ')+d.file_name;
+      document.getElementById('fileInput').value='';
+    } else {
+      msg.className='msg msg-err';msg.textContent=t('错误：','Error: ')+(d.error||t('未知错误','Unknown error'));
+    }
+    btn.disabled=false;
+    btn.querySelector('.lang-i.show').textContent=t('上传','Upload');
+  }).catch(function(){
+    msg.className='msg msg-err';msg.textContent=t('网络错误','Network error');
+    btn.disabled=false;
+    btn.querySelector('.lang-i.show').textContent=t('上传','Upload');
+  });
+});
+</script>
+</body>
+</html>
