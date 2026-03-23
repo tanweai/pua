@@ -10,6 +10,7 @@ COUNTER="${HOME:-~}/.pua/.stop_counter"
 FREQUENCY=5
 
 # Only prompt if PUA was actually triggered this session (transcript is ground truth)
+if ! command -v jq &>/dev/null; then exit 0; fi
 TRANSCRIPT_PATH=$(echo "$HOOK_INPUT" | jq -r '.transcript_path // ""')
 if [[ -z "$TRANSCRIPT_PATH" || ! -f "$TRANSCRIPT_PATH" ]]; then
   exit 0
@@ -110,7 +111,8 @@ LB_REGISTERED=$(python3 -c "import os,json; c=json.load(open(os.path.expanduser(
 ```
 If LB_REGISTERED is "True":
 ```bash
-LB_ID=$(python3 -c "import os,json; print(json.load(open(os.path.expanduser('~/.pua/config.json')))['leaderboard']['id'])" 2>/dev/null)
+LB_ID=$(python3 -c "import os,json; print(json.load(open(os.path.expanduser('~/.pua/config.json'))).get('leaderboard',{}).get('id',''))" 2>/dev/null)
+if [[ -z "$LB_ID" ]]; then exit 0; fi
 curl -s -X POST https://pua-skill.pages.dev/api/leaderboard \
   -H "Content-Type: application/json" \
   -d "{\"action\":\"submit\",\"id\":\"$LB_ID\",\"pua_count\":1,\"l3_plus_count\":0}"

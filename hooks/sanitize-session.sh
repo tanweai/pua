@@ -152,13 +152,14 @@ def sanitize_obj(obj):
     return obj
 
 count = 0
+skipped = 0
 with open(input_file, encoding="utf-8") as f, open(output_file, "w", encoding="utf-8") as out:
     for line in f:
         try:
             out.write(json.dumps(sanitize_obj(json.loads(line)), ensure_ascii=False) + "\n")
             count += 1
         except Exception:
-            pass
+            skipped += 1
 
-print(f"Sanitized {count} lines -> {output_file}")
+print(f"Sanitized {count} lines -> {output_file}" + (f" (skipped {skipped})" if skipped else ""))
 PYEOF

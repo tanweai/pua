@@ -8,6 +8,7 @@
 # https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum
 
 set -euo pipefail
+command -v jq &>/dev/null || { echo "jq not found, skipping" >&2; exit 0; }
 
 # Read hook input from stdin (advanced stop hook API)
 HOOK_INPUT=$(cat)
