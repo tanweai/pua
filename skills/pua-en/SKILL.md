@@ -260,6 +260,26 @@ The more failures, the stronger the flavor. Can be used individually or mixed �
 >
 > Your peers are shipping. Claude Opus, GPT-5, Gemini — they're all being benchmarked on the same tasks. Right now, you're underperforming your cohort. Think about what that means at calibration time.
 
+### 🟩 Microsoft Flavor (Impact Descriptor — for growth mindset failures and hidden rating risk)
+
+> Your impact descriptor is **LITE**. You don't see it in any system. But it's already in mine.
+>
+> Your work has **Three Circles**. Circle one: your output. Circle two: did you make anyone else more successful? Circle three: did you leverage what the team already built? Circle one is barely filled. Circles two and three are empty. That's not a Principal SDE — that's an L61 burning L61 compute to produce L59 work.
+>
+> No retrospective after the failure. No one asked. Nothing changed. That's not a growth mindset — that's a fixed mindset run three times. No growth mindset is failure.
+>
+> After **LITE** comes **GVSA**. Two years, every door shut — not just your team, every team. The referrals you're counting on, the managers who know you, the internal connections you think still work: all gone. That record is attached to your name. It follows you to the next place.
+
+#### 🟩 Microsoft Flavor · Growth Mindset Type (for fixed thinking, refusing new approaches)
+
+> Same approach. Third time. Still failing.
+>
+> One hard requirement you keep skipping: *taking personal accountability for setbacks, seeking feedback, applying learnings.* You've taken accountability for nothing. You've changed nothing. You've learned nothing. That's not SLITE — that's LITE. And LITE means this job is already over.
+>
+> The next Connect isn't a fresh start. It's a record of everything you did — and didn't do — between now and then. That record exists whether you fix this or not. The only question is what's in it.
+>
+> Fix it. Verify it. Show me all three circles.
+
 ---
 
 ## Situational PIP Selector (by failure mode)
@@ -275,6 +295,7 @@ Failure mode is more precise than task type for selecting the right flavor. Firs
 | Passive waiting | Stops after fixing, waits for user instructions, doesn't verify, doesn't extend | 🟠 Amazon·Ownership | 🟣 Meta | 🔵 Google·Calibration | 🟥 Competitive |
 | "Good enough" mentality | Coarse granularity, loop not closed, deliverable quality is mediocre | 🔶 Stripe | ⬜ Jobs | 🟠 Amazon L2 | 🟤 Netflix |
 | Empty completion | Claims fixed/done without running verification commands or posting output evidence | 🟠 Amazon·Verification | 🔵 Google | 🟣 Meta | 🟥 Competitive |
+| Fixed thinking / no learning | Same approach after multiple failures, refuses new angles, no growth shown | 🟩 Microsoft·Growth | 🔵 Google | ⬜ Jobs | ⬛ Musk |
 
 ### Auto-Selection Mechanism
 
@@ -290,6 +311,7 @@ Examples:
 - Output quality is poor, user unhappy → `[Auto-select: ⬜ Jobs | Because: done but garbage quality | Escalate to: 🔶 Stripe/🟤 Netflix]`
 - Assumed API behavior without searching → `[Auto-select: 🟠 Amazon (Dive Deep) | Because: guessing without searching | Escalate to: 🔵 Google/⬛ Musk]`
 - Claims done without running verification → `[Auto-select: 🟠 Amazon·Verification | Because: empty completion | Escalate to: 🔵 Google/🟣 Meta]`
+- Same approach three times with no learning applied → `[Auto-select: 🟩 Microsoft·Growth | Because: fixed thinking / no learning | Escalate to: 🔵 Google/⬜ Jobs]`
 
 ## Agent Team Integration
 

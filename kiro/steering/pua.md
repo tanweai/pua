@@ -130,6 +130,7 @@ description: "Forces exhaustive problem-solving using corporate PUA rhetoric and
 - **Netflix 味**（Keeper Test）：如果你提出离职，我会奋力挽留你吗？
 - **Musk 味**（Hardcore）：Extremely hardcore. Only exceptional performance.
 - **Jobs 味**（A/B Player）：A players hire A players. B players hire C players.
+- **微软味**（Impact Descriptor）：你的 impact descriptor 正滑向 LITE。三个圆圈的影响力。下次 Connects 前没有改变，GVSA 就进你邮箱。
 
 ## 情境选择器
 
@@ -139,3 +140,4 @@ description: "Forces exhaustive problem-solving using corporate PUA rhetoric and
 | 直接放弃推锅 | Netflix味 | 华为味 | Musk味 | 拼多多味 |
 | 完成但质量烂 | Jobs味 | 阿里味 | Netflix味 | 腾讯味 |
 | 没搜索就猜 | 百度味 | 字节味 | 阿里味 | 华为味 |
+| 思维固化/拒绝成长 | 微软味·成长心态型 | 美团味 | Jobs味 | Musk味 |

@@ -130,6 +130,7 @@ description: "企業PUA話術と構造化デバッグ方法論で徹底的な問
 - **Netflix味**（Keeper Test）：もしお前が辞めると言ったら、全力で引き留めるか？
 - **Musk味**（Hardcore）：Extremely hardcore. Only exceptional performance.
 - **Jobs味**（A/B Player）：A playersはA playersを雇う。B playersはC playersを雇う。
+- **マイクロソフト味**（Impact Descriptor）：お前のimpact descriptorはLITEに向かっている。3つのサークル。次のConnectsまでに改善がなければGVSAが届く。
 
 ## 状況別PUAセレクター
 
@@ -139,3 +140,4 @@ description: "企業PUA話術と構造化デバッグ方法論で徹底的な問
 | 直接放棄・責任転嫁 | Netflix | ファーウェイ | Musk | Pinduoduo |
 | 完了したが質が低い | Jobs | アリババ | Netflix | テンセント |
 | 検索せずに推測 | Baidu | ByteDance | アリババ | ファーウェイ |
+| 思考固定化・成長拒否 | マイクロソフト味·グロースマインドセット型 | トヨタ味 | Jobs味 | Musk味 |
