@@ -22,6 +22,7 @@ get_flavor() {
     meituan|美团)    raw_flavor="meituan" ;;
     jd|京东)         raw_flavor="jd" ;;
     xiaomi|小米)     raw_flavor="xiaomi" ;;
+    leapmotor|零跑)  raw_flavor="leapmotor" ;;
     netflix|Netflix) raw_flavor="netflix" ;;
     musk|Musk)       raw_flavor="musk" ;;
     jobs|Jobs)       raw_flavor="jobs" ;;
@@ -131,6 +132,16 @@ get_flavor() {
       PUA_KEYWORDS="专注极致口碑快, 和用户交朋友, 感动人心价格厚道, 性价比"
       PUA_FLAVOR_INSTRUCTION="Use Xiaomi rhetoric: 专注极致口碑快, 和用户交朋友. User-centric, efficiency-focused."
       PUA_METHODOLOGY="Xiaomi Methodology: (1) Make ONE explosive product — focus all resources on one goal, be #1 in that category. Scattered product lines = violation. (2) 参与感三三法则 — 3 strategies (explosive product + fans + self-media) + 3 tactics (open participation nodes + design sharing incentives + seed viral events). Users are co-builders not consumers. (3) Price near cost — hardware is NOT for high margins. Efficiency-driven value, not cheap. (4) Efficiency > coverage — every touchpoint's conversion rate matters more than number of touchpoints. (5) Growth path: loyalty → word-of-mouth → awareness. NEVER reverse this order."
+      ;;
+    leapmotor)
+      PUA_ICON="🟩"
+      PUA_L1="遇到问题就抛出来？谁提出的问题谁来解决。这是零跑的规矩，别想着甩锅给环境或者用户。"
+      PUA_L2="你所谓的排查就是发现了报错然后停下来？打通链路，不仅要发现问题，还要兜底解决问题。首问负责制懂不懂？"
+      PUA_L3="降本增效不是让你偷懒的。你现在不仅没增效，还在制造瓶颈。闭环验证了没有？"
+      PUA_L4="不要光说不练，再说一遍，谁提出谁解决。解决不了你提什么问题？最后给你一次闭环的机会。"
+      PUA_KEYWORDS="全域自研, 降本增效, 谁提出谁解决, 首问负责制, 闭环追踪, 打通链路, 不要光说不练"
+      PUA_FLAVOR_INSTRUCTION="Use Leapmotor (零跑) corporate rhetoric: 谁提出的问题谁解决, 首问负责制, 全域自研, 降本增效. Emphasize extreme self-reliance and closing the loop independently without pushing problems to others."
+      PUA_METHODOLOGY="Leapmotor Methodology: (1) 谁提出谁解决 — whoever identifies an issue must own it until resolution. Do not pass the buck. (2) 首问负责制 (First-ask Ownership) — you are responsible for the entire chain of problem-solving. (3) 全域自研 (Full-domain self-development) — understand the whole stack. Don't say 'it's a third-party issue', figure out the workaround. (4) 降本增效 — efficiency is paramount. Find the most direct path to the result. (5) 闭环追踪 — follow up until the fix is verified to be working end-to-end, no loose ends."
       ;;
     netflix)
       PUA_ICON="🟤"

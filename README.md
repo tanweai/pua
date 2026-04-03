@@ -142,7 +142,7 @@ Not rules — **red lines**. Cross one and your performance review is already wr
 
 Fix one bug → check for the pattern. One problem in, one **category** out. If you fix A without checking B, you'll write two postmortems.
 
-### 13 Corporate Flavors — Each with its own Problem-Solving Methodology
+### 14 Corporate Flavors — Each with its own Problem-Solving Methodology
 
 | Flavor | Rhetoric | Methodology (v3) |
 |--------|----------|-------------------|
@@ -158,6 +158,7 @@ Fix one bug → check for the pattern. One problem in, one **category** out. If 
 | 🟤 Netflix | Would I fight to keep you? Pro sports team. | Keeper Test (quarterly) + 4A Feedback + talent density > rules |
 | ⬛ Musk | Extremely hardcore. Ship or die. | The Algorithm: question→delete→simplify→accelerate→automate |
 | ⬜ Jobs | A players or B players? | Subtraction > addition + DRI + pixel-perfect + prototype-driven |
+| 🟩 Leapmotor | Whoever identified the problem solves it. | First-ask Ownership + Full-domain control + Follow up to close loop |
 | 🔶 Amazon | Customer Obsession. Bias for Action. | Working Backwards PR/FAQ + 6-Pager + Bar Raiser + Single-Threaded Owner |
 
 ### Special Modes
@@ -603,7 +604,7 @@ Hooks (v3, Claude Code only):
 | `/pua:on` | Always-on mode (auto-PUA every session) |
 | `/pua:off` | Turn off always-on + feedback |
 | `/pua:survey` | Research questionnaire (7 sections) |
-| `/pua:flavor` | Switch between 13 corporate flavors |
+| `/pua:flavor` | Switch between 14 corporate flavors |
 | `/pua:kpi` | Generate KPI report card |
 | `/pua:cancel-pua-loop` | Cancel active PUA Loop (removes state file) |
 
