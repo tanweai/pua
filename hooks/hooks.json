@@ -3,7 +3,6 @@
   "hooks": {
     "UserPromptSubmit": [
       {
-        "matcher": "try harder|别偷懒|又错了|还不行|怎么搞|stop giving|you broke|third time|降智|原地打转|能不能靠谱|认真点|不行啊|为什么还不行|你怎么又|换个方法|stop spinning|figure it out|you keep failing|加油|再试试|质量太差|重新做|PUA模式|怎么又失败",
         "hooks": [
           {
             "type": "command",
