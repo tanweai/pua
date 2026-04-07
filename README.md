@@ -319,6 +319,8 @@ for dir in ~/.codex/pua/skills/*; do
 done
 ```
 
+Existing installs that still symlink `~/.codex/skills/pua*` to `~/.codex/pua/codex/pua*` keep the legacy core skill working after `git pull`, but you need to relink to `skills/*` once to enable namespaced subcommands such as `$pua:p7`.
+
 **Trigger methods:**
 
 | Method | Command | Requires |

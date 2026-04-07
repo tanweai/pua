@@ -296,6 +296,8 @@ for dir in ~/.codex/pua/skills/*; do
 done
 ```
 
+以前の Codex インストールで `~/.codex/skills/pua*` を `~/.codex/pua/codex/pua*` にリンクしていた場合、`git pull` 後も従来のコア skill は互換 shim で動き続けます。`$pua:p7` のような名前空間サブコマンドを使うには、上の手順で `skills/*` に張り替えてください。
+
 **トリガー方法：**
 
 | 方法 | コマンド | 必要なもの |

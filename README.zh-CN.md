@@ -299,6 +299,8 @@ for dir in ~/.codex/pua/skills/*; do
 done
 ```
 
+如果你之前把 `~/.codex/skills/pua*` 链接到 `~/.codex/pua/codex/pua*`，`git pull` 之后旧的核心 skill 仍可继续使用；但若要启用 `$pua:p7` 这类命名空间子命令，需要按上面的安装步骤把链接迁移到 `skills/*`。
+
 **触发方式：**
 
 | 方式 | 命令 | 需要 |

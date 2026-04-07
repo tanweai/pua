@@ -95,6 +95,10 @@ git pull
 
 The symlink, junction, or hard link automatically picks up the latest version — no reinstall needed.
 
+If you installed an older Codex version by linking `~/.codex/skills/pua*` to `~/.codex/pua/codex/pua*`, the legacy core skill path continues to work via compatibility shims after `git pull`.
+
+To enable namespaced subcommands such as `$pua:p7` and `$pua:flavor`, re-link once to the shared `skills/*` layout from the Installation section above.
+
 ## Uninstall
 
 ### macOS / Linux
