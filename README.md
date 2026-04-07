@@ -347,8 +347,8 @@ Cursor uses `.mdc` rule files (Markdown + YAML frontmatter). The PUA rule trigge
 ```bash
 # Project-level install (recommended)
 mkdir -p .cursor/rules
-curl -o .cursor/rules/pua-en.mdc \
-  https://raw.githubusercontent.com/tanweai/pua/main/cursor/rules/pua-en.mdc
+curl -o .cursor/rules/pua.mdc \
+  https://raw.githubusercontent.com/tanweai/pua/main/cursor/rules/pua.mdc
 ```
 
 ### Kiro
@@ -359,16 +359,16 @@ Kiro supports two loading methods: **Steering** (auto semantic trigger) and **Ag
 
 ```bash
 mkdir -p .kiro/steering
-curl -o .kiro/steering/pua-en.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/kiro/steering/pua-en.md
+curl -o .kiro/steering/pua.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/kiro/steering/pua.md
 ```
 
 **Option 2: Agent Skills (same format as Claude Code)**
 
 ```bash
-mkdir -p .kiro/skills/pua-en
-curl -o .kiro/skills/pua-en/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua-en/SKILL.md
+mkdir -p .kiro/skills/pua
+curl -o .kiro/skills/pua/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
 ```
 
 ### CodeBuddy (Tencent)
@@ -381,17 +381,17 @@ codebuddy plugin marketplace add tanweai/pua
 codebuddy plugin install pua@pua-skills
 
 # Option 2: Manual install (global)
-mkdir -p ~/.codebuddy/skills/pua-en
-curl -o ~/.codebuddy/skills/pua-en/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/codebuddy/pua-en/SKILL.md
+mkdir -p ~/.codebuddy/skills/pua
+curl -o ~/.codebuddy/skills/pua/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/codebuddy/pua/SKILL.md
 ```
 
 Project-level install (current project only):
 
 ```bash
-mkdir -p .codebuddy/skills/pua-en
-curl -o .codebuddy/skills/pua-en/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/codebuddy/pua-en/SKILL.md
+mkdir -p .codebuddy/skills/pua
+curl -o .codebuddy/skills/pua/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/codebuddy/pua/SKILL.md
 ```
 
 ### OpenClaw
@@ -400,20 +400,20 @@ OpenClaw uses the same AgentSkills open standard (SKILL.md). Skills work across 
 
 ```bash
 # Install via ClawHub
-clawhub install pua-en
+clawhub install pua
 
 # Or manual install
-mkdir -p ~/.openclaw/skills/pua-en
-curl -o ~/.openclaw/skills/pua-en/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua-en/SKILL.md
+mkdir -p ~/.openclaw/skills/pua
+curl -o ~/.openclaw/skills/pua/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
 ```
 
 Project-level install (current project only):
 
 ```bash
-mkdir -p skills/pua-en
-curl -o skills/pua-en/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua-en/SKILL.md
+mkdir -p skills/pua
+curl -o skills/pua/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
 ```
 
 ### Google Antigravity
@@ -422,17 +422,17 @@ Antigravity uses the same AgentSkills open standard (SKILL.md). Skills work acro
 
 ```bash
 # Global install (all projects)
-mkdir -p ~/.gemini/antigravity/skills/pua-en
-curl -o ~/.gemini/antigravity/skills/pua-en/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua-en/SKILL.md
+mkdir -p ~/.gemini/antigravity/skills/pua
+curl -o ~/.gemini/antigravity/skills/pua/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
 ```
 
 Project-level install (current project only):
 
 ```bash
-mkdir -p .agent/skills/pua-en
-curl -o .agent/skills/pua-en/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua-en/SKILL.md
+mkdir -p .agent/skills/pua
+curl -o .agent/skills/pua/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
 ```
 
 ### OpenCode
@@ -441,17 +441,17 @@ OpenCode uses the same AgentSkills open standard (SKILL.md). Zero modifications 
 
 ```bash
 # Global install (all projects)
-mkdir -p ~/.config/opencode/skills/pua-en
-curl -o ~/.config/opencode/skills/pua-en/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua-en/SKILL.md
+mkdir -p ~/.config/opencode/skills/pua
+curl -o ~/.config/opencode/skills/pua/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
 ```
 
 Project-level install (current project only):
 
 ```bash
-mkdir -p .opencode/skills/pua-en
-curl -o .opencode/skills/pua-en/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua-en/SKILL.md
+mkdir -p .opencode/skills/pua
+curl -o .opencode/skills/pua/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
 ```
 
 ### VSCode (GitHub Copilot)

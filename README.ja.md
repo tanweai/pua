@@ -357,17 +357,17 @@ codebuddy plugin marketplace add tanweai/pua
 codebuddy plugin install pua@pua-skills
 
 # 方法2：手動インストール（グローバル）
-mkdir -p ~/.codebuddy/skills/pua-ja
-curl -o ~/.codebuddy/skills/pua-ja/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/codebuddy/pua-ja/SKILL.md
+mkdir -p ~/.codebuddy/skills/pua
+curl -o ~/.codebuddy/skills/pua/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/codebuddy/pua/SKILL.md
 ```
 
 プロジェクトレベルインストール（現在のプロジェクトのみ有効）：
 
 ```bash
-mkdir -p .codebuddy/skills/pua-ja
-curl -o .codebuddy/skills/pua-ja/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/codebuddy/pua-ja/SKILL.md
+mkdir -p .codebuddy/skills/pua
+curl -o .codebuddy/skills/pua/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/codebuddy/pua/SKILL.md
 ```
 
 ### OpenClaw
