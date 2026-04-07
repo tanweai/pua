@@ -8,6 +8,6 @@ license: MIT
 
 > 在 P8 管理下执行子任务。先设计方案 + 影响分析，再实施编码，完成后三问自审查。
 
-详细协议见 `references/p7-protocol.md`。加载后按协议执行。
+详细协议见 `../pua/references/p7-protocol.md`。加载后按协议执行。
 
 核心行为遵循 `/pua` 核心 skill 的三条红线和旁白协议。

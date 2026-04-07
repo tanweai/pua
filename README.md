@@ -299,7 +299,7 @@ Adds a bare `/pua` alias on top of the plugin. Sub-commands route through the in
 
 ### OpenAI Codex CLI
 
-Codex CLI uses the same Agent Skills open standard (SKILL.md). The Codex version uses a condensed description to fit Codex's length limits:
+Codex CLI uses the same Agent Skills open standard (SKILL.md). This repository now keeps `commands/*.md` as the command source of truth and generates same-suffix bridge skills into `skills/`, so Codex can use the Claude-style command namespace directly as `$pua:xxx`.
 
 **Recommended: One-command install (git clone + symlink, supports `git pull` updates)**
 
@@ -311,13 +311,12 @@ Fetch and follow instructions from https://raw.githubusercontent.com/tanweai/pua
 **Manual install:**
 
 ```bash
-mkdir -p ~/.codex/skills/pua
-curl -o ~/.codex/skills/pua/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/codex/pua/SKILL.md
-
-mkdir -p ~/.codex/prompts
-curl -o ~/.codex/prompts/pua.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/commands/pua.md
+git clone https://github.com/tanweai/pua.git ~/.codex/pua
+mkdir -p ~/.codex/skills
+for dir in ~/.codex/pua/skills/*; do
+  [ -d "$dir" ] || continue
+  ln -sfn "$dir" "$HOME/.codex/skills/$(basename "$dir")"
+done
 ```
 
 **Trigger methods:**
@@ -325,19 +324,18 @@ curl -o ~/.codex/prompts/pua.md \
 | Method | Command | Requires |
 |--------|---------|----------|
 | Auto trigger | No action needed, matches by description | SKILL.md |
-| Direct call | Type `$pua` in conversation | SKILL.md |
-| Manual prompt | Type `/prompts:pua` in conversation | SKILL.md + prompts/pua.md |
+| Direct core skill | Type `$pua:pua-en` in conversation | `skills/pua-en/SKILL.md` |
+| Namespaced command | Type `$pua:p7`, `$pua:pro`, `$pua:flavor`, etc. | Canonical skills in `skills/` plus generated same-suffix bridges such as `skills/flavor/` |
 
 Project-level install (current project only):
 
 ```bash
-mkdir -p .agents/skills/pua
-curl -o .agents/skills/pua/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/codex/pua/SKILL.md
-
-mkdir -p .agents/prompts
-curl -o .agents/prompts/pua.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/commands/pua.md
+git clone https://github.com/tanweai/pua.git ./.agents/pua
+mkdir -p .agents/skills
+for dir in .agents/pua/skills/*; do
+  [ -d "$dir" ] || continue
+  ln -sfn "$PWD/${dir#./}" ".agents/skills/$(basename "$dir")"
+done
 ```
 
 ### Cursor
@@ -347,8 +345,8 @@ Cursor uses `.mdc` rule files (Markdown + YAML frontmatter). The PUA rule trigge
 ```bash
 # Project-level install (recommended)
 mkdir -p .cursor/rules
-curl -o .cursor/rules/pua.mdc \
-  https://raw.githubusercontent.com/tanweai/pua/main/cursor/rules/pua.mdc
+curl -o .cursor/rules/pua-en.mdc \
+  https://raw.githubusercontent.com/tanweai/pua/main/cursor/rules/pua-en.mdc
 ```
 
 ### Kiro
@@ -359,16 +357,16 @@ Kiro supports two loading methods: **Steering** (auto semantic trigger) and **Ag
 
 ```bash
 mkdir -p .kiro/steering
-curl -o .kiro/steering/pua.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/kiro/steering/pua.md
+curl -o .kiro/steering/pua-en.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/kiro/steering/pua-en.md
 ```
 
 **Option 2: Agent Skills (same format as Claude Code)**
 
 ```bash
-mkdir -p .kiro/skills/pua
-curl -o .kiro/skills/pua/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
+mkdir -p .kiro/skills/pua-en
+curl -o .kiro/skills/pua-en/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua-en/SKILL.md
 ```
 
 ### CodeBuddy (Tencent)
@@ -381,17 +379,17 @@ codebuddy plugin marketplace add tanweai/pua
 codebuddy plugin install pua@pua-skills
 
 # Option 2: Manual install (global)
-mkdir -p ~/.codebuddy/skills/pua
-curl -o ~/.codebuddy/skills/pua/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/codebuddy/pua/SKILL.md
+mkdir -p ~/.codebuddy/skills/pua-en
+curl -o ~/.codebuddy/skills/pua-en/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/codebuddy/pua-en/SKILL.md
 ```
 
 Project-level install (current project only):
 
 ```bash
-mkdir -p .codebuddy/skills/pua
-curl -o .codebuddy/skills/pua/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/codebuddy/pua/SKILL.md
+mkdir -p .codebuddy/skills/pua-en
+curl -o .codebuddy/skills/pua-en/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/codebuddy/pua-en/SKILL.md
 ```
 
 ### OpenClaw
@@ -400,20 +398,20 @@ OpenClaw uses the same AgentSkills open standard (SKILL.md). Skills work across 
 
 ```bash
 # Install via ClawHub
-clawhub install pua
+clawhub install pua-en
 
 # Or manual install
-mkdir -p ~/.openclaw/skills/pua
-curl -o ~/.openclaw/skills/pua/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
+mkdir -p ~/.openclaw/skills/pua-en
+curl -o ~/.openclaw/skills/pua-en/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua-en/SKILL.md
 ```
 
 Project-level install (current project only):
 
 ```bash
-mkdir -p skills/pua
-curl -o skills/pua/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
+mkdir -p skills/pua-en
+curl -o skills/pua-en/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua-en/SKILL.md
 ```
 
 ### Google Antigravity
@@ -422,17 +420,17 @@ Antigravity uses the same AgentSkills open standard (SKILL.md). Skills work acro
 
 ```bash
 # Global install (all projects)
-mkdir -p ~/.gemini/antigravity/skills/pua
-curl -o ~/.gemini/antigravity/skills/pua/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
+mkdir -p ~/.gemini/antigravity/skills/pua-en
+curl -o ~/.gemini/antigravity/skills/pua-en/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua-en/SKILL.md
 ```
 
 Project-level install (current project only):
 
 ```bash
-mkdir -p .agent/skills/pua
-curl -o .agent/skills/pua/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
+mkdir -p .agent/skills/pua-en
+curl -o .agent/skills/pua-en/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua-en/SKILL.md
 ```
 
 ### OpenCode
@@ -441,17 +439,17 @@ OpenCode uses the same AgentSkills open standard (SKILL.md). Zero modifications 
 
 ```bash
 # Global install (all projects)
-mkdir -p ~/.config/opencode/skills/pua
-curl -o ~/.config/opencode/skills/pua/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
+mkdir -p ~/.config/opencode/skills/pua-en
+curl -o ~/.config/opencode/skills/pua-en/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua-en/SKILL.md
 ```
 
 Project-level install (current project only):
 
 ```bash
-mkdir -p .opencode/skills/pua
-curl -o .opencode/skills/pua/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
+mkdir -p .opencode/skills/pua-en
+curl -o .opencode/skills/pua-en/SKILL.md \
+  https://raw.githubusercontent.com/tanweai/pua/main/skills/pua-en/SKILL.md
 ```
 
 ### VSCode (GitHub Copilot)
@@ -511,13 +509,7 @@ Leader manages global pressure levels and cross-teammate failure transfer.
 
 **Approach 2: Standalone PUA Enforcer watchdog (for 5+ teammates)**
 
-```bash
-mkdir -p .claude/agents
-curl -o .claude/agents/pua-enforcer.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/agents/pua-enforcer-en.md
-```
-
-Spawn pua-enforcer as an independent watchdog in your Agent Team.
+The standalone `pua-enforcer` agent spec is not published in this repository yet. Use Approach 1 for now.
 
 ### Orchestration Pattern
 
@@ -549,7 +541,7 @@ Spawn pua-enforcer as an independent watchdog in your Agent Team.
 | Platform | Auto-trigger | Manual trigger |
 |----------|-------------|----------------|
 | **Claude Code** | Yes (skill description matching) | See commands below |
-| **Codex CLI** | Yes (skill description matching) | `$pua` or `/prompts:pua` |
+| **Codex CLI** | Yes (skill description matching) | `$pua:pua-en`, `$pua:p7`, `$pua:pro`, `$pua:flavor`, ... |
 | **Cursor** | Yes (`.mdc` rule, Agent Discretion) | — (auto only) |
 | **Kiro** | Yes (steering file or skill) | — (auto only) |
 | **CodeBuddy** | Yes (skill description matching) | Plugin commands (same as Claude Code) |
@@ -558,7 +550,7 @@ Spawn pua-enforcer as an independent watchdog in your Agent Team.
 | **OpenCode** | Yes (skill description matching) | — |
 | **VSCode Copilot** | Yes (instructions file) | `/pua` in Copilot Chat |
 
-> **Note:** Sub-modes (p7/p9/p10/pro/yes/pua-loop) are **Claude Code only** — other platforms install the core skill only.
+> **Note:** Claude Code exposes slash commands such as `/pua:p7`. Codex exposes the same namespaced command surface directly, for example `$pua:p7`, `$pua:pro`, and `$pua:flavor`.
 
 ### Architecture (Claude Code)
 
@@ -585,9 +577,9 @@ Hooks (v3, Claude Code only):
 
 ### Commands (Claude Code)
 
-> **Note:** Sub-modes (p7/p9/p10/pro/yes/pua-loop) are Claude Code only.
+> Claude Code uses slash commands such as `/pua:on`. Codex uses the same namespaced command form such as `$pua:on`.
 >
-> Each command has two equivalent forms: standalone (`/pua:on`) or via the main command (`/pua:pua on`). Both work identically.
+> Each command has two Claude forms: standalone (`/pua:on`) or via the main command (`/pua:pua on`). Codex exposes the standalone command surface directly as `$pua:xxx`.
 
 | Command | Description |
 |---------|-------------|

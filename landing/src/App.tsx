@@ -241,7 +241,7 @@ function InstallTabs({ L }: { L: (value: Record<Lang, string>) => string }) {
     },
     codex: {
       desc: L(inline.codexDesc),
-      code: "mkdir -p ~/.codex/skills/pua\ncurl -o ~/.codex/skills/pua/SKILL.md \\\n  https://raw.githubusercontent.com/tanweai/pua/main/codex/pua/SKILL.md",
+      code: "git clone https://github.com/tanweai/pua.git ~/.codex/pua\nmkdir -p ~/.codex/skills\nfor dir in ~/.codex/pua/skills/*; do\n  [ -d \"$dir\" ] || continue\n  ln -sfn \"$dir\" \"$HOME/.codex/skills/$(basename \"$dir\")\"\ndone",
     },
     cursor: {
       desc: L(inline.cursorDesc),

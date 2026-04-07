@@ -2,6 +2,11 @@
 
 Force AI to exhaust every possible solution before giving up. Installs via native skill discovery (`~/.codex/skills/`).
 
+This repository now keeps `commands/*.md` as the source of truth and generates same-suffix bridge skills into `skills/`. Codex exposes the command surface through the plugin namespace, for example:
+
+- Claude Code: `/pua:p7`
+- Codex: `$pua:p7`
+
 ## Prerequisites
 
 - Git
@@ -14,15 +19,14 @@ Force AI to exhaust every possible solution before giving up. Installs via nativ
 # 1. Clone the repo
 git clone https://github.com/tanweai/pua.git ~/.codex/pua
 
-# 2. Create skill symlink (enables auto-discovery)
+# 2. Link every shared skill (core skills + generated command bridges)
 mkdir -p ~/.codex/skills
-ln -s ~/.codex/pua/codex/pua ~/.codex/skills/pua
+for dir in ~/.codex/pua/skills/*; do
+  [ -d "$dir" ] || continue
+  ln -sfn "$dir" "$HOME/.codex/skills/$(basename "$dir")"
+done
 
-# 3. Install /prompts:pua trigger
-mkdir -p ~/.codex/prompts
-ln -s ~/.codex/pua/commands/pua.md ~/.codex/prompts/pua.md
-
-# 4. Restart Codex
+# 3. Restart Codex
 ```
 
 ### Windows (PowerShell)
@@ -31,29 +35,32 @@ ln -s ~/.codex/pua/commands/pua.md ~/.codex/prompts/pua.md
 # 1. Clone the repo
 git clone https://github.com/tanweai/pua.git "$env:USERPROFILE\.codex\pua"
 
-# 2. Create skill junction (enables auto-discovery)
+# 2. Link every shared skill (core skills + generated command bridges)
 New-Item -ItemType Directory -Force "$env:USERPROFILE\.codex\skills"
-cmd /c mklink /J "$env:USERPROFILE\.codex\skills\pua" "$env:USERPROFILE\.codex\pua\codex\pua"
+Get-ChildItem "$env:USERPROFILE\.codex\pua\skills" -Directory | ForEach-Object {
+  $target = Join-Path "$env:USERPROFILE\.codex\skills" $_.Name
+  if (Test-Path $target) {
+    Remove-Item $target -Recurse -Force
+  }
+  cmd /c mklink /J "$target" "$($_.FullName)" | Out-Null
+}
 
-# 3. Install /prompts:pua trigger
-# Use a hard link here because file symlinks often require extra Windows privileges.
-New-Item -ItemType Directory -Force "$env:USERPROFILE\.codex\prompts"
-cmd /c mklink /H "$env:USERPROFILE\.codex\prompts\pua.md" "$env:USERPROFILE\.codex\pua\commands\pua.md"
-
-# 4. Restart Codex
+# 3. Restart Codex
 ```
 
 ## Verify
 
-Type `$pua` in a Codex conversation. If the skill is loaded, you'll see it activate.
+Type `$pua:pua` or `$pua:p7` in a Codex conversation. If the skills are loaded, you'll see them activate.
 
 Or check directly:
 ```bash
 # macOS / Linux
 ls ~/.codex/skills/pua/SKILL.md
+ls ~/.codex/skills/p7/SKILL.md
 
 # Windows PowerShell
 Test-Path "$env:USERPROFILE\.codex\skills\pua\SKILL.md"
+Test-Path "$env:USERPROFILE\.codex\skills\p7\SKILL.md"
 ```
 
 ## Trigger Methods
@@ -61,22 +68,22 @@ Test-Path "$env:USERPROFILE\.codex\skills\pua\SKILL.md"
 | Method | Command | Requires |
 |--------|---------|----------|
 | Auto trigger | No action needed, matches by description | SKILL.md |
-| Direct call | Type `$pua` in conversation | SKILL.md |
-| Manual prompt | Type `/prompts:pua` in conversation | SKILL.md + prompts/pua.md |
+| Direct core skill | Type `$pua:pua` in conversation | `skills/pua/SKILL.md` |
+| Namespaced command | Type `$pua:p7`, `$pua:pro`, `$pua:flavor`, etc. | Canonical skills in `skills/` plus generated same-suffix bridges such as `skills/flavor/` |
 
 ## Language Variants
 
 | Language | Skill path |
 |----------|------------|
-| 🇨🇳 Chinese (default) | `codex/pua/SKILL.md` |
-| 🇺🇸 English (PIP) | `codex/pua-en/SKILL.md` |
-| 🇯🇵 Japanese | `codex/pua-ja/SKILL.md` |
+| 🇨🇳 Chinese (default) | `skills/pua/SKILL.md` |
+| 🇺🇸 English (PIP) | `skills/pua-en/SKILL.md` |
+| 🇯🇵 Japanese | `skills/pua-ja/SKILL.md` |
 
-To install a different language variant, replace `pua` with `pua-en` or `pua-ja` in the symlink/junction step:
+To install a different language variant, keep the shared install loop above and call `$pua:pua-en` or `$pua:pua-ja` explicitly.
 
 ```bash
-# Example: English variant (macOS/Linux)
-ln -s ~/.codex/pua/codex/pua-en ~/.codex/skills/pua-en
+# Example: verify the English variant exists
+ls ~/.codex/skills/pua-en/SKILL.md
 ```
 
 ## Update
@@ -93,15 +100,20 @@ The symlink, junction, or hard link automatically picks up the latest version �
 ### macOS / Linux
 
 ```bash
-rm ~/.codex/skills/pua
-rm ~/.codex/prompts/pua.md
+for dir in ~/.codex/pua/skills/*; do
+  rm -f "$HOME/.codex/skills/$(basename "$dir")"
+done
 rm -rf ~/.codex/pua
 ```
 
 ### Windows (PowerShell)
 
 ```powershell
-Remove-Item "$env:USERPROFILE\.codex\skills\pua"
-Remove-Item "$env:USERPROFILE\.codex\prompts\pua.md"
+Get-ChildItem "$env:USERPROFILE\.codex\pua\skills" -Directory | ForEach-Object {
+  $target = Join-Path "$env:USERPROFILE\.codex\skills" $_.Name
+  if (Test-Path $target) {
+    Remove-Item $target -Recurse -Force
+  }
+}
 Remove-Item -Recurse "$env:USERPROFILE\.codex\pua"
 ```

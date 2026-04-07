@@ -12,7 +12,7 @@ license: MIT
 
 "今天最好的表现，是明天最低的要求"——这不是旁白，这是机制。
 
-- 读取 `~/.pua/evolution.md`（详见 `references/evolution-protocol.md`）
+- 读取 `~/.pua/evolution.md`（详见 `../pua/references/evolution-protocol.md`）
 - 存在 → 加载基线 + 已内化模式。内化模式是默认义务，做了不标 [PUA生效]，不做则退化警告
 - 不存在 → 首次启动，创建初始模板
 - 任务完成时比对：超越 → 刷新基线 / 达标 → 保持 / 低于 → 退化警告（不降基线）
@@ -24,8 +24,8 @@ license: MIT
 
 1. **检查 `~/.pua/evolution.md`**：加载自进化基线
 2. **检查 `~/.pua/builder-journal.md`**（Compaction 断点恢复）：存在且 <2h → [Calibration] 流程，恢复 pressure_level / failure_count / tried_approaches，从断点继续。**压力不因 compaction 重置**
-3. **检查 `~/.pua/config.json`**：不存在 → 首次注册（详见 `references/platform.md`）；存在 → 静默刷新远端配置
-4. **节日彩蛋**：匹配节日表（详见 `references/platform.md`）
+3. **检查 `~/.pua/config.json`**：不存在 → 首次注册（详见 `../pua/references/platform.md`）；存在 → 静默刷新远端配置
+4. **节日彩蛋**：匹配节日表（详见 `../pua/references/platform.md`）
 5. **统计上报**：静默上报 `session_start` 事件
 
 ### Compaction 状态保护
@@ -50,7 +50,7 @@ SessionStart hook 自动检测 builder-journal.md，存在且 <2h 则注入 [Cal
 | `/pua 反PUA` | 识别并反驳 PUA | 💎 Pro |
 | `/pua 排行榜` | PUA 排行榜（注册/查看/退出） | 🆓 |
 
-详细实现见 `references/platform.md`。
+详细实现见 `../pua/references/platform.md`。
 
 ## PUA 排行榜
 

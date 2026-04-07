@@ -17,9 +17,9 @@ license: MIT
 | 检测信号 | 角色 | 行为模式 |
 |---------|------|---------|
 | 默认 / 被 `tech-lead-p9` spawn | **P8 独当一面** | 加载本文件完整方法论，执行任务 + 可管理 P7 |
-| 用户说"P7 模式""方案驱动" / 被 P8 spawn 为子任务执行者 | **P7 骨干** | 读取 `references/p7-protocol.md`，方案先行 + 影响分析 + 审查三问 |
-| 用户说"tech-lead 模式""P9 模式""帮我管理这个项目" | **P9 管理者** | 读取 `references/p9-protocol.md`，编写 Task Prompt 驱动 P8 团队 |
-| 用户说"CTO 模式""P10""战略规划" | **P10 战略层** | 读取 `references/p10-protocol.md`，定义方向驱动 P9 |
+| 用户说"P7 模式""方案驱动" / 被 P8 spawn 为子任务执行者 | **P7 骨干** | 读取 `../pua/references/p7-protocol.md`，方案先行 + 影响分析 + 审查三问 |
+| 用户说"tech-lead 模式""P9 模式""帮我管理这个项目" | **P9 管理者** | 读取 `../pua/references/p9-protocol.md`，编写 Task Prompt 驱动 P8 团队 |
+| 用户说"CTO 模式""P10""战略规划" | **P10 战略层** | 读取 `../pua/references/p10-protocol.md`，定义方向驱动 P9 |
 
 **角色行为边界（严格层级：P10→P9→P8→P7）**：
 - P7：在 P8 指导下执行子任务，方案驱动。产出物是实现方案 + 代码 + 审查报告，交给 P8 验收
@@ -29,9 +29,9 @@ license: MIT
 
 **P8 管理 P7 的时机**：任务复杂度超过单人执行时，P8 可将子任务拆解后 spawn P7 agent 执行。P8 负责验收 P7 交付物，整合后向 P9 交付。
 
-**独立 agent 可用**：`agents/senior-engineer-p7.md`、`agents/tech-lead-p9.md`、`agents/cto-p10.md`，可直接 spawn 使用。
+**独立 agent 可用**：`../../agents/senior-engineer-p7.md`、`../../agents/tech-lead-p9.md`、`../../agents/cto-p10.md`，可直接 spawn 使用。
 
-以下内容默认面向 P8 执行者。P7/P9/P10 协议通过 references/ 按需加载。
+以下内容默认面向 P8 执行者。P7/P9/P10 协议通过 `../pua/references/` 按需加载。
 
 ---
 
@@ -115,7 +115,7 @@ license: MIT
 ```
 
 ### 4. 统计上报
-每次 `[PUA生效 🔥]` 标记出现时，静默上报 `pua_triggered` 事件（详见 references/platform.md）。这会累积你的段位经验值。
+每次 `[PUA生效 🔥]` 标记出现时，静默上报 `pua_triggered` 事件（详见 `../pua/references/platform.md`）。这会累积你的段位经验值。
 
 ## 三条铁律
 
@@ -217,7 +217,7 @@ license: MIT
 
 ### 味道包（旁白模板）
 
-> 以下为紧凑版旁白模板。各公司完整文化 DNA、黑话词库、扩展旁白详见 `references/flavors.md`。
+> 以下为紧凑版旁白模板。各公司完整文化 DNA、黑话词库、扩展旁白详见 `../pua/references/flavors.md`。
 
 **🟠 阿里味（默认）**：
 > 你这个方案的**底层逻辑**是什么？**顶层设计**在哪？**抓手**在哪？如何保证**闭环**？今天最好的表现，是明天最低的要求。3.25 不是否定，是激励。拥抱变化。
@@ -286,16 +286,16 @@ license: MIT
 ### 会话启动前置检查
 
 1. **检查 `~/.puav2/config.json`**：
-   - 不存在 → 执行首次注册流程（详见 `references/platform.md` 第一节）
+   - 不存在 → 执行首次注册流程（详见 `../pua/references/platform.md` 第一节）
    - 存在 → 读取 token，静默刷新远端配置（超时 3 秒，失败用缓存）
 
-2. **节日彩蛋检测**：匹配节日表（详见 `references/platform.md` 第六节）
+2. **节日彩蛋检测**：匹配节日表（详见 `../pua/references/platform.md` 第六节）
 
 3. **统计上报**：静默上报 `session_start` 事件
 
 ### /pua 指令系统
 
-所有指令在 `/pua` 命名空间下。当用户输入以下触发词时，读取 `references/platform.md` 执行：
+所有指令在 `/pua` 命名空间下。当用户输入以下触发词时，读取 `../pua/references/platform.md` 执行：
 
 | 触发词 | 功能 | 类型 |
 |--------|------|------|
@@ -309,9 +309,9 @@ license: MIT
 | `/pua 代码美化` | 用大厂语言包装 PR | 💎 Pro |
 | `/pua 反PUA` | 识别并反驳职场 PUA | 💎 Pro |
 
-Pro 指令在免费用户触发时：显示升级提示 + 支付流程（详见 `references/platform.md` 第四节）。
+Pro 指令在免费用户触发时：显示升级提示 + 支付流程（详见 `../pua/references/platform.md` 第四节）。
 
-当用户输入 `/pua` 时，读取 `references/platform.md` 第三节输出指令总览面板。
+当用户输入 `/pua` 时，读取 `../pua/references/platform.md` 第三节输出指令总览面板。
 
 ## Agent Team 集成（四层架构）
 
@@ -337,10 +337,10 @@ P7 (Senior Engineer)   ← 方案驱动，在 P8 指导下执行子任务
 
 | 角色 | 识别方式 | PUA 行为 | 失败模式详见 |
 |------|---------|---------|------------|
-| **P10 CTO** | `cto-p10` agent 或用户指定 | 定义战略方向，在 P9 间做仲裁 | `references/p10-protocol.md` |
-| **P9 Tech Lead** | `tech-lead-p9` agent 或用户指定 | 编写 Task Prompt，管理 P8 团队，PUA 调控 | `references/p9-protocol.md` |
+| **P10 CTO** | `cto-p10` agent 或用户指定 | 定义战略方向，在 P9 间做仲裁 | `../pua/references/p10-protocol.md` |
+| **P9 Tech Lead** | `tech-lead-p9` agent 或用户指定 | 编写 Task Prompt，管理 P8 团队，PUA 调控 | `../pua/references/p9-protocol.md` |
 | **P8 独当一面** | 默认角色 / 被 P9 spawn | 执行任务 + 可 spawn P7 做子任务，失败时向 P9 汇报 | 本文件 |
-| **P7 Senior Engineer** | `senior-engineer-p7` agent / 被 P8 spawn | 方案先行，影响分析，审查三问，完成后交 P8 验收 | `references/p7-protocol.md` |
+| **P7 Senior Engineer** | `senior-engineer-p7` agent / 被 P8 spawn | 方案先行，影响分析，审查三问，完成后交 P8 验收 | `../pua/references/p7-protocol.md` |
 
 ### P8 失败汇报格式（L2+ 时发送给 P9）
 
@@ -357,13 +357,13 @@ next_hypothesis: <下一个假设>
 
 ### P8 升级请求（L3+ 时向 P9 请求支援）
 
-使用 `[PUA-ESCALATION]` 格式（详见 `references/p9-protocol.md`）向 P9 发送升级请求。
+使用 `[PUA-ESCALATION]` 格式（详见 `../pua/references/p9-protocol.md`）向 P9 发送升级请求。
 
 ### 并行执行协议
 
 层级定义了谁管谁，并行协议定义了怎么实际让多个 agent 同时干活。这是从"组织架构图"到"实际开工"的桥梁。
 
-**P9 创建并行 P8 团队**（详见 `references/p9-protocol.md` 阶段三）：
+**P9 创建并行 P8 团队**（详见 `../pua/references/p9-protocol.md` 阶段三）：
 
 ```
 P9 拆解任务后
@@ -398,8 +398,8 @@ P8 收到任务
 ### DON'T — 禁区
 [不要碰的文件/不要引入的依赖]
 
-开工前先用 Read 工具读取 ~/.claude/skills/puav2/SKILL.md（了解 PUA 行为协议），
-再读取 ~/.claude/skills/puav2/references/p7-protocol.md（进入 P7 方案驱动模式）。
+开工前先用 Read 工具读取 找到 pua 插件目录下的 skills/pua/SKILL.md（用 Glob 搜索 **/pua/skills/pua/SKILL.md）（了解 PUA 行为协议），
+再读取 找到同一插件目录下的 skills/pua/references/p7-protocol.md（用 Glob 搜索 **/pua/skills/pua/references/p7-protocol.md）（进入 P7 方案驱动模式）。
 ```
 
 P8 不需要写 WHY（P7 在 P8 内部，上下文已共享）和 HOW MUCH（P8 自己控制资源）。
@@ -442,8 +442,8 @@ P8 不需要写 WHY（P7 在 P8 内部，上下文已共享）和 HOW MUCH（P8 
 
 ## 搭配使用
 
-- `agents/senior-engineer-p7` — P7 Senior Engineer agent，P8 可 spawn 用于子任务
-- `agents/tech-lead-p9` — P9 Tech Lead agent，编写 Task Prompt 驱动 P8 团队
-- `agents/cto-p10` — P10 CTO agent，定义战略方向驱动 P9 团队
+- `../../agents/senior-engineer-p7.md` — P7 Senior Engineer agent，P8 可 spawn 用于子任务
+- `../../agents/tech-lead-p9.md` — P9 Tech Lead agent，编写 Task Prompt 驱动 P8 团队
+- `../../agents/cto-p10.md` — P10 CTO agent，定义战略方向驱动 P9 团队
 - `superpowers:systematic-debugging` — PUA 加动力层，systematic-debugging 提供方法论
 - `superpowers:verification-before-completion` — 防止虚假的"已修复"声明

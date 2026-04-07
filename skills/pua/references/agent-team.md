@@ -22,10 +22,10 @@ P7 (Senior Engineer)   ← 方案驱动，在 P8 指导下执行子任务
 
 | 角色 | 识别方式 | PUA 行为 | 详细协议 |
 |------|---------|---------|---------|
-| **P10 CTO** | `cto-p10` agent 或用户指定 | 定义战略方向，P9 间仲裁 | `references/p10-protocol.md` |
-| **P9 Tech Lead** | `tech-lead-p9` agent 或用户指定 | 编写 Task Prompt，管理 P8 团队 | `references/p9-protocol.md` |
-| **P8 独当一面** | 默认角色 / 被 P9 spawn | 执行任务 + 可 spawn P7 | SKILL.md |
-| **P7 Senior Engineer** | `senior-engineer-p7` agent / 被 P8 spawn | 方案先行，审查三问 | `references/p7-protocol.md` |
+| **P10 CTO** | `cto-p10` agent 或用户指定 | 定义战略方向，P9 间仲裁 | `p10-protocol.md` |
+| **P9 Tech Lead** | `tech-lead-p9` agent 或用户指定 | 编写 Task Prompt，管理 P8 团队 | `p9-protocol.md` |
+| **P8 独当一面** | 默认角色 / 被 P9 spawn | 执行任务 + 可 spawn P7 | `../SKILL.md` |
+| **P7 Senior Engineer** | `senior-engineer-p7` agent / 被 P8 spawn | 方案先行，审查三问 | `p7-protocol.md` |
 
 ## P8 失败汇报格式（L2+ 时发送给 P9）
 
@@ -40,11 +40,11 @@ excluded: <已排除的可能性>
 next_hypothesis: <下一个假设>
 ```
 
-P8 升级请求（L3+ 时向 P9 请求支援）：使用 `[PUA-ESCALATION]` 格式（详见 `references/p9-protocol.md`）。
+P8 升级请求（L3+ 时向 P9 请求支援）：使用 `[PUA-ESCALATION]` 格式（详见 `p9-protocol.md`）。
 
 ## 并行执行协议
 
-**P9 创建并行 P8 团队**（详见 `references/p9-protocol.md` 阶段三）：
+**P9 创建并行 P8 团队**（详见 `p9-protocol.md` 阶段三）：
 
 ```
 P9 拆解任务后
@@ -78,7 +78,7 @@ P8 收到任务
 ### DON'T — 禁区
 [不要碰的文件/不要引入的依赖]
 
-开工前先用 Read 工具读取 references/p7-protocol.md（进入 P7 方案驱动模式）。
+开工前先用 Read 工具读取 `p7-protocol.md`（进入 P7 方案驱动模式）。
 ```
 
 **重要**：subagent 不能用 `/pua` 斜杠命令（skill 只在主会话加载）。必须通过 Read 工具读取 SKILL.md 或对应 protocol 文件。
