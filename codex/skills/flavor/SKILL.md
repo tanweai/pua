@@ -1,0 +1,1 @@
+../../../skills/flavor/SKILL.md
