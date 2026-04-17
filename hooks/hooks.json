@@ -73,6 +73,18 @@
           }
         ]
       }
+    ],
+    "SubagentStop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/hooks/subagent-teardown.sh",
+            "timeout": 5
+          }
+        ]
+      }
     ]
   }
 }

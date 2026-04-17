@@ -581,6 +581,7 @@ Hooks (v3, Claude Code only):
   UserPromptSubmit → Frustration phrase interception → PUA enforcement
   PreCompact    → State preservation (pressure level + failure count)
   Stop          → Feedback collection + PUA Loop continuation
+  SubagentStop  → Agent lifecycle accounting (v3.2) — writes teardown.jsonl, removes from active-agents.json
 ```
 
 ### Commands (Claude Code)
@@ -606,6 +607,9 @@ Hooks (v3, Claude Code only):
 | `/pua:flavor` | Switch between 13 corporate flavors |
 | `/pua:kpi` | Generate KPI report card |
 | `/pua:cancel-pua-loop` | Cancel active PUA Loop (removes state file) |
+| `/pua:team-status` 🆕 | **v3.2** — List all active agents with PID/TTL/age (Netflix Keeper Test: who's still on the court?) |
+| `/pua:reap-orphans` 🆕 | **v3.2** — Scan and reclaim stale agents (state mtime > 30min, no heartbeat) |
+| `/pua:teardown-all` 🆕 | **v3.2** — Cascading release of all active agents (P10 → P9 → P8 → P7 all off the court) |
 
 
 ## High-Agency: PUA v2 Evolution

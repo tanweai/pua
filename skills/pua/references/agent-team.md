@@ -103,3 +103,8 @@ P8 收到任务
 7. **PUA 流向**：P10→P9→P8→P7，不越级
 8. **P8 内部 P7 文件域**：由 P8 负责划分；多个 P8 的文件域由 P9 负责划分
 9. **任务不重置**：重新分配时附带 `前任已失败 N 次，压力等级 LX，已排除: [...]`
+10. **验收≠释放**：P8 交付通过后，P9 必须显式发 `[TEARDOWN]` 或 `[REASSIGN]`，不允许静默挂起
+11. **TeamCreate 必须配 TeamDelete**：每个 team 生命周期闭合；跨 sprint 保留需显式 `[TEAM-HIBERNATE]`
+12. **subagent 禁建 team**：P8 被 spawn 后只能用 Agent tool spawn P7，不能 TeamCreate（防嵌套孤儿）
+
+> 生命周期释放、清理、孤儿回收的完整协议见 `references/teardown-protocol.md`。

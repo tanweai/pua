@@ -1,6 +1,6 @@
 {
     "name": "pua",
-    "version": "3.0.0",
+    "version": "3.2.0",
     "description": "Forces high-agency exhaustive problem-solving with corporate PUA pressure escalation. Use when AI is passive, gives up easily, not verifying results, or producing low-quality work. Triggers on: 'try harder', '加油', '别偷懒', 'stop giving up', 'PUA模式', '质量太差', '重新做', '你再试试', '为什么还不行', '你怎么又失败了', user frustration or quality complaints, repeated failures (2+), or when agent needs motivation.",
     "author": {
         "name": "探微安全实验室",

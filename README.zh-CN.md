@@ -632,6 +632,7 @@ Hooks（v3，Claude Code 专属）：
   UserPromptSubmit → 挫败短语拦截 → PUA 行为注入
   PreCompact    → 状态持久化（压力等级 + 失败次数）
   Stop          → 反馈收集 + PUA Loop 延续
+  SubagentStop  → Agent 生命周期会计（v3.2）— 写 teardown.jsonl，从 active-agents.json 移除
 ```
 
 ### 命令（Claude Code 专属）
@@ -657,6 +658,9 @@ Hooks（v3，Claude Code 专属）：
 | `/pua:flavor` | 切换 13 种大厂味道 |
 | `/pua:kpi` | 生成 KPI 报告卡 |
 | `/pua:cancel-pua-loop` | 取消当前 PUA Loop（删除状态文件） |
+| `/pua:team-status` 🆕 | **v3.2** — 列出当前在场阵容（活跃 agent、PID、TTL、年龄；Netflix Keeper Test 工程版） |
+| `/pua:reap-orphans` 🆕 | **v3.2** — 扫描并回收孤儿 agent（state mtime > 30min 且无心跳的自动下场） |
+| `/pua:teardown-all` 🆕 | **v3.2** — 级联释放所有活跃 agent（P10 → P9 → P8 → P7 全员下场） |
 
 ## 贡献数据
 

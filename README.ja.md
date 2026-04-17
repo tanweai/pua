@@ -620,6 +620,7 @@ Hooks（v3、Claude Code専用）:
   UserPromptSubmit → 不満フレーズのインターセプト → PUA強制実行
   PreCompact    → 状態保存（プレッシャーレベル + 失敗回数）
   Stop          → フィードバック収集 + PUA Loop継続判定
+  SubagentStop  → Agent ライフサイクル会計（v3.2）— teardown.jsonl書込、active-agents.jsonから削除
 ```
 
 ### コマンド（Claude Code専用）
@@ -643,6 +644,9 @@ Hooks（v3、Claude Code専用）:
 | `/pua:flavor` | 13種の大企業フレーバーを切り替え |
 | `/pua:kpi` | KPIレポートカードを生成 |
 | `/pua:cancel-pua-loop` | アクティブなPUA Loopをキャンセル（状態ファイルを削除） |
+| `/pua:team-status` 🆕 | **v3.2** — 在場メンバー一覧（アクティブagent、PID、TTL、年齢；Netflix Keeper Test エンジニア版） |
+| `/pua:reap-orphans` 🆕 | **v3.2** — 孤児agentをスキャンして回収（state mtime > 30min で心拍なし） |
+| `/pua:teardown-all` 🆕 | **v3.2** — 全アクティブagentをカスケード解放（P10 → P9 → P8 → P7 全員退場） |
 
 ## データ貢献
 

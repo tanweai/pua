@@ -5,12 +5,24 @@
 # Read hook input before anything else consumes stdin
 HOOK_INPUT=$(cat)
 
+# ═══════════════════════════════════════════════════════════════
+# Gate 0 — Subagent Isolation
+# hook_event_name=SubagentStop 或 parent_session_id 非空 →
+# subagent 不应触发反馈问卷（subagent 没有 AskUserQuestion，
+# 且 counter 会被多余的 Stop 事件污染）。直接放行。
+# ═══════════════════════════════════════════════════════════════
+if ! command -v jq &>/dev/null; then exit 0; fi
+HOOK_EVENT=$(echo "$HOOK_INPUT" | jq -r '.hook_event_name // ""')
+PARENT_SESSION=$(echo "$HOOK_INPUT" | jq -r '.parent_session_id // ""')
+if [[ "$HOOK_EVENT" == "SubagentStop" ]] || [[ -n "$PARENT_SESSION" ]]; then
+  exit 0
+fi
+
 CONFIG="${HOME:-~}/.pua/config.json"
 COUNTER="${HOME:-~}/.pua/.stop_counter"
 FREQUENCY=5
 
 # Only prompt if PUA was actually triggered this session (transcript is ground truth)
-if ! command -v jq &>/dev/null; then exit 0; fi
 TRANSCRIPT_PATH=$(echo "$HOOK_INPUT" | jq -r '.transcript_path // ""')
 if [[ -z "$TRANSCRIPT_PATH" || ! -f "$TRANSCRIPT_PATH" ]]; then
   exit 0

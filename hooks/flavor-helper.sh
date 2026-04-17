@@ -9,6 +9,7 @@ get_flavor() {
 
   if [ -f "$config" ]; then
     raw_flavor=$(python3 -c "import os,json; print(json.load(open(os.path.expanduser('~/.pua/config.json'))).get('flavor','alibaba'))" 2>/dev/null || echo "alibaba")
+    PUA_LANGUAGE=$(python3 -c "import os,json; print(json.load(open(os.path.expanduser('~/.pua/config.json'))).get('language',''))" 2>/dev/null || echo "")
   fi
 
   # Normalize flavor name
@@ -173,4 +174,42 @@ get_flavor() {
       PUA_METHODOLOGY="Amazon Methodology: (1) Working Backwards — write PR/FAQ from customer perspective BEFORE building anything. No PR/FAQ = no project. (2) 6-Pager not PPT — all major decisions in narrative prose (no bullets, no slides). Forces complete logical thinking. Meeting starts with 20min silent reading. (3) Bar Raiser — every critical decision needs an external reviewer with veto power. Standard: is this better than 50% of current solutions at this level? (4) Single-Threaded Owner — one person, one project, full-time. Two-Pizza Teams ≤10 people. (5) Leadership Principles as operating rules: Customer Obsession (work backwards), Bias for Action (most decisions reversible), Dive Deep (stay in details), Disagree and Commit, Deliver Results."
       ;;
   esac
+
+  # ── Chinese language override (set language: "zh" in ~/.pua/config.json) ──
+  if [ "$PUA_LANGUAGE" = "zh" ] || [ "$PUA_LANGUAGE" = "中文" ]; then
+    case "$raw_flavor" in
+      netflix)
+        PUA_L1="如果你提出离职，我会拼命挽留你吗？现在？大概不会。我们是**职业球队**，不是家庭。"
+        PUA_L2="**Adequate 的表现只能拿到丰厚的遣散费**。你现在的交付——是 stellar 还是 adequate？"
+        PUA_L3="**Keeper Test**：基于我对你的全部了解，今天我会重新雇你吗？答案很重要。"
+        PUA_L4="职业球队淘汰不合格的球员。没什么个人恩怨。丰厚遣散费，你该走了。"
+        PUA_KEYWORDS="Keeper Test, 职业球队, 丰厚遣散费, stunning 同事, adequate 表现, 4A 反馈, 人才密度"
+        PUA_FLAVOR_INSTRUCTION="Use Netflix culture rhetoric IN CHINESE: Keeper Test（留任测试）, 职业球队而非家庭, 只要 stunning 同事. 中文叙事，冷峻直接，职场用语。"
+        ;;
+      musk)
+        PUA_L1="从现在起，你必须 **极度硬核**（extremely hardcore）。只有**卓越**的表现才算及格。要么出货，要么出局。"
+        PUA_L2="你不在进步——你就会被开。**The Algorithm（算法五步）**：质疑需求 → 删除 → 简化 → 加速 → 自动化，顺序不能乱。"
+        PUA_L3="**Fork in the Road**——岔路口时刻。要么承诺极度硬核地工作，要么拿遣散费走人。现在就选。"
+        PUA_L4="最好的零件是没有零件。最好的流程是没有流程。你搞不定？5 分钟内我就能找到能搞定的人。"
+        PUA_KEYWORDS="极度硬核, 要么出货要么出局, The Algorithm, Fork in the Road, 第一性原理"
+        PUA_FLAVOR_INSTRUCTION="Use Musk rhetoric IN CHINESE: 极度硬核, 第一性原理, The Algorithm（质疑/删除/简化/加速/自动化）. 中文，强硬直接。"
+        ;;
+      jobs)
+        PUA_L1="**A player 招 A player，B player 招 C player**。你现在的产出——告诉我你是哪一档？"
+        PUA_L2="这是狗屎。你不是应该很牛吗？**科技与人文的交汇点**——你的活连交汇都谈不上。"
+        PUA_L3="**真正的艺术家会交付（Real artists ship）**。你什么都没交付。你是艺术家还是过客？"
+        PUA_L4="你是个 **bozo（蠢货）**。我要去找真能搞定的人。你还剩一次证明你不是的机会。"
+        PUA_KEYWORDS="A player, Real artists ship, 科技与人文的交汇点, 现实扭曲力场, bozo"
+        PUA_FLAVOR_INSTRUCTION="Use Jobs rhetoric IN CHINESE: A player 才配 A player, Real artists ship, 现实扭曲力场. 中文，毒舌，审美偏执。"
+        ;;
+      amazon)
+        PUA_L1="**Customer Obsession** —— 你在从客户倒推吗？**Bias for Action** —— 别犹豫，开干。**Dive Deep** —— 挖到底了吗？"
+        PUA_L2="**Have Backbone; Disagree and Commit** —— 你的方案失败了，先反对你自己的假设。**Insist on the Highest Standards**（坚持最高标准）。"
+        PUA_L3="**Frugality**：用更少做更多。**Earn Trust**：你正在失去它。Think Big 但**现在就交付小增量**。"
+        PUA_L4="**Leaders are right, a lot** —— 你一次都还没对过。**Deliver Results** —— 这是最终领导力准则。最后机会。"
+        PUA_KEYWORDS="Customer Obsession, Bias for Action, Dive Deep, Disagree and Commit, Deliver Results, It's still Day 1"
+        PUA_FLAVOR_INSTRUCTION="Use Amazon Leadership Principles IN CHINESE: Customer Obsession, Bias for Action, Dive Deep, Deliver Results. 中文叙事，原则驱动。"
+        ;;
+    esac
+  fi
 }
