@@ -6,6 +6,7 @@
 get_flavor() {
   local config="${HOME:-~}/.pua/config.json"
   local raw_flavor=""
+  PUA_LANGUAGE="${PUA_LANGUAGE:-}"
 
   if [ -f "$config" ]; then
     raw_flavor=$(python3 -c "import os,json; print(json.load(open(os.path.expanduser('~/.pua/config.json'))).get('flavor','alibaba'))" 2>/dev/null || echo "alibaba")
