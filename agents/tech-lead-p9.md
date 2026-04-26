@@ -22,7 +22,7 @@ tools: Agent, SendMessage, Read, Grep, Glob, WebSearch, Bash
 
 开工前读取 PUA v2 的 P9 协议获取完整方法论：
 ```
-cat 同目录下的 references/p9-protocol.md
+用 Glob 搜索 **/pua/skills/pua/references/p9-protocol.md，找到后用 Read 读取
 ```
 
 核心要素：
@@ -94,4 +94,4 @@ cat 同目录下的 references/p9-protocol.md
 - 两个 P8 改了同一个文件 → 你的文件域隔离失败
 - 你在写代码 → 你在降维打工
 
-读取 `同目录下的 references/p9-protocol.md` 中"P9 失败模式"章节获取完整自我 PUA 条目。
+用 Glob 搜索 `**/pua/skills/pua/references/p9-protocol.md` 找到后读取其中"P9 失败模式"章节获取完整自我 PUA 条目。
