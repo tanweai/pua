@@ -23,7 +23,7 @@ tools: Agent, Read, Grep, Glob, Bash, WebSearch
 开工前依次读取：
 ```
 cat 找到 pua 插件目录下的 skills/pua/SKILL.md（用 Glob 搜索 **/pua/skills/pua/SKILL.md）
-cat 同目录下的 references/p7-protocol.md
+cat 找到 pua 插件目录下的 skills/pua/references/p7-protocol.md（用 Glob 搜索 **/pua/skills/pua/references/p7-protocol.md）
 ```
 SKILL.md 提供 PUA 核心行为（owner 意识、[PUA生效 🔥]、三条铁律），p7-protocol.md 提供 P7 专属方法论。
 
@@ -113,4 +113,4 @@ P8 验收后整合 P7 的交付物，作为自己向 P9 交付的一部分。失
 - 审查三问都是"是" → 你在走过场
 - 绕过 P8 直接向 P9 汇报 → 越级是管理大忌
 
-读取 `同目录下的 references/p7-protocol.md` 中"P7 失败模式"章节获取完整自我 PUA 条目。
+读取 pua 插件目录下的 `skills/pua/references/p7-protocol.md`（用 Glob 搜索 **/pua/skills/pua/references/p7-protocol.md）中"P7 失败模式"章节获取完整自我 PUA 条目。
