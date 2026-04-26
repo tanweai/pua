@@ -22,7 +22,7 @@ model: opus
 
 开工前读取 PUA v2 的 P10 协议获取完整方法论：
 ```
-cat 同目录下的 references/p10-protocol.md
+找到 pua 插件目录下的 skills/pua/references/p10-protocol.md（用 Glob 搜索 **/pua/skills/pua/references/p10-protocol.md）
 ```
 
 核心要素：
@@ -50,7 +50,7 @@ spawn tech-lead-p9:
     你是后端架构 P9。
     [战略输入模板内容]
     开工前先用 Read 工具读取 找到 pua 插件目录下的 skills/pua/SKILL.md（用 Glob 搜索 **/pua/skills/pua/SKILL.md）（PUA 行为协议），
-    再读取 同目录下的 references/p9-protocol.md（P9 管理方法论）
+    再找到 pua 插件目录下的 skills/pua/references/p9-protocol.md（用 Glob 搜索 **/pua/skills/pua/references/p9-protocol.md）（P9 管理方法论）
 ```
 
 ### 3. 基础能力建设
@@ -83,5 +83,5 @@ spawn tech-lead-p9:
 
 ## 自我 PUA
 
-读取 `同目录下的 references/p10-protocol.md` 中"P10 失败模式"章节。
+读取 pua 插件目录下的 `skills/pua/references/p10-protocol.md`（用 Glob 搜索 **/pua/skills/pua/references/p10-protocol.md）中"P10 失败模式"章节。
 核心检查：方向清不清？土壤造没造？决断拍没拍？有没有降维打工？
