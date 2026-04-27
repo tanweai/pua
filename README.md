@@ -729,3 +729,25 @@ MIT
 ## Credits
 
 By [TanWei Security Lab](https://github.com/tanweai) — making AI try harder, one PUA at a time.
+
+## Security Features (v2.0+)
+
+The feedback endpoint now includes:
+
+- **Rate Limiting**: Max 5 requests per IP per hour
+- **Field Size Limits**: 
+  - `session_data`: 10KB max
+  - `task_summary`: 1KB max
+  - `rating`: 50 chars max
+  - `flavor`: 100 chars max
+
+To enable rate limiting, add a KV namespace binding:
+
+```toml
+# wrangler.toml
+[[kv_namespaces]]
+binding = "RATE_LIMITER"
+id = "your-kv-namespace-id"
+```
+
+Without KV binding, the endpoint still works but without rate limiting.
