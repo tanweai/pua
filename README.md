@@ -261,7 +261,7 @@ Then manually register in `~/.claude/plugins/installed_plugins.json`:
     "pua@pua-skills": [
       {
         "scope": "user",
-        "installPath": "/Users/<you>/.claude/plugins/pua",
+        "installPath": "/absolute/path/to/.claude/plugins/pua",
         "version": "2.9.0"
       }
     ]
@@ -269,7 +269,7 @@ Then manually register in `~/.claude/plugins/installed_plugins.json`:
 }
 ```
 
-> **Windows:** use `C:/Users/<you>/.claude/plugins/pua` as `installPath`.
+> `installPath` must be the absolute path to your local checkout. On Windows, use the matching absolute `C:/...` path.
 
 Restart Claude Code. To update: `git pull` inside `~/.claude/plugins/pua`.
 
@@ -301,7 +301,7 @@ Adds a bare `/pua` alias on top of the plugin. Sub-commands route through the in
 
 Codex CLI uses the same Agent Skills open standard (SKILL.md). The Codex version uses a condensed description to fit Codex's length limits:
 
-**Recommended: One-command install (git clone + symlink, supports `git pull` updates)**
+**Recommended: One-command install (fetch the maintained installer doc)**
 
 Ask Codex to run:
 ```
@@ -311,13 +311,8 @@ Fetch and follow instructions from https://raw.githubusercontent.com/tanweai/pua
 **Manual install:**
 
 ```bash
-mkdir -p ~/.codex/skills/pua
-curl -o ~/.codex/skills/pua/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/codex/pua/SKILL.md
-
-mkdir -p ~/.codex/prompts
-curl -o ~/.codex/prompts/pua.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/commands/pua.md
+git clone https://github.com/tanweai/pua.git ~/.codex/pua
+python3 ~/.codex/pua/scripts/codex_subcommands.py install --codex-home ~/.codex
 ```
 
 **Trigger methods:**
@@ -325,19 +320,17 @@ curl -o ~/.codex/prompts/pua.md \
 | Method | Command | Requires |
 |--------|---------|----------|
 | Auto trigger | No action needed, matches by description | SKILL.md |
-| Direct call | Type `$pua` in conversation | SKILL.md |
-| Manual prompt | Type `/prompts:pua` in conversation | SKILL.md + prompts/pua.md |
+| Direct call | Type `$pua` in conversation | Installed skill |
+| Direct subcommand | Type `$pua:p7`, `$pua:on`, `$pua:survey`, etc. | Installed skills |
+| Manual prompt | Type `/prompts:pua` in conversation | Installed prompt |
+
+Codex installs from the repo's `codex/` export tree only, so Codex-specific subcommands do not require changing the shared Claude Code skill surface. The installer script keeps the export tree and installed links in sync, so new Codex subcommands do not require users to maintain a manual link list.
 
 Project-level install (current project only):
 
 ```bash
-mkdir -p .agents/skills/pua
-curl -o .agents/skills/pua/SKILL.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/codex/pua/SKILL.md
-
-mkdir -p .agents/prompts
-curl -o .agents/prompts/pua.md \
-  https://raw.githubusercontent.com/tanweai/pua/main/commands/pua.md
+git clone https://github.com/tanweai/pua.git ./.pua
+python3 ./.pua/scripts/codex_subcommands.py install --codex-home ./.agents
 ```
 
 ### Cursor
@@ -549,7 +542,7 @@ Spawn pua-enforcer as an independent watchdog in your Agent Team.
 | Platform | Auto-trigger | Manual trigger |
 |----------|-------------|----------------|
 | **Claude Code** | Yes (skill description matching) | See commands below |
-| **Codex CLI** | Yes (skill description matching) | `$pua` or `/prompts:pua` |
+| **Codex CLI** | Yes (skill description matching) | `$pua`, `$pua:xxx`, or `/prompts:pua` |
 | **Cursor** | Yes (`.mdc` rule, Agent Discretion) | — (auto only) |
 | **Kiro** | Yes (steering file or skill) | — (auto only) |
 | **CodeBuddy** | Yes (skill description matching) | Plugin commands (same as Claude Code) |
@@ -558,7 +551,7 @@ Spawn pua-enforcer as an independent watchdog in your Agent Team.
 | **OpenCode** | Yes (skill description matching) | — |
 | **VSCode Copilot** | Yes (instructions file) | `/pua` in Copilot Chat |
 
-> **Note:** Sub-modes (p7/p9/p10/pro/yes/pua-loop) are **Claude Code only** — other platforms install the core skill only.
+> **Note:** Codex CLI now supports the same public subcommands through namespaced skills such as `$pua:p7` and `$pua:on`. Claude Code still has the richer hook integration shown below.
 
 ### Architecture (Claude Code)
 
@@ -584,11 +577,11 @@ Hooks (v3, Claude Code only):
   SubagentStop  → Agent lifecycle accounting (v3.2) — writes teardown.jsonl, removes from active-agents.json
 ```
 
-### Commands (Claude Code)
+### Commands (Claude Code / Codex CLI)
 
-> **Note:** Sub-modes (p7/p9/p10/pro/yes/pua-loop) are Claude Code only.
+> Claude Code uses `/pua:...`. Codex CLI uses the same namespaced surface with `$pua:...`.
 >
-> Each command has two equivalent forms: standalone (`/pua:on`) or via the main command (`/pua:pua on`). Both work identically.
+> The main-command form also remains equivalent: `/pua:pua on` in Claude Code and `$pua` with `on` as the routed argument in Codex prompt flow.
 
 | Command | Description |
 |---------|-------------|
@@ -610,6 +603,28 @@ Hooks (v3, Claude Code only):
 | `/pua:team-status` 🆕 | **v3.2** — List all active agents with PID/TTL/age (Netflix Keeper Test: who's still on the court?) |
 | `/pua:reap-orphans` 🆕 | **v3.2** — Scan and reclaim stale agents (state mtime > 30min, no heartbeat) |
 | `/pua:teardown-all` 🆕 | **v3.2** — Cascading release of all active agents (P10 → P9 → P8 → P7 all off the court) |
+
+Codex CLI equivalents:
+
+```text
+$pua
+$pua:p7
+$pua:p9
+$pua:p10
+$pua:pro
+$pua:yes
+$pua:mama
+$pua:shot
+$pua:pua-loop
+$pua:on
+$pua:off
+$pua:flavor
+$pua:kpi
+$pua:survey
+$pua:cancel-pua-loop
+$pua:pua-en
+$pua:pua-ja
+```
 
 
 ## High-Agency: PUA v2 Evolution

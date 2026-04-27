@@ -1,0 +1,108 @@
+{
+  "prompt": {
+    "source": "codex/prompts/pua.md",
+    "target": "prompts/pua.md"
+  },
+  "install": [
+    {
+      "name": "pua",
+      "source": "codex/pua",
+      "target": "skills/pua"
+    },
+    {
+      "name": "pua-en",
+      "source": "codex/pua-en",
+      "target": "skills/pua-en"
+    },
+    {
+      "name": "pua-ja",
+      "source": "codex/pua-ja",
+      "target": "skills/pua-ja"
+    },
+    {
+      "name": "pua:pua",
+      "source": "codex/skills/pua-core",
+      "target": "skills/pua"
+    },
+    {
+      "name": "pua:p7",
+      "source": "codex/skills/pua-p7",
+      "target": "skills/p7"
+    },
+    {
+      "name": "pua:p9",
+      "source": "codex/skills/pua-p9",
+      "target": "skills/p9"
+    },
+    {
+      "name": "pua:p10",
+      "source": "codex/skills/pua-p10",
+      "target": "skills/p10"
+    },
+    {
+      "name": "pua:pro",
+      "source": "codex/skills/pua-pro",
+      "target": "skills/pro"
+    },
+    {
+      "name": "pua:yes",
+      "source": "codex/skills/pua-yes",
+      "target": "skills/yes"
+    },
+    {
+      "name": "pua:mama",
+      "source": "codex/skills/pua-mama",
+      "target": "skills/mama"
+    },
+    {
+      "name": "pua:shot",
+      "source": "codex/skills/pua-shot",
+      "target": "skills/shot"
+    },
+    {
+      "name": "pua:pua-loop",
+      "source": "codex/skills/pua-pua-loop",
+      "target": "skills/pua-loop"
+    },
+    {
+      "name": "pua:pua-en",
+      "source": "codex/skills/pua-pua-en",
+      "target": "skills/pua-en"
+    },
+    {
+      "name": "pua:pua-ja",
+      "source": "codex/skills/pua-pua-ja",
+      "target": "skills/pua-ja"
+    },
+    {
+      "name": "pua:on",
+      "source": "codex/skills/on",
+      "target": "skills/on"
+    },
+    {
+      "name": "pua:off",
+      "source": "codex/skills/off",
+      "target": "skills/off"
+    },
+    {
+      "name": "pua:flavor",
+      "source": "codex/skills/flavor",
+      "target": "skills/flavor"
+    },
+    {
+      "name": "pua:kpi",
+      "source": "codex/skills/kpi",
+      "target": "skills/kpi"
+    },
+    {
+      "name": "pua:survey",
+      "source": "codex/skills/survey",
+      "target": "skills/survey"
+    },
+    {
+      "name": "pua:cancel-pua-loop",
+      "source": "codex/skills/cancel-pua-loop",
+      "target": "skills/cancel-pua-loop"
+    }
+  ]
+}

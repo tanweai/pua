@@ -3,3 +3,5 @@ dist/
 .DS_Store
 docs/.local
 pua-workspace/CLAUDE.md
+__pycache__/
+*.pyc
