@@ -1,9 +1,9 @@
 ---
-description: "级联释放所有活跃 PUA agent：P10→P9→P8→P7 全员下场。/pua:teardown-all。Triggers on: '/pua:teardown-all', '收工', '全员下场', 'teardown all', 'stop all agents'."
+description: "级联释放所有活跃 PUA agent：P10→P9→P8→P7 全员休息。/pua:teardown-all。Triggers on: '/pua:teardown-all', '收工', '全员休息', 'teardown all', 'stop all agents'."
 allowed-tools: ["Bash(rm:*)", "Bash(ls:*)", "Bash(find:*)", "Bash(date:*)", "Bash(mkdir:*)", "Bash(git:*)"]
 ---
 
-# PUA Teardown All — 全员下场
+# PUA Teardown All — 全员休息
 
 > 不是解散球队，是正式收工。每个球员打卡下班，教练也下班。
 
@@ -50,7 +50,7 @@ allowed-tools: ["Bash(rm:*)", "Bash(ls:*)", "Bash(find:*)", "Bash(date:*)", "Bas
 ## 输出格式
 
 ```
-> [PUA TEARDOWN-ALL] 全员下场完成：
+> [PUA TEARDOWN-ALL] 全员休息完成：
 >   ✓ Loop state 清理 (N 个)
 >   ✓ Active agents 记录清理
 >   ✓ Worktree 回收 (M 个)

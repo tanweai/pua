@@ -5,7 +5,7 @@ allowed-tools: ["Bash(find:*)", "Bash(stat:*)", "Bash(rm:*)", "Bash(ls:*)", "Bas
 
 # PUA Reap Orphans — 孤儿回收
 
-Keeper Test 的工程版：打完就下场，拖着不走的一律清理。
+Keeper Test 的工程版：打完就休息，拖着不走的一律清理。
 
 ## 执行步骤
 

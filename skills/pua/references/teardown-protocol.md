@@ -1,6 +1,6 @@
 # PUA Teardown Protocol — Agent 生命周期释放协议
 
-> **当职业球队里某位球员已经打完自己那场比赛，你必须让他下场。继续让他站在场上只会拖垮全队节奏。**
+> **当职业球队里某位球员已经打完自己那场比赛，你必须让他休息。继续让他站在场上只会拖垮全队节奏。**
 > — Netflix Keeper Test 推论
 
 PUA v3 之前的协议只覆盖 agent 生命周期的前 4 步（Define → Spawn → Monitor → Accept），缺后 3 步（**Release → Cleanup → Orphan handling**）。这会导致：
@@ -35,7 +35,7 @@ PUA v3 之前的协议只覆盖 agent 生命周期的前 4 步（Define → Spaw
 
 ### R1. P9 验收通过必须发 `[TEARDOWN]` 信号
 
-**WHY** ：验收通过 ≠ agent 释放。P9 默认会继续分配下一个任务给同一个 P8，但如果没有下一个任务，老 P8 就这样挂在那里。`[TEARDOWN]` 是明确的"下场"指令。
+**WHY** ：验收通过 ≠ agent 释放。P9 默认会继续分配下一个任务给同一个 P8，但如果没有下一个任务，老 P8 就这样挂在那里。`[TEARDOWN]` 是明确的"休息"指令。
 
 **HOW** ：P9 在验收旁白后，追加一行：
 

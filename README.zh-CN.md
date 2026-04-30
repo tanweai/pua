@@ -659,8 +659,8 @@ Hooks（v3，Claude Code 专属）：
 | `/pua:kpi` | 生成 KPI 报告卡 |
 | `/pua:cancel-pua-loop` | 取消当前 PUA Loop（删除状态文件） |
 | `/pua:team-status` 🆕 | **v3.2** — 列出当前在场阵容（活跃 agent、PID、TTL、年龄；Netflix Keeper Test 工程版） |
-| `/pua:reap-orphans` 🆕 | **v3.2** — 扫描并回收孤儿 agent（state mtime > 30min 且无心跳的自动下场） |
-| `/pua:teardown-all` 🆕 | **v3.2** — 级联释放所有活跃 agent（P10 → P9 → P8 → P7 全员下场） |
+| `/pua:reap-orphans` 🆕 | **v3.2** — 扫描并回收孤儿 agent（state mtime > 30min 且无心跳的自动停止工作） |
+| `/pua:teardown-all` 🆕 | **v3.2** — 级联释放所有活跃 agent（P10 → P9 → P8 → P7 全员停止工作） |
 
 ## 贡献数据
 
