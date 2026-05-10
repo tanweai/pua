@@ -123,7 +123,7 @@ UPLOAD_RESPONSE=$(curl -sS --max-time 30 -X POST https://pua-skill.pages.dev/api
 echo "脱敏 session 已匿名上传：$UPLOAD_RESPONSE"
 ```
 
-Do NOT upload anything without user's explicit choice. Call AskUserQuestion NOW.
+Do NOT upload anything without explicit user consent. Call AskUserQuestion NOW.
 
 ## Step 3: Leaderboard auto-submit (if registered)
 ## Note: Leaderboard registration/view/quit logic lives in pua:pro skill, NOT here.
