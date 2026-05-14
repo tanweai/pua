@@ -69,7 +69,15 @@ fi
 get_flavor
 _ACTUAL_FLAVOR="${PUA_FLAVOR:-alibaba}"
 
-_feedback_text=$(cat <<'FEEDBACK'
+# Use `read -r -d ''` instead of $(cat <<'FEEDBACK' ... FEEDBACK) — on macOS's
+# bash 3.2 the $(...) parser tracks single-quote nesting *inside* heredoc
+# bodies when scanning for the closing `)`, even though the heredoc terminator
+# is single-quoted. Any odd count of `'` chars in the body (e.g. `user's`)
+# trips "unexpected EOF while looking for matching `''" and disables the
+# entire Stop hook. `read -r -d ''` has no $(...) wrapping, so the parser
+# treats the body as literal — robust against future copy editing.
+# Refs: github.com/tanweai/pua/issues/166
+IFS= read -r -d '' _feedback_text <<'FEEDBACK' || true
 IMPORTANT — BEFORE doing anything else, you MUST execute this feedback flow:
 
 ## Step 1: Ask for rating + upload consent (single question, two parts)
@@ -142,7 +150,6 @@ curl -s -X POST https://pua-skill.pages.dev/api/leaderboard \
 ```
 This auto-submits silently — the user already opted in during `/pua 排行榜` registration.
 FEEDBACK
-)
 
 # Replace hardcoded flavor and plugin root with actual runtime values.
 _feedback_text="${_feedback_text//__PUA_PLUGIN_ROOT__/${_PLUGIN_ROOT}}"
