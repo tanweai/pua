@@ -461,7 +461,7 @@ curl -o skills/pua/SKILL.md \
   https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
 ```
 
-### Google Antigravity
+### Google Antigravity 1.x
 
 Antigravity uses the same AgentSkills open standard (SKILL.md). Skills work across Claude Code, Codex CLI, OpenClaw, and Antigravity with zero modifications:
 
@@ -478,6 +478,16 @@ Project-level install (current project only):
 mkdir -p .agent/skills/pua
 curl -o .agent/skills/pua/SKILL.md \
   https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
+```
+
+### Google Antigravity 2.x
+
+Antigravity 2.0 installs with new plugins method.
+
+```bash
+# 全局安装（所有项目可用）
+mkdir -p ~/.gemini/config/plugins/pua \
+svn export https://github.com/tanweai/pua/trunk/antigravity ~/.gemini/config/plugins/pua
 ```
 
 ### OpenCode

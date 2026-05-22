@@ -441,7 +441,7 @@ curl -o skills/pua/SKILL.md \
   https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
 ```
 
-### Google Antigravity
+### Google Antigravity 1.x
 
 Antigravity 使用相同的 AgentSkills 开放标准（SKILL.md），零修改兼容：
 
@@ -458,6 +458,16 @@ curl -o ~/.gemini/antigravity/skills/pua/SKILL.md \
 mkdir -p .agent/skills/pua
 curl -o .agent/skills/pua/SKILL.md \
   https://raw.githubusercontent.com/tanweai/pua/main/skills/pua/SKILL.md
+```
+
+### Google Antigravity 2.x
+
+Antigravity 2.0 使用新的 Plugins 安装
+
+```bash
+# 全局安装（所有项目可用）
+mkdir -p ~/.gemini/config/plugins/pua \
+svn export https://github.com/tanweai/pua/trunk/antigravity ~/.gemini/config/plugins/pua
 ```
 
 ### OpenCode

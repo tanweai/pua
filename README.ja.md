@@ -393,7 +393,7 @@ curl -o skills/pua-ja/SKILL.md \
   https://raw.githubusercontent.com/tanweai/pua/main/skills/pua-ja/SKILL.md
 ```
 
-### Google Antigravity
+### Google Antigravity 1.x
 
 Antigravityは同じAgentSkillsオープンスタンダード（SKILL.md）を使用。修正なしで互換：
 
@@ -410,6 +410,16 @@ curl -o ~/.gemini/antigravity/skills/pua-ja/SKILL.md \
 mkdir -p .agent/skills/pua-ja
 curl -o .agent/skills/pua-ja/SKILL.md \
   https://raw.githubusercontent.com/tanweai/pua/main/skills/pua-ja/SKILL.md
+```
+
+### Google Antigravity 2.x
+
+Antigravity 2.0 は新しいプラグインと共にインストールされます。
+
+```bash
+# 全局安装（所有项目可用）
+mkdir -p ~/.gemini/config/plugins/pua \
+svn export https://github.com/tanweai/pua/trunk/antigravity ~/.gemini/config/plugins/pua
 ```
 
 ### OpenCode
