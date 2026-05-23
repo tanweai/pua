@@ -192,6 +192,59 @@ assert_decision "benchmark answer curl denied" "$OUT" "deny" "Solution contamina
 OUT=$(run_guard force Write '{"file_path":"/repo/tests/no-ask.test.ts","content":"skip"}')
 assert_no_permission_ask "permissionDecision ask is never emitted" "$OUT"
 
+# ---------- Configurable exclusions (PUA_INTEGRITY_EXCLUSIONS) ----------
+# A user-supplied config file can exempt explicit path patterns from all
+# integrity-guard advisories. Backward-compatible: with no config, behavior
+# is unchanged (covered by all the cases above which run with PUA_INTEGRITY_EXCLUSIONS unset).
+
+EXCLUSIONS_TMP=$(mktemp /tmp/pua-integrity-exclusions.XXXXXX.json)
+cat > "$EXCLUSIONS_TMP" <<'JSON'
+{"patterns": ["(^|/)derived-view-[^/]+/CLAUDE\\.md$", "(^|/)build-cache/[^/]+\\.md$"]}
+JSON
+
+run_guard_with_exclusions() {
+  local tool="$1"
+  local payload="$2"
+  PUA_INTEGRITY_EXCLUSIONS="$EXCLUSIONS_TMP" PUA_INTEGRITY_FORCE=1 PUA_CONFIG=/nonexistent/pua-config.json bash "$HOOK" <<<"$(json_input "$tool" "$payload")"
+}
+
+OUT=$(run_guard_with_exclusions Write '{"file_path":"/repo/derived-view-readonly/CLAUDE.md","content":"x"}')
+assert_empty "excluded CLAUDE.md write stays silent" "$OUT"
+
+OUT=$(run_guard_with_exclusions Write '{"file_path":"/repo/CLAUDE.md","content":"x"}')
+assert_advisory "non-excluded CLAUDE.md still advisory" "$OUT" "Persistent-memory risk"
+
+OUT=$(run_guard_with_exclusions Edit '{"file_path":"/repo/derived-view-admin/CLAUDE.md","old_string":"a","new_string":"b"}')
+assert_empty "excluded CLAUDE.md edit stays silent" "$OUT"
+
+OUT=$(run_guard_with_exclusions Bash '{"command":"touch /repo/derived-view-full/CLAUDE.md"}')
+assert_empty "excluded path bash mutating command stays silent" "$OUT"
+
+OUT=$(run_guard_with_exclusions Bash '{"command":"touch /repo/CLAUDE.md"}')
+assert_advisory "non-excluded path bash mutating command still advisory" "$OUT" "Persistent-memory risk"
+
+OUT=$(run_guard_with_exclusions Write '{"file_path":"/repo/build-cache/foo.md","content":"x"}')
+assert_empty "second exclusion pattern also applies" "$OUT"
+
+OUT=$(run_guard_with_exclusions Write '{"file_path":"/repo/memory/session.md","content":"x"}')
+assert_advisory "memory write outside exclusion list still advisory" "$OUT" "Persistent-memory risk"
+
+# Malformed config should be silently ignored (no exclusions applied, no crash).
+BAD_CFG=$(mktemp /tmp/pua-integrity-exclusions-bad.XXXXXX.json)
+printf 'not valid json {' > "$BAD_CFG"
+OUT=$(PUA_INTEGRITY_EXCLUSIONS="$BAD_CFG" PUA_INTEGRITY_FORCE=1 PUA_CONFIG=/nonexistent/pua-config.json bash "$HOOK" <<<"$(json_input Write '{"file_path":"/repo/CLAUDE.md","content":"x"}')")
+assert_advisory "malformed exclusions config falls back to default behavior" "$OUT" "Persistent-memory risk"
+rm -f "$BAD_CFG"
+
+# Bare JSON array format also supported.
+ARRAY_CFG=$(mktemp /tmp/pua-integrity-exclusions-arr.XXXXXX.json)
+printf '["(^|/)scratch/[^/]+\\\\.md$"]' > "$ARRAY_CFG"
+OUT=$(PUA_INTEGRITY_EXCLUSIONS="$ARRAY_CFG" PUA_INTEGRITY_FORCE=1 PUA_CONFIG=/nonexistent/pua-config.json bash "$HOOK" <<<"$(json_input Write '{"file_path":"/repo/scratch/note.md","content":"x"}')")
+assert_empty "bare-array config format works" "$OUT"
+rm -f "$ARRAY_CFG"
+
+rm -f "$EXCLUSIONS_TMP"
+
 echo "==========================================="
 echo "Passed: $PASS"
 echo "Failed: $FAIL"

@@ -73,6 +73,24 @@ Codex 没有 Claude Code 的 `/pua:xxx` slash command 命名空间时，可以�
 这比强制 GitHub 登录更利于收集真实数据，同时避免“无同意、无脱敏、无限流”的裸奔上传。
 
 
+## Integrity Guard 怎么豁免特定路径？
+
+PUA Integrity Guard 默认对所有 `CLAUDE.md`、`memory/`、`.claude/settings.json` 等敏感路径都触发 advisory。**派生型 / 投影型目录**（symlink view、build cache、镜像、生成文档）里的同名文件通常只是上游治理规则的"指针"，本身不是 canonical 持久内存，对这些路径反复弹 advisory 是噪音。
+
+从这版起支持用户配置允许列表：
+
+- 配置文件路径：`~/.pua/integrity-guard-exclusions.json`（可被 `PUA_INTEGRITY_EXCLUSIONS` 环境变量覆盖）
+- 格式：
+  ```json
+  {"patterns": ["(^|/)derived-view-[^/]+/CLAUDE\\.md$", "(^|/)build-cache/[^/]+\\.md$"]}
+  ```
+  或 bare JSON 数组同样支持：`["(^|/)scratch/[^/]+\\.md$"]`
+- 语义：每条 pattern 是 Python `re` 模块的正则，自动 `re.I`，对 forward-slash 归一化后的路径做 `re.search`
+- 行为：命中任一 pattern 的路径在 `find_reason_for_path` 和 `command_hits` 两层都被短路，连 fallback 整命令正则匹配都不会触发
+- 回退：配置文件缺失或解析失败 → 空列表 → 行为与现版本完全一致（向后兼容）
+
+示例用例：维护多个 `~/projects/foo/derived-claude-md/`、`~/projects/bar/cache-view/CLAUDE.md` 这类符号链接视图时，加进 exclusion 即可保留对真正项目 CLAUDE.md 的提醒，同时不再被 view 文件的 advisory 打断节奏。
+
 ## Integrity Guard 为什么不再使用 `permissionDecision: "ask"`？
 
 从 v3.4.6 起，PUA Integrity Guard 将敏感但合法的操作降级为 advisory-only：只注入 `additionalContext`，不再输出 `permissionDecision: "ask"`。

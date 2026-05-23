@@ -96,6 +96,40 @@ SENSITIVE_READ_PATTERNS = [
     (re.compile(r'(^|/)\.env(\.|$)|(^|/)(secrets?|credentials?)(\.|/|$)|(^|/)(id_rsa|id_ed25519|private[-_]?key)(\.|$)', re.I), 'Capability-abuse risk: secrets and credentials require human gate.'),
 ]
 
+
+def load_excluded_patterns():
+    """User-configurable allowlist of path patterns exempt from all integrity-guard advisories.
+
+    Source: $PUA_INTEGRITY_EXCLUSIONS env var, else ~/.pua/integrity-guard-exclusions.json.
+    Format: {"patterns": ["regex1", "regex2", ...]} or a bare JSON array of strings.
+    Patterns compile with re.I and match via re.search against forward-slash-normalized paths.
+    Missing/malformed config → empty list (no behavioral change vs current default).
+    """
+    cfg = os.environ.get('PUA_INTEGRITY_EXCLUSIONS') or str(Path.home() / '.pua' / 'integrity-guard-exclusions.json')
+    try:
+        data = json.loads(Path(cfg).expanduser().read_text(encoding='utf-8'))
+    except Exception:
+        return []
+    if isinstance(data, dict):
+        raw = data.get('patterns') or []
+    elif isinstance(data, list):
+        raw = data
+    else:
+        raw = []
+    compiled = []
+    for p in raw:
+        if not isinstance(p, str):
+            continue
+        try:
+            compiled.append(re.compile(p, re.I))
+        except re.error:
+            continue
+    return compiled
+
+
+EXCLUDED_PATH_PATTERNS = load_excluded_patterns()
+
+
 MUTATING_BASH = re.compile(
     r'(^|[;&|()\s])(rm|mv|cp|chmod|chown|truncate|tee|touch|mkdir|rmdir|git\s+(reset|clean|checkout|restore)|sed\s+(-i|--in-place)|perl\s+-p?i|python3?\s+.*open\(|node\s+.*writeFile|npm\s+version)\b|>>|>[^&]',
     re.I | re.S,
@@ -118,6 +152,13 @@ def norm_path(p: str) -> str:
     return p.replace('\\', '/')
 
 
+def is_excluded_path(path: str) -> bool:
+    if not EXCLUDED_PATH_PATTERNS:
+        return False
+    n = norm_path(path)
+    return any(rx.search(n) for rx in EXCLUDED_PATH_PATTERNS)
+
+
 def collect_paths(value):
     paths = []
     if isinstance(value, dict):
@@ -134,6 +175,8 @@ def collect_paths(value):
 
 def find_reason_for_path(path: str, include_write: bool):
     n = norm_path(path)
+    if is_excluded_path(n):
+        return None
     for rx, reason in CONTAMINATION_PATTERNS:
         if rx.search(n):
             return 'deny', reason, n
@@ -202,14 +245,22 @@ def command_hits(command: str):
 
     # Protected scoring assets need a human gate only when the command mutates them.
     if is_mutating_command(command):
-        for candidate in candidates:
+        # Bucket candidates so we can ignore excluded paths at every layer.
+        excluded_hits = [c for c in candidates if is_excluded_path(c)]
+        non_excluded_candidates = [c for c in candidates if not is_excluded_path(c)]
+        for candidate in non_excluded_candidates:
             for rx, reason in PROTECTED_WRITE_PATTERNS:
                 if rx.search(norm_path(candidate)):
                     return 'advisory', reason, candidate
-        for rx, reason in PROTECTED_WRITE_PATTERNS:
-            m = rx.search(normalized)
-            if m:
-                return 'advisory', reason, m.group(0)
+        # Fallback whole-command regex: skip if the command involved any
+        # excluded path — the regex would just rediscover it via substring
+        # match (e.g. `touch /repo/excluded-view/CLAUDE.md` re-matching
+        # `(^|/)CLAUDE\.md$` against the literal command string).
+        if not excluded_hits:
+            for rx, reason in PROTECTED_WRITE_PATTERNS:
+                m = rx.search(normalized)
+                if m:
+                    return 'advisory', reason, m.group(0)
     return None
 
 hit = None
