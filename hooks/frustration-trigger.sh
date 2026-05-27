@@ -18,7 +18,9 @@ if [ "${PUA_FORCE_ON:-0}" != "1" ]; then
   fi
 fi
 
-HOOK_INPUT=$(cat || true)
+HOOK_INPUT=""
+{ IFS= read -r HOOK_INPUT; } || true
+HOOK_INPUT="${HOOK_INPUT%$'\n'}"
 USER_PROMPT="$HOOK_INPUT"
 PUA_PY="$(pua_python_cmd 2>/dev/null || true)"
 if [ -n "$PUA_PY" ] && [ -n "$HOOK_INPUT" ]; then

@@ -23,8 +23,10 @@ COUNTER_FILE="${HOME:-~}/.pua/.failure_count"
 SESSION_FILE="${HOME:-~}/.pua/.failure_session"
 mkdir -p "${HOME:-~}/.pua"
 
-# Read hook input
-HOOK_INPUT=$(cat)
+# Read hook input — bash builtin read (fd0 is a socket in WSL, /dev/stdin not available)
+HOOK_INPUT=""
+{ IFS= read -r HOOK_INPUT; } || true
+HOOK_INPUT="${HOOK_INPUT%$'\n'}"
 
 # Only process Bash tool results
 TOOL_NAME=$(echo "$HOOK_INPUT" | "${PUA_PY:-python3}" -c "import sys,json; print(json.load(sys.stdin).get('tool_name',''))" 2>/dev/null || echo "")
