@@ -59,8 +59,9 @@ fi
 # 兼容 legacy .claude/pua-loop.local.md
 # ═══════════════════════════════════════════════════════════════
 HOOK_SESSION_ID=$(echo "$HOOK_INPUT" | jq -r '.session_id // ""' 2>/dev/null || echo "")
-PUA_DIR="${PUA_STATE_DIR:-${HOME}/.pua}"
-LEGACY_PUA_DIR="${HOME}/.claude/pua"
+DEFAULT_HOME="${HOME:-.}"
+PUA_DIR="${PUA_STATE_DIR:-${DEFAULT_HOME}/.pua}"
+LEGACY_PUA_DIR="${DEFAULT_HOME}/.claude/pua"
 mkdir -p "$PUA_DIR" .pua 2>/dev/null || true
 LOCAL_HISTORY_FILE=".pua/pua-loop-history.jsonl"
 CWD_HASH=$(printf '%s' "$(pwd)" | md5sum 2>/dev/null | cut -c1-8 || printf '%s' "$(pwd)" | md5 2>/dev/null | cut -c1-8 || echo "default")
@@ -207,20 +208,30 @@ fi
 # Extract last assistant text
 LAST_LINES=$(grep -E '"role"[[:space:]]*:[[:space:]]*"assistant"' "$TRANSCRIPT_PATH" | tail -n 100) || true
 if [[ -z "$LAST_LINES" ]]; then
-  rm "$RALPH_STATE_FILE"
+  cleanup_state_files
   exit 0
 fi
 
 set +e
 LAST_OUTPUT=$(echo "$LAST_LINES" | jq -rs '
+  def text_content($content):
+    if ($content | type) == "string" then
+      $content
+    elif ($content | type) == "array" then
+      ($content[]? | if type == "string" then . elif (.type == "text" or .type == "output_text") then (.text // "") else empty end)
+    else
+      empty
+    end;
   [
     .[] |
-    if (.message.role? == "assistant") then
-      (.message.content[]? | if type == "string" then . elif (.type == "text" or .type == "output_text") then (.text // "") else empty end)
+    if (.role? == "assistant") then
+      text_content(.message.content? // .content?)
+    elif (.message.role? == "assistant") then
+      text_content(.message.content?)
     elif (.payload.role? == "assistant") then
-      (.payload.content[]? | if type == "string" then . elif (.type == "text" or .type == "output_text") then (.text // "") else empty end)
+      text_content(.payload.content?)
     elif (.payload.message.role? == "assistant") then
-      (.payload.message.content[]? | if type == "string" then . elif (.type == "text" or .type == "output_text") then (.text // "") else empty end)
+      text_content(.payload.message.content?)
     else
       empty
     end
@@ -231,7 +242,7 @@ set -e
 
 if [[ $JQ_EXIT -ne 0 ]]; then
   echo "⚠️  PUA Loop: JSON parse failed" >&2
-  rm "$RALPH_STATE_FILE"
+  cleanup_state_files
   exit 0
 fi
 
@@ -242,7 +253,7 @@ ABORT_TEXT=$(echo "$LAST_OUTPUT" | perl -0777 -ne 'if (/<loop-abort>(.*?)<\/loop
 if [[ -n "$ABORT_TEXT" ]]; then
   echo "🛑 PUA Loop: <loop-abort> received. Reason: $ABORT_TEXT"
   echo "{\"iteration\":$ITERATION,\"status\":\"abort\",\"reason\":\"$(echo "$ABORT_TEXT" | head -1 | tr '"' "'")\",\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> "$LOCAL_HISTORY_FILE" 2>/dev/null || true
-  rm "$RALPH_STATE_FILE"
+  cleanup_state_files
   exit 0
 fi
 

@@ -10,6 +10,7 @@ PUA_PY="$(pua_python_cmd 2>/dev/null || true)"
 [[ -z "$PUA_PY" ]] && exit 0
 
 HOOK_INPUT=$(cat || true)
+PUA_DIR="$(pua_state_dir)"
 PROMPT=$(printf '%s' "$HOOK_INPUT" | "$PUA_PY" -c 'import json,sys
 try:
     data=json.load(sys.stdin)
@@ -61,12 +62,12 @@ PY
 }
 
 handle_feedback_reply() {
-  local pending="${HOME:-~}/.pua/pending-feedback.json"
+  local pending="${PUA_DIR}/pending-feedback.json"
   [[ ! -f "$pending" ]] && return 1
   case "$PROMPT" in
     *"pua feedback skip"*|*"这次跳过"*|*"跳过"*|*"skip"*)
-      mkdir -p "${HOME:-~}/.pua"
-      printf '{"ts":"%s","rating":"skip","uploaded":false}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "${HOME:-~}/.pua/feedback.jsonl"
+      mkdir -p "$PUA_DIR"
+      printf '{"ts":"%s","rating":"跳过","choice":"skip","pua_count":1,"uploaded":false}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "${PUA_DIR}/feedback.jsonl"
       rm -f "$pending"
       json_context "[PUA Feedback] Skipped and recorded locally. Continue the user's task normally."
       return 0

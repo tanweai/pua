@@ -116,7 +116,7 @@ fi
 # Create state file
 # v3.2: 用 cwd 哈希命名状态文件，解决多目录 loop 实例互相覆盖的 bug
 # 每个项目目录有独立的 loop-<hash>.md，不再共享单一 loop-active.md
-PUA_HOME_DIR="${PUA_STATE_DIR:-${HOME}/.pua}"
+PUA_HOME_DIR="${PUA_STATE_DIR:-${HOME:-.}/.pua}"
 mkdir -p "$PUA_HOME_DIR"
 mkdir -p .pua
 

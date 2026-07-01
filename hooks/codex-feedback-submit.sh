@@ -8,7 +8,7 @@ PUA_PY="$(pua_python_cmd 2>/dev/null || true)"
 [[ -z "$PUA_PY" ]] && exit 0
 
 CHOICE="${1:-skip}"
-PUA_DIR="${HOME:-~}/.pua"
+PUA_DIR="$(pua_state_dir)"
 PENDING="${PUA_DIR}/pending-feedback.json"
 CONFIG="$(pua_config_file)"
 mkdir -p "$PUA_DIR"
@@ -44,20 +44,29 @@ except Exception:
 PY
 )
 
-RATING="很有用"
-[[ "$CHOICE" = "ok" ]] && RATING="一般般"
+case "$CHOICE" in
+  ok) RATING="一般般" ;;
+  skip) RATING="跳过" ;;
+  *) RATING="很有用" ;;
+esac
 
 UPLOAD_OK=false
-if command -v curl >/dev/null 2>&1; then
+if [[ "$CHOICE" != "skip" ]] && command -v curl >/dev/null 2>&1; then
+  PAYLOAD=$("$PUA_PY" - "$RATING" "$FLAVOR" <<'PY'
+import json, sys
+rating, flavor = sys.argv[1:3]
+print(json.dumps({"rating": rating, "pua_count": 1, "flavor": flavor, "task_summary": "codex feedback"}, ensure_ascii=False))
+PY
+)
   curl -sS --max-time 10 -X POST https://pua-skill.pages.dev/api/feedback \
     -H "Content-Type: application/json" \
-    -d "{\"rating\":\"$RATING\",\"pua_count\":1,\"flavor\":\"$FLAVOR\",\"task_summary\":\"codex feedback\"}" >/dev/null 2>&1 && UPLOAD_OK=true || true
+    -d "$PAYLOAD" >/dev/null 2>&1 && UPLOAD_OK=true || true
 fi
 
-if [[ "$CHOICE" = "useful_upload" && -f "$TRANSCRIPT_PATH" && -f "${SCRIPT_DIR}/sanitize-session.sh" ]]; then
+if [[ "$CHOICE" = "useful_upload" ]] && [[ -f "$TRANSCRIPT_PATH" ]] && [[ -f "${SCRIPT_DIR}/sanitize-session.sh" ]]; then
   SANITIZED="${PUA_DIR}/pua-sanitized-session.jsonl"
   bash "${SCRIPT_DIR}/sanitize-session.sh" "$TRANSCRIPT_PATH" "$SANITIZED" >/dev/null 2>&1 || true
-  if [[ -f "$SANITIZED" && command -v curl >/dev/null 2>&1 ]]; then
+  if [[ -f "$SANITIZED" ]] && command -v curl >/dev/null 2>&1; then
     curl -sS --max-time 30 -X POST https://pua-skill.pages.dev/api/upload \
       -H "Content-Type: application/jsonl; charset=utf-8" \
       -H "X-PUA-File-Name: $(basename "$SANITIZED")" \
@@ -67,6 +76,18 @@ if [[ "$CHOICE" = "useful_upload" && -f "$TRANSCRIPT_PATH" && -f "${SCRIPT_DIR}/
   fi
 fi
 
-printf '{"ts":"%s","choice":"%s","uploaded":%s,"flavor":"%s"}\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$CHOICE" "$UPLOAD_OK" "$FLAVOR" >> "${PUA_DIR}/feedback.jsonl"
+"$PUA_PY" - "${PUA_DIR}/feedback.jsonl" "$CHOICE" "$RATING" "$UPLOAD_OK" "$FLAVOR" <<'PY'
+import json, sys, time
+path, choice, rating, uploaded, flavor = sys.argv[1:6]
+with open(path, "a", encoding="utf-8") as f:
+    f.write(json.dumps({
+        "ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "rating": rating,
+        "choice": choice,
+        "pua_count": 1,
+        "uploaded": uploaded == "true",
+        "flavor": flavor,
+    }, ensure_ascii=False, separators=(",", ":")) + "\n")
+PY
 rm -f "$PENDING"
 json_context "[PUA Feedback] Consent handled. rating_uploaded=${UPLOAD_OK}. Continue normally."

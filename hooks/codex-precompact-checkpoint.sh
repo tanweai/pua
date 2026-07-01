@@ -7,7 +7,7 @@ source "${SCRIPT_DIR}/flavor-helper.sh"
 PUA_PY="$(pua_python_cmd 2>/dev/null || true)"
 
 HOOK_INPUT=$(cat || true)
-PUA_DIR="${HOME:-~}/.pua"
+PUA_DIR="$(pua_state_dir)"
 JOURNAL="${PUA_DIR}/builder-journal.md"
 CONFIG="$(pua_config_file)"
 mkdir -p "$PUA_DIR"
