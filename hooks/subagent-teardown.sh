@@ -5,8 +5,8 @@
 # 不 block，不干扰主流程，纯 append-only 记录。
 #
 # 数据去向：
-#   $HOME/.claude/pua/teardown.jsonl   — 供 /pua:team-status 汇总
-#   $HOME/.claude/pua/active-agents.json — 从 in_progress 集合移除
+#   $HOME/.pua/teardown.jsonl   — 供 /pua:team-status 汇总
+#   $HOME/.pua/active-agents.json — 从 in_progress 集合移除
 #
 # 输入字段（来自 Claude Code SubagentStop payload）：
 #   session_id, transcript_path, cwd, hook_event_name="SubagentStop"
@@ -17,7 +17,8 @@ set -uo pipefail
 command -v jq &>/dev/null || exit 0
 
 HOOK_INPUT=$(cat)
-PUA_DIR="${HOME}/.claude/pua"
+PUA_DIR="${PUA_STATE_DIR:-${HOME}/.pua}"
+LEGACY_PUA_DIR="${HOME}/.claude/pua"
 mkdir -p "$PUA_DIR" 2>/dev/null || exit 0
 
 # 提取关键字段（全部 fail-safe 空字符串）
@@ -46,6 +47,9 @@ jq -cn \
 
 # 若 active-agents.json 存在，尝试从中移除 agent_id（best-effort）
 ACTIVE_FILE="$PUA_DIR/active-agents.json"
+if [[ ! -f "$ACTIVE_FILE" && -f "$LEGACY_PUA_DIR/active-agents.json" ]]; then
+  ACTIVE_FILE="$LEGACY_PUA_DIR/active-agents.json"
+fi
 if [[ -f "$ACTIVE_FILE" ]] && [[ -n "$AGENT_ID" ]]; then
   TMP="$ACTIVE_FILE.tmp.$$"
   jq --arg aid "$AGENT_ID" '.agents |= map(select(.id != $aid))' "$ACTIVE_FILE" > "$TMP" 2>/dev/null \

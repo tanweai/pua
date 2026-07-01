@@ -1,6 +1,6 @@
 ---
 name: pua-survey
-description: "PUA survey alias for Codex. Codex subcommand mapping for Claude Code /pua:survey style usage; invoke with $pua-survey."
+description: "Run the PUA research questionnaire."
 license: MIT
 ---
 

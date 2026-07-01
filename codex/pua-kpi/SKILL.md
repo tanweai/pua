@@ -1,6 +1,6 @@
 ---
 name: pua-kpi
-description: "PUA KPI alias for Codex. Codex subcommand mapping for Claude Code /pua:kpi style usage; invoke with $pua-kpi."
+description: "Generate a local PUA KPI report card."
 license: MIT
 ---
 

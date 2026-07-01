@@ -1,5 +1,5 @@
 ---
-description: "Use when the user invokes /pua or asks for PUA mode, try-harder/retry help, change-approach coaching, completion-quality checks, evidence requests, test-before-done reminders, or Ding-style workplace reminders. Routes to p7, p9, p10, pro, yes, mama, loop, on/off/offline, kpi, survey, flavor, ding, again, done-check, or evidence. Normal calm first-attempt requests are left alone."
+description: "Use only when the user explicitly invokes /pua or asks for PUA mode, try-harder/retry help, change-approach coaching, completion-quality checks, evidence requests, test-before-done reminders, or Ding-style workplace reminders. Routes to p7, p9, p10, pro, yes, mama, loop, on/off/offline, kpi, survey, flavor, ding, again, done-check, or evidence. Normal calm first-attempt requests are left alone."
 argument-hint: "[p7|p9|p10|pro|yes|mama|loop|on|off|offline|kpi|survey|flavor|ding|again|done-check|evidence|task]"
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: pua-pro
-description: "PUA Pro alias for Codex. Codex subcommand mapping for Claude Code /pua:pro style usage; invoke with $pua-pro."
+description: "Self-evolution mode with KPI tracking and improvement loops."
 license: MIT
 ---
 

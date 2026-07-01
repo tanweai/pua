@@ -1,6 +1,6 @@
 ---
 name: pua-loop
-description: "PUA Loop alias for Codex. Codex subcommand mapping for Claude Code /pua:loop style usage; invoke with $pua-loop."
+description: "Auto-iterate until verified, paused, or aborted."
 license: MIT
 ---
 

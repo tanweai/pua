@@ -13,6 +13,7 @@ manifest_files = [
     '.claude-plugin/marketplace.json',
     '.codebuddy-plugin/plugin.json',
     '.codebuddy-plugin/marketplace.json',
+    '.codex-plugin/plugin.json',
 ]
 versions = []
 errors = []
@@ -73,6 +74,42 @@ else:
             errors.append(f'harness governance reference missing required term: {term}')
 
 hooks_json = json.loads((root / 'hooks/hooks.json').read_text(encoding='utf-8'))
+codex_plugin = json.loads((root / '.codex-plugin/plugin.json').read_text(encoding='utf-8'))
+if codex_plugin.get('skills') != './codex/':
+    errors.append('.codex-plugin/plugin.json must point skills at ./codex/')
+if codex_plugin.get('hooks') != './hooks/codex-hooks.json':
+    errors.append('.codex-plugin/plugin.json must point hooks at ./hooks/codex-hooks.json')
+codex_hooks_path = root / 'hooks/codex-hooks.json'
+if not codex_hooks_path.exists():
+    errors.append('missing hooks/codex-hooks.json')
+else:
+    codex_hooks = json.loads(codex_hooks_path.read_text(encoding='utf-8'))
+    def walk_hooks(obj):
+        if isinstance(obj, dict):
+            if obj.get('type') == 'prompt':
+                errors.append('Codex hooks must not use type: prompt')
+            for value in obj.values():
+                walk_hooks(value)
+        elif isinstance(obj, list):
+            for value in obj:
+                walk_hooks(value)
+    walk_hooks(codex_hooks)
+    for event in ['SessionStart', 'UserPromptSubmit', 'PostToolUse', 'PreCompact', 'Stop', 'SubagentStart', 'SubagentStop', 'PreToolUse']:
+        if event not in codex_hooks.get('hooks', {}):
+            errors.append(f'Codex hooks missing event: {event}')
+for rel in [
+    'hooks/codex-context-wrapper.sh',
+    'hooks/codex-command-router.sh',
+    'hooks/codex-precompact-checkpoint.sh',
+    'hooks/codex-stop-dispatcher.sh',
+    'hooks/codex-stop-feedback.sh',
+    'hooks/codex-feedback-submit.sh',
+    'hooks/codex-subagent-start.sh',
+    'codex/pua-shot/SKILL.md',
+    'codex/pua-cancel-pua-loop/SKILL.md',
+]:
+    if not (root / rel).exists():
+        errors.append(f'missing Codex hook/alias asset: {rel}')
 pre_hooks = hooks_json.get('hooks', {}).get('PreToolUse', [])
 if not any(any('integrity-guard.sh' in hook.get('command', '') for hook in item.get('hooks', [])) for item in pre_hooks):
     errors.append('hooks/hooks.json missing PreToolUse integrity-guard.sh registration')
@@ -248,6 +285,14 @@ if 'EVAL_WORKSPACE="$RESULTS_DIR/workspace"' not in trigger or 'cd "$EVAL_WORKSP
     errors.append('trigger eval must run in a neutral workspace, not the pua plugin repo')
 if 'PUA_CONFIG="$eval_config" run_with_timeout 90 claude' not in helpers:
     errors.append('behavior eval must use isolated PUA_CONFIG to avoid user ~/.pua/config.json')
+
+readme_en = (root / 'README.md').read_text(encoding='utf-8')
+readme_zh = (root / 'README.zh-CN.md').read_text(encoding='utf-8')
+for text, label in [(readme_en, 'README.md'), (readme_zh, 'README.zh-CN.md')]:
+    if 'Codex hooks' not in text and 'Codex Hook' not in text:
+        errors.append(f'{label} must document Codex hooks support')
+    if 'other platforms install the core skill only' in text or '其他平台使用核心 skill，不含 hook' in text:
+        errors.append(f'{label} still claims Codex lacks hook/sub-mode support')
 
 if errors:
     print('=== Release consistency FAILED ===')

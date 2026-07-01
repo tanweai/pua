@@ -285,16 +285,18 @@ curl -o ~/.claude/commands/pua.md \
 
 ### OpenAI Codex CLI
 
-Codex CLI 使用相同的 Agent Skills 开放标准（SKILL.md）。Codex 版本使用精简的 description 以兼容 Codex 的长度限制：
+Codex 使用相同的 Agent Skills 开放标准（SKILL.md），并内置原生 Codex plugin manifest 与 lifecycle hooks。想要完整 v3 行为（SessionStart 注入、用户挫败触发、Bash 失败升级、PreCompact checkpoint、PUA Loop 续跑、静默可选反馈记录、Subagent 生命周期会计），请走 plugin 安装。
 
-**推荐：一键安装（git clone + symlink，支持 `git pull` 更新）**
+**推荐：源码 plugin 安装（支持 `git pull` 更新）**
 
 让 Codex 执行：
 ```
 Fetch and follow instructions from https://raw.githubusercontent.com/tanweai/pua/main/.codex/INSTALL.md
 ```
 
-**手动安装：**
+推荐安装会创建本地 Codex marketplace（`pua@pua-local`），源码放在 `~/.codex/plugins/src/pua`。不要把 plugin checkout 放在 `~/.codex/pua`；这个旧路径可能会被 Codex 当成额外 skill 源，导致 `$pua-*` 在选择器里重复出现。
+
+**手动 skill-only fallback：**
 
 ```bash
 mkdir -p ~/.codex/skills/pua
@@ -310,9 +312,12 @@ curl -o ~/.codex/prompts/pua.md \
 
 | 方式 | 命令 | 需要 |
 |------|------|------|
-| 自动触发 | 无需操作，根据 description 匹配 | SKILL.md |
-| 直接调用 | 对话中输入 `$pua` | SKILL.md |
-| 手动 prompt | 对话中输入 `/prompts:pua` | SKILL.md + prompts/pua.md |
+| Hook 触发 | 无需操作 | Codex plugin + trusted hooks |
+| 直接调用 | 对话中输入 `$pua` / `$pua-p7` / `$pua-loop` | Codex skills |
+| 文本命令 | 输入 `/pua:on`、`/pua p9`、`/pua loop ...` | Codex plugin hooks |
+| 手动 prompt | 输入 `/prompts:pua` | prompts fallback |
+
+Codex hooks 是 plugin 级 lifecycle hooks。`pua@pua-local` 安装并在 `/hooks` 里批准后，同一套 hooks 会在新会话第一轮之前和后续生命周期事件中运行。选择 `$pua-p7`、`$pua-kpi` 等 skill 只会改变当前 turn 的说明，不会安装各自独立的一套 hooks。
 
 项目级安装（仅当前项目生效）：
 
@@ -598,7 +603,7 @@ High-Agency = 外部压力 + 内在驱动（核反应堆 — 自维持链式反�
 
 > High-Agency 特性已内置于当前 pua skill，安装 pua 即可使用，无需额外操作。
 
-## 方法论智能路由：PUA v3（Claude Code）
+## 方法论智能路由：PUA v3（Claude Code + Codex Hooks）
 
 **v3 = v2 + 智能方法论路由 + 代码级行为检测**
 
@@ -620,7 +625,7 @@ v2 用压力旁白激励 Agent。v3 更进一步：自动根据任务类型选�
 - 质量差 → ⬜ Jobs → 🟧 小米 → 🟤 Netflix
 - 没搜就猜 → ⚫ 百度 → 🔶 Amazon → 🟡 字节
 
-### v3 Hook 系统（Claude Code 专属）
+### v3 Hook 系统（Claude Code + Codex Hooks）
 
 | Hook | 触发时机 | 功能 |
 |------|---------|------|
@@ -629,7 +634,7 @@ v2 用压力旁白激励 Agent。v3 更进一步：自动根据任务类型选�
 | **UserPromptSubmit** | 用户挫败短语 | 在模型响应前拦截"又错了""try harder"等，注入经过过滤的 PUA 上下文 |
 | **PreCompact** | 上下文压缩前 | 保存压力等级+失败次数，跨压缩恢复 |
 
-> v3 hook 功能需要 Claude Code。其他平台使用核心 skill，不含 hook。
+> v3 hook 功能需要 Claude Code 或 Codex hooks。其他非 Claude/Codex 平台默认使用核心 skill，不含 hook。
 
 ## 搭配使用
 
@@ -645,7 +650,7 @@ v2 用压力旁白激励 Agent。v3 更进一步：自动根据任务类型选�
 | 平台 | 自动触发 | 手动触发 |
 |------|---------|---------|
 | **Claude Code** | 是（skill description 匹配） | 见下方命令列表 |
-| **Codex CLI** | 是（skill description 匹配） | `$pua` 或 `/prompts:pua` |
+| **Codex CLI** | 是（skill description 匹配 + hooks） | `$pua`、`$pua-*`、`/pua:*` 或 `/prompts:pua` |
 | **Cursor** | 是（`.mdc` 规则，Agent Discretion） | — （仅自动） |
 | **Kiro** | 是（steering 文件或 skill） | — （仅自动） |
 | **CodeBuddy** | 是（skill description 匹配） | 插件命令（同 Claude Code） |
@@ -654,9 +659,9 @@ v2 用压力旁白激励 Agent。v3 更进一步：自动根据任务类型选�
 | **OpenCode** | 是（skill description 匹配） | — |
 | **VSCode Copilot** | 是（instructions 文件） | Copilot Chat 输入 `/pua` |
 
-> **注意：** p7/p9/p10/pro/yes/pua-loop 等子模式为 **Claude Code 专属**——其他平台仅安装核心 skill。
+> **注意：** 完整 v3 hooks 和子模式支持 Claude Code 与 Codex。其他平台仅安装核心 skill，除非对应 adapter 另有说明。
 
-### 架构（Claude Code）
+### 架构（Claude Code + Codex）
 
 ```
 /pua:pua        → 核心引擎 — 三条红线 + 味道 + 压力升级 + 方法论路由 (v3)
@@ -671,18 +676,18 @@ v2 用压力旁白激励 Agent。v3 更进一步：自动根据任务类型选�
 /pua:pua-en     → 英文 PIP 版
 /pua:pua-ja     → 日本語版
 
-Hooks（v3，Claude Code 专属）：
+Hooks（v3，Claude Code + Codex）：
   SessionStart  → additionalContext 注入（味道 + 方法论 + 路由）
   PostToolUse   → Bash 失败检测 → L1-L4 压力升级 + 方法论切换
   UserPromptSubmit → 脚本内挫败关键词过滤 → PUA 上下文
   PreCompact    → 状态持久化（压力等级 + 失败次数）
-  Stop          → 反馈收集 + PUA Loop 延续
+  Stop          → PUA Loop 延续 + 静默可选反馈记录
   SubagentStop  → Agent 生命周期会计（v3.2）— 写 teardown.jsonl，从 active-agents.json 移除
 ```
 
-### 命令（Claude Code 专属）
+### 命令（Claude Code + Codex）
 
-> **注意：** p7/p9/p10/pro/yes/pua-loop 等子模式为 Claude Code 专属。
+> **注意：** Codex 会把这些能力暴露为 `$pua-*` skills，同时通过 Codex UserPromptSubmit hook 接受 `/pua:*` 文本命令。
 >
 > 每个子命令有两种等价调用方式：独立命令（`/pua:on`）或通过主命令传参（`/pua:pua on`），效果完全相同。
 

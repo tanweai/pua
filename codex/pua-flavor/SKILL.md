@@ -1,6 +1,6 @@
 ---
 name: pua-flavor
-description: "PUA flavor alias for Codex. Codex subcommand mapping for Claude Code /pua:flavor style usage; invoke with $pua-flavor."
+description: "Switch PUA corporate flavor and methodology."
 license: MIT
 ---
 

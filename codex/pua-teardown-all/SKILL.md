@@ -1,6 +1,6 @@
 ---
 name: pua-teardown-all
-description: "PUA teardown alias for Codex. Codex subcommand mapping for Claude Code /pua:teardown-all style usage; invoke with $pua-teardown-all."
+description: "Stop and clean up all PUA agent team state."
 license: MIT
 ---
 

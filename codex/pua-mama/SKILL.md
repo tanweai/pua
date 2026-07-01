@@ -1,6 +1,6 @@
 ---
 name: pua-mama
-description: "PUA mama alias for Codex. Codex subcommand mapping for Claude Code /pua:mama style usage; invoke with $pua-mama."
+description: "Chinese mom reminder mode with the same PUA completion rules."
 license: MIT
 ---
 

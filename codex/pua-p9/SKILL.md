@@ -1,6 +1,6 @@
 ---
 name: pua-p9
-description: "PUA P9 alias for Codex. Codex subcommand mapping for Claude Code /pua:p9 style usage; invoke with $pua-p9."
+description: "P9 tech lead mode: decompose work and drive delivery."
 license: MIT
 ---
 

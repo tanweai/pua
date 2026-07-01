@@ -1,6 +1,6 @@
 ---
 name: pua-yes
-description: "PUA yes alias for Codex. Codex subcommand mapping for Claude Code /pua:yes style usage; invoke with $pua-yes."
+description: "Encouragement mode: supportive pressure with light roasting."
 license: MIT
 ---
 
