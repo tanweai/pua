@@ -126,6 +126,7 @@ Use the configured flavor by default. If no flavor is configured and the task cl
 | Build New | add, create, implement, 新增 | Musk |
 | Research | research, search, 调研, 搜索 | Baidu |
 | Architecture | design, 架构, 方案 | Amazon |
+| Full-Stack Acceleration | CUDA, GPU, profiling, critical path, 加速, 瓶颈 | NVIDIA/Jensen |
 | Evidence/Completion | test, verify, 验证, 没跑测试别说完成 | Ding or ByteDance |
 | Workplace Process | 无招, ONE, 老板体感, 周报, 口径, 置身钉内, 置身钉外, 每日一包, 薛定谔的用户, 病态敏捷, 望舒行动, 全景监狱, 温室数据, 发心, 捆柴, 手感, 做错事, 油尽灯枯, 透明鸟笼 | Ding |
 

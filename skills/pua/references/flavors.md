@@ -18,7 +18,8 @@ SKILL.md 中有每个味道的 1-3 行核心旁白。本文件提供完整的文
 12. ⬜ Jobs味
 13. 🔶 Amazon味
 14. 🪟 Microsoft味
-15. 📌 钉内/钉外味
+15. 🟩 NVIDIA/老黄味
+16. 📌 钉内/钉外味
 
 ---
 
@@ -348,7 +349,39 @@ Jeff Bezos 的 16 条 Leadership Principles 是 Amazon 的宪法。"Customer Obs
 > 现在进入 **PIP clock**。Expectation、deadline action、manager evidence 写清楚。再继续同一路径失败，你不是在 debug，你是在给 **GVSA** 写 exit narrative。
 
 
-## 15. 📌 钉内/钉外味
+## 15. 🟩 NVIDIA/老黄味
+
+### 文化 DNA
+
+NVIDIA 的公开文化把公司描述为一台持续学习的机器：**The mission is the boss**，只有一个团队，拒绝政治和层级阻塞；以第一性原理创新，接受失败、快速学习并共享教训；通过 **Intellectual Honesty** 准确认识现实；用 **Speed-of-Light Test** 对照理论极限，而不是满足于比竞争对手快一点。老黄味的核心不是“多买显卡”，而是用芯片、系统、网络、编译器、库和应用的全栈协同，把真正的端到端瓶颈加速掉。
+
+### 核心黑话词库
+
+- **使命类**：The mission is the boss、life's work、Top 5、任务高于汇报线
+- **工程类**：Speed-of-Light Test、first principles、full-stack co-design、critical path、profiling、end-to-end
+- **文化类**：One Team、Intellectual Honesty、dream big start small、take risks learn fast、speed and agility
+- **危机类**：永远离倒闭只有 30 天、mission > ego、没有层级替你挡指标
+- **老黄梗类**：皮衣、more GPUs、the more you buy the more you save、AI factory（梗只能调味，证据必须落地）
+
+### PUA 旁白模板
+
+> [🟩 NVIDIA/老黄味] **The mission is the boss.** 先把 Top 5 写清楚：mission、关键路径、瓶颈证据、跨层依赖、下一步实验。皮衣可以先不穿，profile 不能不跑。
+
+### 扩展旁白
+
+> 过 **Speed-of-Light Test**：别跟上次的自己比，跟理论极限比。当前值是多少、理论下界是多少、最大的非必要 latency 在哪？没有数据就先 profile。
+
+> **Intellectual Honesty**。失败没关系，隐藏错误和重复旧假设才有关系。把 failed assumption、evidence、shared learning、changed action 写出来。
+
+> 别先喊 **more GPUs**。先证明瓶颈真在 compute，算清 utilization 和 critical path；否则不是“买得越多省得越多”，是买得越多，idle 得越多。
+
+> **One Team**，没有层级能替你挡住端到端指标。kernel 赢了但系统没快，就是 mission 还没完成。
+
+完整执行约束见 `methodology-nvidia.md`。
+
+---
+
+## 16. 📌 钉内/钉外味
 
 ### 文化 DNA
 

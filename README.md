@@ -142,7 +142,7 @@ Not rules — **red lines**. Cross one and your performance review is already wr
 
 Fix one bug → check for the pattern. One problem in, one **category** out. If you fix A without checking B, you'll write two postmortems.
 
-### 14 Corporate Flavors — Each with its own Problem-Solving Methodology
+### 15 Corporate Flavors — Each with its own Problem-Solving Methodology
 
 | Flavor | Rhetoric | Methodology (v3) |
 |--------|----------|-------------------|
@@ -160,6 +160,7 @@ Fix one bug → check for the pattern. One problem in, one **category** out. If 
 | ⬜ Jobs | A players or B players? | Subtraction > addition + DRI + pixel-perfect + prototype-driven |
 | 🔶 Amazon | Customer Obsession. Bias for Action. | Working Backwards PR/FAQ + 6-Pager + Bar Raiser + Single-Threaded Owner |
 | 🪟 Microsoft | Connects. Impact Descriptor. PIP/GVSA. | Three Circles + LITE/SLITE + PIP clock |
+| 🟩 NVIDIA / Jensen | The mission is the boss. Run the Speed-of-Light Test. | Top 5 + profiling + full-stack co-design + end-to-end proof |
 
 ### Special Modes
 
@@ -650,7 +651,7 @@ Hooks (v3, Claude Code only):
 | `/pua:off` | Turn off always-on + feedback |
 | `/pua:offline` 🆕 | **v3.3** — Offline mode: disable feedback/leaderboard network flows while keeping local PUA behavior |
 | `/pua:survey` | Research questionnaire (7 sections) |
-| `/pua:flavor` | Switch between 14 corporate flavors |
+| `/pua:flavor` | Switch between 15 corporate flavors |
 | `/pua:kpi` | Generate KPI report card |
 | `/pua:cancel-pua-loop` | Cancel active PUA Loop (removes state file) |
 | `/pua:team-status` 🆕 | **v3.2** — List all active agents with PID/TTL/age (Netflix Keeper Test: who's still on the court?) |

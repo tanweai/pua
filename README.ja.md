@@ -146,7 +146,7 @@ AI コーディングエージェントのスキルプラグイン。中国・�
 4. **実行** — 新方案は本質的に異なり、検証基準があり、失敗時に新情報を生む
 5. **振り返り** — 何が解決したか？なぜ以前は思いつかなかったか？関連問題を主体的にチェック
 
-### 14種の大企業フレーバー — 各社固有の問題解決メソドロジー付き
+### 15種の大企業フレーバー — 各社固有の問題解決メソドロジー付き
 
 | フレーバー | レトリック | メソドロジー（v3） |
 |-----------|----------|-------------------|
@@ -164,6 +164,7 @@ AI コーディングエージェントのスキルプラグイン。中国・�
 | ⬜ Jobs | A playersかB playersか？ | 引き算 > 足し算 + DRI + ピクセルパーフェクト + プロトタイプ駆動 |
 | 🔶 Amazon | Customer Obsession. Bias for Action. | Working Backwards PR/FAQ + 6-Pager + Bar Raiser + Single-Threaded Owner |
 | 🪟 Microsoft | Connects。Impact Descriptor。PIP/GVSA。 | 三圈影響力 + LITE/SLITE + PIP clock |
+| 🟩 NVIDIA / Jensen | The mission is the boss。Speed-of-Light Test。 | Top 5 + profiling + フルスタック協調 + エンドツーエンド検証 |
 
 ## ベンチマークデータ
 
@@ -642,7 +643,7 @@ Hooks（v3、Claude Code専用）:
 | `/pua:on` | 常時ONモード（毎セッション自動PUA） |
 | `/pua:off` | 常時ONモード + フィードバック収集をオフ |
 | `/pua:survey` | アンケート（7セクション） |
-| `/pua:flavor` | 14種の大企業フレーバーを切り替え |
+| `/pua:flavor` | 15種の大企業フレーバーを切り替え |
 | `/pua:kpi` | KPIレポートカードを生成 |
 | `/pua:cancel-pua-loop` | アクティブなPUA Loopをキャンセル（状態ファイルを削除） |
 | `/pua:team-status` 🆕 | **v3.2** — 在場メンバー一覧（アクティブagent、PID、TTL、年齢；Netflix Keeper Test エンジニア版） |
