@@ -20,6 +20,16 @@ for term in 'The Mission Is the Boss|The mission is the boss' 'Speed-of-Light Te
   assert_grep "$term" skills/pua/references/methodology-nvidia.md "methodology includes $term"
 done
 
+for term in '\[NV-FULL-STACK-PROFILE\]' 'stage_measurements:' 'resource_utilization:' 'bottleneck_evidence:' 'optimization_target:' 'expected_system_effect:' 'repro_command:'; do
+  assert_grep "$term" skills/pua/references/methodology-nvidia.md "Step 3 template includes $term"
+done
+
+assert_grep '反面行为（碰了就触发压力升级）' skills/pua/references/methodology-nvidia.md "methodology defines pressure-triggering anti-patterns"
+for level in 'L1 — Mission Review' 'L2 — Speed-of-Light Review' 'L3 — Intellectual Honesty Review' 'L4 — 30-Day Mode'; do
+  assert_grep "$level" skills/pua/references/methodology-nvidia.md "anti-patterns map behavior to $level"
+done
+assert_grep '重复触发同类反面行为.*再升一级' skills/pua/references/methodology-nvidia.md "repeat violations escalate pressure"
+
 for file in hooks/flavor-helper.sh skills/pua/SKILL.md skills/pua/references/flavors.md skills/pua/references/methodology-router.md README.md README.zh-CN.md README.ja.md landing/src/i18n.ts commands/flavor.md; do
   assert_grep 'NVIDIA|Nvidia|nvidia|英伟达|老黄|Speed-of-Light' "$file" "NVIDIA flavor appears in $file"
 done
