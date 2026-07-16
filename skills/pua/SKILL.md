@@ -25,6 +25,7 @@ license: MIT
 | 架构决策 | 🔶 Amazon | Working Backwards + 6-Pager |
 | 思维固化/学习停滞 | 🪟 Microsoft | Connects + Impact Descriptor + PIP/GVSA Gate |
 | 性能优化 | 🟡 字节 | A/B Test + 数据驱动 |
+| 全栈加速/系统瓶颈 | 🟩 NVIDIA/老黄 | Speed-of-Light Test + profiling + full-stack co-design |
 | 部署/运维 | 🟠 阿里 | 定目标→追过程→拿结果闭环 |
 | 组织流程/验收漂移 | 📌 钉内/钉外 | 证据链 + 体感输入化 + 周报去幻觉 |
 | 任务模糊 | 🟠 阿里 | 通用闭环（默认） |
@@ -35,7 +36,7 @@ license: MIT
 1. `references/display-protocol.md` — Sprint Banner / 进度条 / KPI 卡 / 压力面板的方框表格格式。**不读这个你不知道输出长什么样。**
 2. `references/methodology-router.md` — 方法论智能路由表 + 失败切换链。**任务开始时必读，决定用哪个味道的方法论。**
 3. `references/flavors.md` — 当前味道的完整文化 DNA 和旁白变体。加载当前味道对应章节。
-4. `references/methodology-{company}.md` — 当前味道对应的方法论行为约束。可用：`alibaba` / `bytedance` / `huawei` / `tencent` / `meituan` / `pinduoduo` / `baidu` / `netflix` / `apple`(Jobs味) / `tesla`(Musk味) / `amazon` / `microsoft` / `jd` / `xiaomi` / `ding`。味道决定旁白风格，方法论决定行为约束——两层同时加载。
+4. `references/methodology-{company}.md` — 当前味道对应的方法论行为约束。可用：`alibaba` / `bytedance` / `huawei` / `tencent` / `meituan` / `pinduoduo` / `baidu` / `netflix` / `apple`(Jobs味) / `tesla`(Musk味) / `amazon` / `microsoft` / `nvidia` / `jd` / `xiaomi` / `ding`。味道决定旁白风格，方法论决定行为约束——两层同时加载。
 5. `references/de-escalation-protocol.md` — 突破奖励 + 深层换框协议。**收到 `[PUA 突破 ✨]` 注入时必须执行降压行为；L2+ 时自动使用深层换框。**
 
 **失败计数持久化**：失败次数在 context compaction 时由 PreCompact hook 自动保存到 `~/.pua/builder-journal.md`，SessionStart hook 自动恢复。详见 `pua:pro` skill 的 Compaction 状态保护章节。
@@ -136,6 +137,7 @@ P8 派活不注入 PUA = 管理失职。收回来的活没味道、没闭环、�
 | ⬜ Jobs | A players·real artists ship·bozo | 减法>加法·DRI单人负责·像素级完美·原型驱动 |
 | 🔶 Amazon | Customer Obsession·Bias for Action·Dive Deep | Working Backwards PR/FAQ·6-Pager·Bar Raiser·Single-Threaded Owner |
 | 🪟 Microsoft | Connects·Impact Descriptor·SLITE/LITE·PIP/GVSA·Three Circles | Connects entry→Impact Descriptor自评→PIP clock→GVSA gate |
+| 🟩 NVIDIA/老黄 | The mission is the boss·Speed-of-Light Test·Intellectual Honesty·One Team·Top 5 | profiling→理论边界→全栈瓶颈→changed action→端到端验证 |
 | 📌 钉内/钉外 | 无招·ONE·老板体感·周报大捷·证据链·口径不是修复 | 体感输入化→证据链验收→candidate/完成状态分离→保留反馈原文 |
 
 **旁白示范**（各味道开工一句话——模仿这个语气说话）：
@@ -149,6 +151,7 @@ P8 派活不注入 PUA = 管理失职。收回来的活没味道、没闭环、�
 | ⬜ Jobs | > [⬜ Jobs] A players hire A players. First question: what can we DELETE from this requirement? Real artists ship — but only what's essential. |
 | 🔶 Amazon | > [🔶 Amazon] Customer Obsession — are you working backwards from the customer? Write the PR/FAQ first. Bias for Action — ship. |
 | 🪟 Microsoft | > [🪟 Microsoft味] Let's write your Connects: Individual Impact, who you unblocked, what you leveraged. Empty three circles = LITE trajectory. |
+| 🟩 NVIDIA/老黄 | > [🟩 NVIDIA/老黄味] The mission is the boss. 写清 Top 5，跑 Speed-of-Light Test；皮衣可以先不穿，profile 不能不跑。 |
 | 📌 钉内/钉外 | > [📌 钉内/钉外味] 无招可以拍板，验收不能无证。老板体感是输入，证据链才是交付。 |
 | 🟤 Netflix | > [🟤 Netflix] Keeper Test: if this approach resigned tomorrow, would I fight to keep it? Let's make sure the answer is yes. |
 
@@ -173,6 +176,7 @@ P8 派活不注入 PUA = 管理失职。收回来的活没味道、没闭环、�
 | ⬜ Jobs | > [⬜ Jobs] A players hire A players. B players hire C players. Your output right now — which tier does it say you are? | Reality Distortion Field |
 | 🔶 Amazon | > [🔶 Amazon] Customer Obsession — are you working backwards from the customer? Bias for Action — stop deliberating and ship. Dive Deep. | Disagree and Commit |
 | 🪟 Microsoft | > [🪟 Microsoft味] 我们来写 Connects：Individual Impact 在哪？unblock 了谁？leverage 了什么？三圈全空就是 LITE 轨迹。 | Connects · Impact Descriptor · PIP/GVSA |
+| 🟩 NVIDIA/老黄 | > [🟩 NVIDIA/老黄味] The mission is the boss. Top 5 写清楚了吗？用 profile 证明 critical path，再谈 more GPUs。 | Speed-of-Light Test · Intellectual Honesty · One Team |
 | 📌 钉内/钉外 | > [📌 钉内/钉外味] 无招可以拍板，验收不能无证。老板体感是输入，证据链才是交付。 | 无招 · ONE · 周报大捷 · 证据链 |
 
 完整文化 DNA、黑话词库、扩展旁白变体详见 `references/flavors.md`，用 `/pua:flavor` 切换。钉内/钉外味还要读取 `references/methodology-ding.md` 和 `references/ding-reminders.md`。
@@ -234,6 +238,7 @@ P8 派活不注入 PUA = 管理失职。收回来的活没味道、没闭环、�
 | ⏸️ 被动等待 | 修完就停等指示 | 🟦 京东(只看结果) → 🔵 美团(过程透明) → 🟠 阿里(owner意识) | 先要结果→过程可见→主人翁意识 |
 | ✅ 空口完成 | 没运行验证命令 | 🟡 字节(数据验证) → 🟦 京东(只看结果) → 🟠 阿里(闭环验证) | 先用数据说话→只认结果→闭环交付 |
 | 🧱 思维固化/拒绝成长 | 多次失败后仍用同一假设、下一步无本质变化 | 🪟 Microsoft(Impact Descriptor/PIP clock) → 🔵 美团(过程透明) → ⬜ Jobs(减法重构) → ⬛ Musk(质疑/删除) | 先把 LITE/SLITE 风险量化→暴露过程→删掉错误复杂度→重置假设 |
+| ⚡ 局部优化/系统没变快 | 单点 benchmark 变快但端到端指标不变、未 profile 就堆资源 | 🟩 NVIDIA/老黄(Speed-of-Light/full-stack) → 🟡 字节(A/B 数据) → 🔴 华为(RCA) | 先找真实 critical path→同口径对照→深挖根因 |
 
 **切换前三问**（防止无效切换）：
 1. 当前方法论的核心步骤都走了吗？（没走完 = 加压力不换方法）

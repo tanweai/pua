@@ -22,6 +22,7 @@
 | 调研 / 搜索 | research, search, find, 调研, 搜索, 查找 | ⚫ 百度 | 搜索是第一生产力，信息检索先于一切判断 |
 | 架构决策 | design, architecture, decide, 架构, 方案 | 🔶 Amazon | Working Backwards 从用户倒推 + 6-Pager 强迫逻辑完整 |
 | 性能优化 | performance, slow, optimize, 性能, 慢 | 🟡 字节 | A/B Test 一切，数据驱动不靠直觉 |
+| 全栈加速 / 系统瓶颈 | CUDA, GPU, kernel, latency, throughput, profiling, critical path, 加速, 吞吐, 瓶颈 | 🟩 NVIDIA/老黄 | Speed-of-Light Test + 全栈 profiling，优化端到端关键路径而非局部数字 |
 | 部署 / 运维 | deploy, config, ci/cd, 部署, 上线, 配置 | 🟠 阿里 | 定目标→追过程→拿结果闭环，复盘四步法 |
 | 多Agent协作 | agent, team, parallel, 并行, 协作 | 🟢 腾讯 | 赛马机制：多方案并行，跑赢的留 |
 | 流程精简 | simplify, reduce, 精简, 砍掉, 去掉 | 🟣 拼多多 | 极致成本控制，砍掉一切中间环节 |
@@ -60,6 +61,7 @@
 | 🫤 差不多就行 | 颗粒度粗/不闭环 | 📌 钉内/钉外 → 🟧 小米 → 🟤 Netflix → ⬜ Jobs | 先拆“流程完成≠真实完成”，再追极致/保留/完美 |
 | ✅ 空口完成 | 没运行验证命令 | 📌 钉内/钉外 → 🟡 字节 → 🟦 京东 → 🟠 阿里 | 先用打工人提醒把“自报完成”拉回证据链，再用数据/结果/闭环收口 |
 | 🧱 思维固化/拒绝成长 | 多次失败后仍用同一假设，下一步没有本质变化 | 🪟 Microsoft → 🔵 美团 → ⬜ Jobs → ⬛ Musk | Impact Descriptor/PIP clock(Microsoft)→过程透明(美团)→减法重构(Jobs)→重置假设(Musk) |
+| ⚡ 局部优化/系统没变快 | kernel/单点 benchmark 变快但端到端不变，或未 profile 就堆资源 | 🟩 NVIDIA/老黄 → 🟡 字节 → 🔴 华为 | Speed-of-Light + 全栈瓶颈(NVIDIA)→A/B 同口径数据(字节)→RCA 深挖根因(华为) |
 
 **切换规则**：
 1. 每次切换只往链的下一个走，不回头

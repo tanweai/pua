@@ -23,11 +23,11 @@ for file in hooks/flavor-helper.sh skills/pua/SKILL.md skills/pua/references/fla
   assert_grep 'Microsoft|微软|Connects|Impact Descriptor|SLITE|LITE|PIP|GVSA' "$file" "Microsoft internal制度 terms appear in $file"
 done
 assert_grep '思维固化|拒绝成长|fixed thinking|LITE|SLITE' skills/pua/SKILL.md "core skill routes fixed-thinking failures to Microsoft"
-assert_grep '14 Corporate Flavors|14 种大厂|14種の大企業' README.md "README English count updated to 14"
-assert_grep '14 种大厂' README.zh-CN.md "README Chinese count updated to 14"
-assert_grep '14種の大企業' README.ja.md "README Japanese count updated to 14"
-assert_grep '14 种味道|14 corporate flavors|14 flavours|14 flavors' commands/flavor.md "flavor command count updated"
-assert_grep '14 corporate methodologies|14 种企业方法论|14の企業メソドロジー' landing/src/i18n.ts "landing copy count updated"
+assert_grep '15 Corporate Flavors|15 种大厂|15種の大企業' README.md "README English count updated to 15"
+assert_grep '15 种大厂' README.zh-CN.md "README Chinese count updated to 15"
+assert_grep '15種の大企業' README.ja.md "README Japanese count updated to 15"
+assert_grep '16 种味道|16 corporate flavors|16 flavours|16 flavors' commands/flavor.md "flavor command count updated"
+assert_grep '15 corporate methodologies|15 种企业方法论|15の企業メソドロジー' landing/src/i18n.ts "landing copy count updated"
 
 echo "=============================="
 echo "Passed: $PASS"

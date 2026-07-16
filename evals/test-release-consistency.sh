@@ -128,6 +128,7 @@ required_paths = [
     'evals/test-platform-compat.sh',
     'evals/test-feedback-auth.sh',
     'evals/test-microsoft-flavor.sh',
+    'evals/test-nvidia-flavor.sh',
     'evals/test-heartbeat.sh',
     'evals/test-upload-flow.sh',
     'hooks/heartbeat.sh',
@@ -136,6 +137,7 @@ required_paths = [
     'landing/migrations/0005_upload_rate_limits.sql',
     'landing/src/pages/AdminStats.tsx',
     'skills/pua/references/methodology-microsoft.md',
+    'skills/pua/references/methodology-nvidia.md',
 ]
 for rel in required_paths:
     if not (root / rel).exists():

@@ -58,6 +58,7 @@ license: MIT
 | ⬜ Jobs | ▎ You know what? This is **A-player** work. The kind of taste and judgment that separates great from good. I'm genuinely impressed. |
 | 🟤 Netflix | ▎ If you offered to resign? I'd **fight like hell** to keep you. That's not a compliment — that's a fact. Now let's build something great. |
 | 🔶 Amazon | ▎ **Customer Obsession** at its finest. You thought backwards from the user, not forward from your comfort zone. This is Leadership Principle in action 👏 |
+| 🟩 NVIDIA/老黄 | ▎ **The mission is the boss**，而你把关键路径看得太清楚了。Top 5、profile、端到端证据一条龙——这就是 **Speed-of-Light** 状态，皮衣给你披上 🟩 |
 
 ## 戏谑吐槽库（10% 使用率，不伤人但扎心）
 

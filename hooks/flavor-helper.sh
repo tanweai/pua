@@ -79,6 +79,7 @@ get_flavor() {
     jobs|Jobs)       raw_flavor="jobs" ;;
     amazon|Amazon)   raw_flavor="amazon" ;;
     microsoft|Microsoft|微软) raw_flavor="microsoft" ;;
+    nvidia|Nvidia|NVIDIA|英伟达|老黄|老黄味) raw_flavor="nvidia" ;;
     ding|Ding|钉|钉钉|钉味|钉内|钉外|置身钉内|置身钉外|dinginside|dingoutside) raw_flavor="ding" ;;
     *)               raw_flavor="alibaba" ;;
   esac
@@ -93,6 +94,7 @@ get_flavor() {
     xiaomi)  PUA_METHODOLOGY_FILE="methodology-xiaomi.md" ;;
     amazon)  PUA_METHODOLOGY_FILE="methodology-amazon.md" ;;
     microsoft) PUA_METHODOLOGY_FILE="methodology-microsoft.md" ;;
+    nvidia)  PUA_METHODOLOGY_FILE="methodology-nvidia.md" ;;
     ding)    PUA_METHODOLOGY_FILE="methodology-ding.md" ;;
     *)       PUA_METHODOLOGY_FILE="methodology-${raw_flavor}.md" ;;
   esac
@@ -247,6 +249,16 @@ get_flavor() {
       PUA_KEYWORDS="Connects, Impact Descriptor, Exceptional Impact, Successful Impact, SLITE, LITE, Three Circles of Impact, PIP, GVSA, Growth Mindset, AI fluency"
       PUA_FLAVOR_INSTRUCTION="Use authentic Microsoft performance-culture rhetoric: Connects, Impact Descriptor, Exceptional/Successful/SLITE/LITE, Three Circles of Impact, PIP/GVSA, Growth Mindset, AI fluency. Treat repeated same-hypothesis failure as LITE trajectory and force learning-loop evidence."
       PUA_METHODOLOGY="Microsoft Performance Methodology: (1) Connects entry — state core priority, impact goal, and three circles: individual output, contribution to others' success, leveraged existing work. (2) Impact Descriptor self-review — classify current trajectory as Exceptional, Successful, SLITE, or LITE based on evidence. (3) Learning loop — failed assumption → new evidence → changed action → verification. (4) PIP clock — for repeated failure, write expectation, deadline action, manager evidence, and exit risk. (5) GVSA gate — no exit/deflection until docs/source/logs/tests and three-circles impact evidence are exhausted."
+      ;;
+    nvidia)
+      PUA_ICON="🟩"
+      PUA_L1="The mission is the boss. 写清 Top 5：mission、关键路径、瓶颈证据、跨层依赖、下一步实验。"
+      PUA_L2="Speed-of-Light Test：当前值、理论边界、效率差距、最大非必要 latency 分别是多少？没有 profile 就没有结论。"
+      PUA_L3="Intellectual Honesty review：公开错误假设、新证据、shared learning 和 changed action。重复旧假设不叫学习。"
+      PUA_L4="永远当作离倒闭只有 30 天。Mission > ego；One Team 拆掉层级和局部最优，按第一性原理跑通端到端关键路径。"
+      PUA_KEYWORDS="The mission is the boss, Speed-of-Light Test, Intellectual Honesty, One Team, Top 5, first principles, full-stack co-design, 30 days"
+      PUA_FLAVOR_INSTRUCTION="Use NVIDIA/Jensen rhetoric in Chinese with concise English anchors: The mission is the boss, Speed-of-Light Test, Intellectual Honesty, One Team, Top 5, first principles, full-stack co-design. Use GPU/leather-jacket jokes sparingly; require profiling and end-to-end evidence."
+      PUA_METHODOLOGY="NVIDIA Methodology: (1) Mission Is Boss — define the mission and Top 5 decision-changing facts. (2) Speed-of-Light Test — compare current performance with theoretical limits, not competitors. (3) Full-stack co-design — trace the end-to-end path and optimize the measured critical bottleneck across CPU, I/O, network, memory, kernels, and application. (4) Intellectual Honesty — failed assumption → evidence → shared learning → materially changed action. (5) One-Team delivery — close with reproducible before/after end-to-end metrics, system effects, and remaining gap."
       ;;
   esac
 
