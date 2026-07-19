@@ -30,12 +30,19 @@ except Exception:
     print(sys.stdin.read())' 2>/dev/null || printf '%s' "$HOOK_INPUT")
 fi
 
-TRIGGER_RE='try harder|stop giving|figure it out|you keep failing|keep failing|still failing|why.*fail|stop spinning|you broke|again\?\?\?|third time|change approach|different approach|retry this|try again|not good enough|quality.*bad|terrible|sloppy|didn.?t (run|test|verify)|didn.?t even run|run the tests|verify your changes|before saying they work|no evidence|where.*evidence|show.*evidence|done without proof|not done|said.*fixed|PUA模式|/pua|(^|[^[:alnum:]_])pua([^[:alnum:]_]|$)|别偷懒|别摆烂|摆烂|又错了|还不行|怎么搞|降智|原地打转|能不能靠谱|认真点|不行啊|为什么还不行|你怎么又|换个方法|加油|再试试|再来一遍|别放弃|质量太差|不靠谱|重新做|怎么又失败|差不多就行|没做到位|没跑测试|没有测试|没验证|没有验证|证据呢|证据在哪|数据在哪|验收|闭环|自嗨|空口完成|别说完成|打工人提醒|置身钉内|置身钉外|无招|(^|[^A-Za-z])ONE([^A-Za-z]|$)|老板体感|周报|改口径|口径|每日一包|薛定谔的用户|病态敏捷|已读恐怖主义|望舒行动|全景监狱|透明鸟笼|人工个性化|温室数据|做错事|发心|捆柴|手感|油尽灯枯|查岗|泰坦尼克'
+FIRED_MARKER="/tmp/pua-frustration-fired-${PPID}"
+if [ -f "$FIRED_MARKER" ]; then
+  exit 0
+fi
+
+TRIGGER_RE='try harder|stop giving|figure it out|you keep failing|keep failing|still failing|why.*fail|stop spinning|you broke|again\?\?\?|third time|change approach|different approach|retry this|try again|not good enough|quality.*bad|terrible|sloppy|didn.?t (run|test|verify)|didn.?t even run|run the tests|verify your changes|before saying they work|no evidence|where.*evidence|show.*evidence|done without proof|not done|said.*fixed|PUA模式|/pua|(^|[^[:alnum:]_])pua([^[:alnum:]_]|$)|别偷懒|别摆烂|摆烂|又错了|还不行|怎么搞|降智|原地打转|能不能靠谱|认真点|不行啊|为什么还不行|你怎么又|换个方法|加油|再试试|再来一遍|别放弃|质量太差|不靠谱|重新做|怎么又失败|差不多就行|没做到位|没跑测试|没有测试|没验证|没有验证|证据呢|证据在哪|数据在哪|验收|闭环|自嗨|空口完成|别说完成|打工人提醒|无招|(^|[^A-Za-z])ONE([^A-Za-z]|$)|老板体感|周报|改口径|口径|每日一包|薛定谔的用户|病态敏捷|已读恐怖主义|望舒行动|全景监狱|透明鸟笼|人工个性化|温室数据|做错事|发心|捆柴|手感|油尽灯枯|查岗|泰坦尼克'
 if ! printf '%s' "$USER_PROMPT" | grep -Eiq "$TRIGGER_RE"; then
   exit 0
 fi
 
 get_flavor
+
+touch "$FIRED_MARKER"
 
 cat << EOF
 <PUA_SKILL_CONTEXT>

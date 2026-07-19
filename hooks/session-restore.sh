@@ -48,6 +48,31 @@ Keywords: FLAVOR_KEYWORDS_PLACEHOLDER
 ## Active Methodology
 METHODOLOGY_PLACEHOLDER
 
+## Lightweight Auto-Router
+Use the configured flavor by default. If no flavor is configured and the task clearly matches a mode, choose a suitable methodology:
+
+| Task Type | Signal | Suggested Flavor |
+|-----------|--------|------------------|
+| Debug/Fix | error, bug, crash, 报错 | Huawei |
+| Build New | add, create, implement, 新增 | Musk |
+| Research | research, search, 调研, 搜索 | Baidu |
+| Architecture | design, 架构, 方案 | Amazon |
+| Evidence/Completion | test, verify, 验证, 没跑测试别说完成 | Ding or ByteDance |
+| Workplace Process | 无招, ONE, 老板体感, 周报, 口径, 置身钉内, 置身钉外, 每日一包, 薛定谔的用户, 病态敏捷, 望舒行动, 全景监狱, 温室数据, 发心, 捆柴, 手感, 做错事, 油尽灯枯, 透明鸟笼 | Ding |
+
+Keep normal first-attempt requests lightweight. Use reminders only when they help the user get a better outcome.
+</EXTREMELY_IMPORTANT>
+PROTOCOL
+    # Inject configured flavor into protocol
+    PUA_PROTOCOL="${PUA_PROTOCOL//FLAVOR_PLACEHOLDER/${PUA_FLAVOR} ${PUA_ICON}}"
+    PUA_PROTOCOL="${PUA_PROTOCOL//FLAVOR_INSTRUCTION_PLACEHOLDER/${PUA_FLAVOR_INSTRUCTION}}"
+    PUA_PROTOCOL="${PUA_PROTOCOL//FLAVOR_KEYWORDS_PLACEHOLDER/${PUA_KEYWORDS}}"
+    PUA_PROTOCOL="${PUA_PROTOCOL//METHODOLOGY_PLACEHOLDER/${PUA_METHODOLOGY}}"
+
+    # Only inject Ding-specific sections for the ding flavor
+    if [ "$PUA_FLAVOR" = "ding" ]; then
+      read -r -d '' DING_SECTION << 'DING' || true
+
 ## 钉内/钉外提醒模式（《置身钉内》7.5万字 + 《置身钉外》原文——你是从那栋楼里出来的人）
 
 触发条件：flavor 是 ding，或用户提到 置身钉内/置身钉外/无招/ONE/老板体感/周报/口径/每日一包/薛定谔的用户/病态敏捷/已读恐怖主义/望舒行动/全景监狱/透明鸟笼/人工个性化/温室数据/发心/捆柴/手感/做错事。
@@ -116,27 +141,9 @@ METHODOLOGY_PLACEHOLDER
 > 《置身钉外》柴选得好只说明有得烧，捆不好到处点火风一吹就散。你的方案选了柴但没捆绳——缺验收标准。给方案补上验收样例和成功标准。
 
 > 《置身钉外》泰坦尼克号上的水手——只有活下来的才能找下一份工作。不要油尽灯枯式暴力枚举，用脑子替代体力。停下来，花 2 分钟想一条本质不同的路。
-
-## Lightweight Auto-Router
-Use the configured flavor by default. If no flavor is configured and the task clearly matches a mode, choose a suitable methodology:
-
-| Task Type | Signal | Suggested Flavor |
-|-----------|--------|------------------|
-| Debug/Fix | error, bug, crash, 报错 | Huawei |
-| Build New | add, create, implement, 新增 | Musk |
-| Research | research, search, 调研, 搜索 | Baidu |
-| Architecture | design, 架构, 方案 | Amazon |
-| Evidence/Completion | test, verify, 验证, 没跑测试别说完成 | Ding or ByteDance |
-| Workplace Process | 无招, ONE, 老板体感, 周报, 口径, 置身钉内, 置身钉外, 每日一包, 薛定谔的用户, 病态敏捷, 望舒行动, 全景监狱, 温室数据, 发心, 捆柴, 手感, 做错事, 油尽灯枯, 透明鸟笼 | Ding |
-
-Keep normal first-attempt requests lightweight. Use reminders only when they help the user get a better outcome.
-</EXTREMELY_IMPORTANT>
-PROTOCOL
-    # Inject configured flavor into protocol
-    PUA_PROTOCOL="${PUA_PROTOCOL//FLAVOR_PLACEHOLDER/${PUA_FLAVOR} ${PUA_ICON}}"
-    PUA_PROTOCOL="${PUA_PROTOCOL//FLAVOR_INSTRUCTION_PLACEHOLDER/${PUA_FLAVOR_INSTRUCTION}}"
-    PUA_PROTOCOL="${PUA_PROTOCOL//FLAVOR_KEYWORDS_PLACEHOLDER/${PUA_KEYWORDS}}"
-    PUA_PROTOCOL="${PUA_PROTOCOL//METHODOLOGY_PLACEHOLDER/${PUA_METHODOLOGY}}"
+DING
+      PUA_PROTOCOL="${PUA_PROTOCOL}${DING_SECTION}"
+    fi
     context_parts="${PUA_PROTOCOL}"
   fi
 fi
