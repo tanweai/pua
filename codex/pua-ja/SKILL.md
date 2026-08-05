@@ -327,22 +327,22 @@ L3以上がトリガーされた場合、全項目を完了して報告するこ
 
 ## Agent Team統合
 
-PUA SkillがClaude Code Agent Teamコンテキストで実行される場合、動作は自動的にチームモードに切り替わる。
+現在のruntimeがteammateのspawnと双方向メッセージの両方を提供する場合に限り、PUA Skillはチームモードへ切り替わる。どちらかがない場合はsingle-agentモードを維持し、チーム連携が存在するふりをしない。
 
 ### 役割識別
 
 | 役割 | 識別方法 | PUA動作 |
 |------|---------|---------|
 | **Leader** | teammateをspawn、レポートを受信 | グローバルプレッシャーレベル管理者。全teammateの失敗カウントを監視、統一的にエスカレーション、PUA話術をブロードキャスト |
-| **Teammate** | Leaderにspawnされた、`Teammate write`ツールを持つ | PUA方法論をロードして自己駆動。失敗時にLeaderへ構造化レポートを送信 |
+| **Teammate** | Leaderにspawnされ、runtime経由で構造化メッセージを返せる | PUA方法論をロードして自己駆動。失敗時にLeaderへ構造化レポートを送信 |
 | **PUA Enforcer** | `agents/pua-enforcer.md`で定義 | 任意の監視役。サボりパターンを検知しPUAで介入。5+teammate時に推奨 |
 
 ### Leaderの行動規則
 
-1. **初期化**：teammate spawn時にタスク説明に含める：`作業開始前にpua skillをロードするか cat .claude/skills/pua/SKILL.md を実行`
+1. **初期化**：runtimeのskill loaderで`pua`をロードさせる。skill loaderがなければ読める`SKILL.md`のパスを渡し、それも読めない場合は方法論全文をタスクpromptに含める
 2. **失敗カウント管理**：グローバル失敗カウンター（teammate＋タスク次元）を維持。teammate失敗レポート受信時：
-   - カウント加算 → プレッシャーレベル判定（L1-L4）→ `Teammate write`で対応PUA話術＋強制アクションを送信
-   - L3+時に`broadcast`で全チームへ競争プレッシャー（楽天味）
+   - カウント加算 → プレッシャーレベル判定（L1-L4）→ runtimeのdirect-message機能で対応PUA話術＋強制アクションを送信。独立したAPIがない場合は次のtask/resume promptに含める
+   - L3+ではruntimeのbroadcastを優先し、未対応なら各teammateへdirect-messageする。どちらもなければチームモードは利用不可
 3. **teammate間引き継ぎ**：タスクをteammate Aから Bへ再割り当て時：`前任がN回失敗、プレッシャーレベルLX、排除済みアプローチ: [...]`を添付。Bは現在のレベルから開始、リセットなし。
 
 ### Teammateの行動規則
@@ -368,9 +368,9 @@ Agent Teamには永続的な共有変数がないため、メッセージ伝達�
 
 | 方向 | チャネル | 内容 |
 |------|---------|------|
-| Leader → Teammate | タスク説明 + `Teammate write` | プレッシャーレベル、失敗コンテキスト、PUA話術 |
-| Teammate → Leader | `Teammate write` | `[PUA-REPORT]`形式レポート |
-| Leader → All | `broadcast` | Critical発見、競争的動機付け（「他のteammateが類似問題を解決済み」） |
+| Leader → Teammate | タスク説明 + runtime direct-message（または次のtask/resume prompt） | プレッシャーレベル、失敗コンテキスト、PUA話術 |
+| Teammate → Leader | runtimeの構造化返信チャネル | `[PUA-REPORT]`形式レポート |
+| Leader → All | runtime broadcast、未対応ならteammateごとのdirect-message | Critical発見、競争的動機付け（「他のteammateが類似問題を解決済み」） |
 
 ## 組み合わせ使用
 

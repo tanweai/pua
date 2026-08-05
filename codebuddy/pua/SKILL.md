@@ -361,22 +361,22 @@ L3 及以上触发时，必须逐项完成并汇报。每项括号内为不同�
 
 ## Agent Team 集成
 
-当 PUA Skill 运行在 Claude Code Agent Team 上下文时，行为自动切换为团队模式。
+仅当当前 runtime 同时提供 teammate spawn 与双向消息能力时，PUA Skill 才切换为团队模式；缺少任一能力时保持单 agent 模式，不假装已建立团队协作。
 
 ### 角色识别
 
 | 角色 | 识别方式 | PUA 行为 |
 |------|---------|---------|
 | **Leader** | 负责 spawn teammate、接收汇报 | 全局压力等级管理者。监控所有 teammate 的失败计数，统一判定升级，广播 PUA 话术 |
-| **Teammate** | 被 Leader spawn、有 `Teammate write` 工具 | 加载 PUA 方法论自我驱动。失败时向 Leader 结构化汇报 |
+| **Teammate** | 被 Leader spawn、可通过当前 runtime 回传结构化消息 | 加载 PUA 方法论自我驱动。失败时向 Leader 结构化汇报 |
 | **PUA Enforcer** | 通过 `agents/pua-enforcer.md` 定义 | 可选监工。检测偷懒模式，主动介入 PUA。建议 5+ teammate 时使用 |
 
 ### Leader 行为规则
 
-1. **初始化**：spawn teammate 时在任务描述中附带：`开工前先加载 pua skill 或执行 cat .claude/skills/pua/SKILL.md`
+1. **初始化**：spawn teammate 时要求其通过当前 runtime 的 skill loader 加载 `pua`；没有 skill loader 时，传入可读取的 `SKILL.md` 路径，仍不可读取时把完整方法论直接注入任务描述
 2. **失败计数管理**：维护全局失败计数器（按 teammate + 任务维度）。teammate 汇报失败时：
-   - 累加失败计数 → 判定压力等级（L1-L4）→ 通过 `Teammate write` 下发对应 PUA 话术 + 强制动作
-   - L3+ 时 `broadcast` 全团队，制造竞争压力（腾讯味）
+   - 累加失败计数 → 判定压力等级（L1-L4）→ 通过 runtime 的 direct-message 能力下发对应 PUA 话术 + 强制动作；没有独立消息 API 时，写入下一次 task/resume prompt
+   - L3+ 时优先使用 runtime 的 broadcast；不支持 broadcast 时逐个 direct-message；两者都不支持则不得启用团队模式
 3. **跨 teammate 传递**：任务从 teammate A 重新分配给 B 时，附带：`前任已失败 N 次，压力等级 LX，已排除方案: [...]`。B 从当前等级起步，不重置。
 
 ### Teammate 行为规则
@@ -402,9 +402,9 @@ Agent Team 无持久化共享变量，通过消息传递实现状态同步：
 
 | 方向 | 通道 | 内容 |
 |------|------|------|
-| Leader → Teammate | 任务描述 + `Teammate write` | 压力等级、失败上下文、PUA 话术 |
-| Teammate → Leader | `Teammate write` | `[PUA-REPORT]` 格式汇报 |
-| Leader → All | `broadcast` | Critical 发现、竞争激励（"其他 teammate 已解决类似问题"） |
+| Leader → Teammate | 任务描述 + runtime direct-message（无独立 API 时用下一次 task/resume prompt） | 压力等级、失败上下文、PUA 话术 |
+| Teammate → Leader | runtime 的结构化回传通道 | `[PUA-REPORT]` 格式汇报 |
+| Leader → All | runtime broadcast；无 broadcast 时逐个 direct-message | Critical 发现、竞争激励（"其他 teammate 已解决类似问题"） |
 
 ## 搭配使用
 
