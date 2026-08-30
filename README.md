@@ -778,7 +778,7 @@ bash hooks/sanitize-session.sh <input.jsonl> <output.jsonl>
 
 ## Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=tanweai/pua&type=Date)](https://star-history.com/#tanweai/pua&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=tanweai/pua&type=Date)](https://star-history.dera.page/#tanweai/pua&Date)
 
 ## License
 
