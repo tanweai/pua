@@ -412,6 +412,18 @@ curl -o .agent/skills/pua-ja/SKILL.md \
   https://raw.githubusercontent.com/tanweai/pua/main/skills/pua-ja/SKILL.md
 ```
 
+### Google Antigravity 2.0
+
+Antigravity 2.0 プラグインの使用
+
+```bash
+git clone https://github.com/tanweai/pua
+
+mkdir -p ~/.gemini/config/plugins/pua
+
+cp -r pua/antigravity ~/.gemini/config/plugins/pua/
+```
+
 ### OpenCode
 
 OpenCodeは同じAgentSkillsオープンスタンダード（SKILL.md）を使用。修正なしで互換：
