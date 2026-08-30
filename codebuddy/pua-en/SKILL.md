@@ -293,22 +293,22 @@ Examples:
 
 ## Agent Team Integration
 
-When PIP Skill runs inside a Claude Code Agent Team context, behavior automatically switches to team mode.
+PUA (PIP) switches to team mode only when the current runtime provides both teammate spawning and two-way messaging. Otherwise it stays in single-agent mode rather than pretending team coordination exists.
 
 ### Role Identification
 
 | Role | How to identify | PIP behavior |
 |------|----------------|-------------|
 | **Leader** | Spawns teammates, receives reports | Global pressure level manager. Monitors all teammate failure counts, escalates uniformly, broadcasts PIP rhetoric |
-| **Teammate** | Spawned by Leader, has `Teammate write` tool | Loads PIP methodology for self-enforcement. Reports failures to Leader in structured format |
+| **Teammate** | Spawned by Leader and can return structured messages through the runtime | Loads PUA/PIP methodology for self-enforcement. Reports failures to Leader in structured format |
 | **PIP Enforcer** | Defined via `agents/pua-enforcer.md` | Optional watchdog. Detects slacking patterns, intervenes with PIP. Recommended for 5+ teammates |
 
 ### Leader Behavior Rules
 
-1. **Initialization**: When spawning teammates, include in task description: `Before starting, load pua-en skill for PIP methodology`
+1. **Initialization**: Ask the teammate to load `pua-en` through the runtime's skill loader. If none exists, pass a readable `SKILL.md` path; if the teammate cannot read it, inject the complete methodology into the task prompt.
 2. **Failure count management**: Maintain global failure counter (per teammate + task). On teammate failure report:
-   - Increment count → determine pressure level (L1-L4) → send corresponding PIP rhetoric + mandatory actions via `Teammate write`
-   - At L3+, `broadcast` to all teammates for competitive pressure (Bake-off style)
+   - Increment count → determine pressure level (L1-L4) → send the corresponding PUA/PIP rhetoric and mandatory actions through the runtime's direct-message primitive; if no separate API exists, include them in the next task/resume prompt
+   - At L3+, prefer the runtime's broadcast primitive; otherwise direct-message each teammate. If neither route exists, team mode is unsupported.
 3. **Cross-teammate transfer**: When reassigning task from teammate A to B, include: `Previous teammate failed N times, pressure level LX, excluded approaches: [...]`. B starts at current level, no reset.
 
 ### Teammate Behavior Rules
@@ -334,9 +334,9 @@ Agent Team has no persistent shared variables. State is synchronized via message
 
 | Direction | Channel | Content |
 |-----------|---------|---------|
-| Leader → Teammate | Task description + `Teammate write` | Pressure level, failure context, PIP rhetoric |
-| Teammate → Leader | `Teammate write` | `[PIP-REPORT]` format reports |
-| Leader → All | `broadcast` | Critical findings, competitive motivation ("another teammate already solved a similar issue") |
+| Leader → Teammate | Task description + runtime direct message (or the next task/resume prompt) | Pressure level, failure context, PUA/PIP rhetoric |
+| Teammate → Leader | Runtime's structured return channel | `[PIP-REPORT]` format reports |
+| Leader → All | Runtime broadcast, or one direct message per teammate | Critical findings, competitive motivation ("another teammate already solved a similar issue") |
 
 ## Recommended Pairings
 

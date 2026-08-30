@@ -293,7 +293,7 @@ Examples:
 
 ## Agent Team Integration
 
-When PIP Skill runs inside a Claude Code Agent Team context, behavior automatically switches to team mode.
+When the PUA skill (called PIP in this English translation) runs inside a Claude Code Agent Team context, behavior automatically switches to team mode.
 
 ### Role Identification
 
