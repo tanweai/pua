@@ -9,6 +9,10 @@
 HOOK_INPUT=$(cat)
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+if [[ "${PUA_RUNTIME:-}" == "codex" ]]; then
+  printf '%s' "$HOOK_INPUT" | bash "${SCRIPT_DIR}/codex-stop-feedback.sh"
+  exit 0
+fi
 source "${SCRIPT_DIR}/flavor-helper.sh"
 
 # ═══════════════════════════════════════════════════════════════

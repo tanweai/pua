@@ -1,6 +1,6 @@
 ---
 name: pua-off
-description: "PUA off alias for Codex. Codex subcommand mapping for Claude Code /pua:off style usage; invoke with $pua-off."
+description: "Turn off always-on PUA mode and request feedback."
 license: MIT
 ---
 

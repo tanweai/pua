@@ -1,6 +1,6 @@
 ---
 name: pua-reap-orphans
-description: "PUA reap-orphans alias for Codex. Codex subcommand mapping for Claude Code /pua:reap-orphans style usage; invoke with $pua-reap-orphans."
+description: "Clean up stale PUA agent state."
 license: MIT
 ---
 

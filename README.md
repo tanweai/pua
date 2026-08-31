@@ -305,16 +305,18 @@ Adds a bare `/pua` alias on top of the plugin. Sub-commands route through the in
 
 ### OpenAI Codex CLI
 
-Codex CLI uses the same Agent Skills open standard (SKILL.md). The Codex version uses a condensed description to fit Codex's length limits:
+Codex uses the same Agent Skills open standard (SKILL.md) and now ships a native Codex plugin manifest with lifecycle hooks. Use the plugin path when you want the full v3 behavior: always-on SessionStart injection, frustration triggers, Bash failure escalation, PreCompact checkpoints, PUA Loop continuation, silent optional-feedback bookkeeping, and subagent lifecycle accounting.
 
-**Recommended: One-command install (git clone + symlink, supports `git pull` updates)**
+**Recommended: plugin install from source (supports `git pull` updates)**
 
 Ask Codex to run:
 ```
 Fetch and follow instructions from https://raw.githubusercontent.com/tanweai/pua/main/.codex/INSTALL.md
 ```
 
-**Manual install:**
+The recommended install uses a local Codex marketplace (`pua@pua-local`) and a checkout under `~/.codex/plugins/src/pua`. Do not install the plugin checkout at `~/.codex/pua`; that deprecated path can be discovered as an extra skill source and duplicate `$pua-*` entries.
+
+**Manual skill-only fallback:**
 
 ```bash
 mkdir -p ~/.codex/skills/pua
@@ -330,9 +332,12 @@ curl -o ~/.codex/prompts/pua.md \
 
 | Method | Command | Requires |
 |--------|---------|----------|
-| Auto trigger | No action needed, matches by description | SKILL.md |
-| Direct call | Type `$pua` in conversation | SKILL.md |
-| Manual prompt | Type `/prompts:pua` in conversation | SKILL.md + prompts/pua.md |
+| Hook trigger | No action needed | Codex plugin + trusted hooks |
+| Direct call | Type `$pua` / `$pua-p7` / `$pua-loop` | Codex skills |
+| Text command | Type `/pua:on`, `/pua p9`, `/pua loop ...` | Codex plugin hooks |
+| Manual prompt | Type `/prompts:pua` | prompts fallback |
+
+Codex hooks are plugin-level lifecycle hooks. After `pua@pua-local` is installed and trusted in `/hooks`, the same hook set runs before the first turn of new sessions and on later lifecycle events. Selecting `$pua-p7`, `$pua-kpi`, or another PUA skill only changes the current turn's instructions; it does not install a separate hook set.
 
 Project-level install (current project only):
 
@@ -594,7 +599,7 @@ Spawn pua-enforcer as an independent watchdog in your Agent Team.
 | Platform | Auto-trigger | Manual trigger |
 |----------|-------------|----------------|
 | **Claude Code** | Yes (skill description matching) | See commands below |
-| **Codex CLI** | Yes (skill description matching) | `$pua` or `/prompts:pua` |
+| **Codex CLI** | Yes (skill description matching + hooks) | `$pua`, `$pua-*`, `/pua:*`, or `/prompts:pua` |
 | **Cursor** | Yes (`.mdc` rule, Agent Discretion) | — (auto only) |
 | **Kiro** | Yes (steering file or skill) | — (auto only) |
 | **CodeBuddy** | Yes (skill description matching) | Plugin commands (same as Claude Code) |
@@ -603,9 +608,9 @@ Spawn pua-enforcer as an independent watchdog in your Agent Team.
 | **OpenCode** | Yes (skill description matching) | — |
 | **VSCode Copilot** | Yes (instructions file) | `/pua` in Copilot Chat |
 
-> **Note:** Sub-modes (p7/p9/p10/pro/yes/pua-loop) are **Claude Code only** — other platforms install the core skill only.
+> **Note:** Full v3 hooks and sub-modes are available on Claude Code and Codex. Other platforms install the core skill unless their adapter says otherwise.
 
-### Architecture (Claude Code)
+### Architecture (Claude Code + Codex)
 
 ```
 /pua:pua        → Core engine — red lines + flavor + pressure + methodology router (v3)
@@ -620,18 +625,18 @@ Spawn pua-enforcer as an independent watchdog in your Agent Team.
 /pua:pua-en     → English PIP Edition
 /pua:pua-ja     → Japanese Edition
 
-Hooks (v3, Claude Code only):
+Hooks (v3, Claude Code + Codex):
   SessionStart  → additionalContext injection (flavor + methodology + router)
   PostToolUse   → Bash failure detection → L1-L4 pressure + methodology switch
   UserPromptSubmit → Script-level frustration filtering → PUA context
   PreCompact    → State preservation (pressure level + failure count)
-  Stop          → Feedback collection + PUA Loop continuation
+  Stop          → PUA Loop continuation + silent optional-feedback bookkeeping
   SubagentStop  → Agent lifecycle accounting (v3.2) — writes teardown.jsonl, removes from active-agents.json
 ```
 
-### Commands (Claude Code)
+### Commands (Claude Code + Codex)
 
-> **Note:** Sub-modes (p7/p9/p10/pro/yes/pua-loop) are Claude Code only.
+> **Note:** Codex exposes these as `$pua-*` skills and also accepts `/pua:*` text commands through the Codex UserPromptSubmit hook.
 >
 > Each command has two equivalent forms: standalone (`/pua:on`) or via the main command (`/pua:pua on`). Both work identically.
 
@@ -689,7 +694,7 @@ Based on research into high-agency individuals:
 
 > High-Agency features are built into the current pua skill. No separate install needed.
 
-## Methodology Router: PUA v3 (Claude Code)
+## Methodology Router: PUA v3 (Claude Code + Codex Hooks)
 
 **v3 = v2 + intelligent methodology routing + code-level behavioral detection**
 
@@ -720,7 +725,7 @@ Task arrives → Analyze type → Auto-select best methodology
               Not searching → ⚫ Baidu → 🔶 Amazon → 🟡 ByteDance
 ```
 
-### v3 Hook System (Claude Code only)
+### v3 Hook System (Claude Code + Codex Hooks)
 
 | Hook | Trigger | What It Does |
 |------|---------|-------------|
@@ -738,7 +743,7 @@ Task arrives → Analyze type → Auto-select best methodology
 | Failure response | Escalate pressure within same methodology | **Switch to different methodology** based on failure pattern |
 | System injection | Plain text output (advisory) | **`additionalContext` JSON** (system-level, like Superpowers) |
 
-> v3 hook features require Claude Code. Other platforms use the core skill without hooks.
+> v3 hook features require Claude Code or Codex hooks. Other platforms use the core skill without hooks.
 
 ## Works Well With
 

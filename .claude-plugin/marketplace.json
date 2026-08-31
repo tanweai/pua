@@ -8,7 +8,7 @@
     "plugins": [
         {
             "name": "pua",
-            "description": "PUA productivity coaching — modular skills, 15 workplace/corporate flavors including Ding Inside/Outside, completion-quality checks, retry/change-approach reminders, and feedback tools.",
+            "description": "v3.5.0: PUA productivity coaching — modular skills, 15 workplace/corporate flavors including Ding Inside/Outside, completion-quality checks, retry/change-approach reminders, and feedback tools.",
             "version": "3.5.0",
             "source": "./",
             "author": {

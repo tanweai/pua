@@ -1,6 +1,6 @@
 ---
 name: pua-p10
-description: "PUA P10 alias for Codex. Codex subcommand mapping for Claude Code /pua:p10 style usage; invoke with $pua-p10."
+description: "P10 strategy mode: set direction, tradeoffs, and acceptance."
 license: MIT
 ---
 

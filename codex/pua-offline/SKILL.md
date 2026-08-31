@@ -1,6 +1,6 @@
 ---
 name: pua-offline
-description: "PUA offline alias for Codex. Codex subcommand mapping for Claude Code /pua:offline style usage; invoke with $pua-offline."
+description: "Keep PUA local while disabling network feedback flows."
 license: MIT
 ---
 

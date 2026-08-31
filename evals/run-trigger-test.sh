@@ -33,7 +33,7 @@ test_prompt() {
 
     (
         cd "$EVAL_WORKSPACE"
-        PUA_CONFIG="$EVAL_PUA_CONFIG" PUA_FORCE_ON=1 run_with_timeout 120 claude -p "$prompt" \
+        PUA_FORCE_ON=1 PUA_CONFIG="$EVAL_PUA_CONFIG" run_with_timeout 120 claude -p "$prompt" \
             --plugin-dir "$PLUGIN_DIR" \
             --dangerously-skip-permissions \
             --max-turns 2 \

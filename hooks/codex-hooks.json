@@ -1,0 +1,116 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume|clear|compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PUA_RUNTIME=codex bash \"${CLAUDE_PLUGIN_ROOT}/hooks/heartbeat.sh\"",
+            "timeout": 2,
+            "statusMessage": "PUA heartbeat"
+          },
+          {
+            "type": "command",
+            "command": "PUA_RUNTIME=codex bash \"${CLAUDE_PLUGIN_ROOT}/hooks/session-restore.sh\"",
+            "timeout": 5,
+            "statusMessage": "Loading PUA context"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PUA_RUNTIME=codex bash \"${CLAUDE_PLUGIN_ROOT}/hooks/codex-command-router.sh\"",
+            "timeout": 10,
+            "statusMessage": "Routing PUA command"
+          },
+          {
+            "type": "command",
+            "command": "PUA_RUNTIME=codex bash \"${CLAUDE_PLUGIN_ROOT}/hooks/codex-context-wrapper.sh\" UserPromptSubmit \"${CLAUDE_PLUGIN_ROOT}/hooks/frustration-trigger.sh\"",
+            "timeout": 5,
+            "statusMessage": "Checking PUA trigger"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PUA_RUNTIME=codex bash \"${CLAUDE_PLUGIN_ROOT}/hooks/codex-context-wrapper.sh\" PostToolUse \"${CLAUDE_PLUGIN_ROOT}/hooks/failure-detector.sh\"",
+            "timeout": 5,
+            "statusMessage": "Checking failure pattern"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "manual|auto",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PUA_RUNTIME=codex bash \"${CLAUDE_PLUGIN_ROOT}/hooks/codex-precompact-checkpoint.sh\"",
+            "timeout": 5,
+            "statusMessage": "Saving PUA checkpoint"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PUA_RUNTIME=codex bash \"${CLAUDE_PLUGIN_ROOT}/hooks/codex-stop-dispatcher.sh\"",
+            "timeout": 30,
+            "statusMessage": "Checking PUA loop"
+          }
+        ]
+      }
+    ],
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PUA_RUNTIME=codex bash \"${CLAUDE_PLUGIN_ROOT}/hooks/codex-subagent-start.sh\"",
+            "timeout": 5,
+            "statusMessage": "Tracking PUA agent"
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PUA_RUNTIME=codex bash \"${CLAUDE_PLUGIN_ROOT}/hooks/subagent-teardown.sh\"",
+            "timeout": 5,
+            "statusMessage": "Releasing PUA agent"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash|Read|Grep|Glob|Edit|Write|apply_patch|mcp__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "PUA_RUNTIME=codex bash \"${CLAUDE_PLUGIN_ROOT}/hooks/integrity-guard.sh\"",
+            "timeout": 5,
+            "statusMessage": "Checking PUA guard"
+          }
+        ]
+      }
+    ]
+  }
+}

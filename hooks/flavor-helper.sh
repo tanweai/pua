@@ -32,6 +32,10 @@ pua_config_file() {
   printf '%s\n' "${PUA_CONFIG:-${HOME:-~}/.pua/config.json}"
 }
 
+pua_state_dir() {
+  printf '%s\n' "${PUA_STATE_DIR:-${HOME:-.}/.pua}"
+}
+
 pua_json_get() {
   local path="$1"
   local key="$2"

@@ -57,8 +57,8 @@ STOPPING:
   or <loop-abort>, or Ctrl+C. No iteration cap by default.
 
 MONITORING:
-  ls ~/.claude/pua/loop-*.md                 # State (per-project)
-  cat .claude/pua-loop-history.jsonl         # Iteration history
+  ls ~/.pua/loop-*.md                        # State (per-project)
+  cat .pua/pua-loop-history.jsonl            # Iteration history
 HELP_EOF
       exit 0
       ;;
@@ -116,13 +116,14 @@ fi
 # Create state file
 # v3.2: 用 cwd 哈希命名状态文件，解决多目录 loop 实例互相覆盖的 bug
 # 每个项目目录有独立的 loop-<hash>.md，不再共享单一 loop-active.md
-PUA_HOME_DIR="${HOME}/.claude/pua"
+PUA_HOME_DIR="${PUA_STATE_DIR:-${HOME:-.}/.pua}"
 mkdir -p "$PUA_HOME_DIR"
-mkdir -p .claude
+mkdir -p .pua
 
 CWD_HASH=$(printf '%s' "$(pwd)" | md5sum 2>/dev/null | cut -c1-8 || printf '%s' "$(pwd)" | md5 2>/dev/null | cut -c1-8 || echo "default")
 ABS_STATE="${PUA_HOME_DIR}/loop-${CWD_HASH}.md"
-LEGACY_STATE=".claude/pua-loop.local.md"
+LEGACY_STATE=".pua/pua-loop.local.md"
+CLAUDE_LEGACY_STATE=".claude/pua-loop.local.md"
 
 # YAML quoting
 if [[ -n "$COMPLETION_PROMISE" ]] && [[ "$COMPLETION_PROMISE" != "null" ]]; then
@@ -161,7 +162,7 @@ cat > "$ABS_STATE" <<EOF
 ---
 active: true
 iteration: 1
-session_id: ${CLAUDE_CODE_SESSION_ID:-}
+session_id: ${CLAUDE_CODE_SESSION_ID:-${CODEX_SESSION_ID:-}}
 max_iterations: $MAX_ITERATIONS
 completion_promise: $COMPLETION_PROMISE_YAML
 verify_command: $VERIFY_COMMAND_YAML
@@ -174,7 +175,7 @@ $PROMPT
 
 == PUA 行为协议（每次迭代必须遵守）==
 1. 读取项目文件和 git log，了解上次做了什么（Git 是你的跨迭代记忆）
-2. 如果存在 .claude/pua-loop-history.jsonl，先读取了解之前的迭代结果，避免重复失败的方案
+2. 如果存在 .pua/pua-loop-history.jsonl，先读取了解之前的迭代结果，避免重复失败的方案
 3. 按三条红线执行：闭环验证、事实驱动、穷尽一切方案
 4. 跑 build/test 验证改动，不要跳过
 5. 发现问题就修，修完再验证（不声称完成，先验证）
@@ -195,9 +196,11 @@ EOF
 
 # 向后兼容：同步写 legacy 相对路径（老监控工具 / 已部署的 reap-orphans 兜底）
 cp "$ABS_STATE" "$LEGACY_STATE"
+mkdir -p .claude
+cp "$ABS_STATE" "$CLAUDE_LEGACY_STATE"
 
 # Initialize history log（保留相对路径，hook 写入也用它；后续可迁移到绝对路径）
-echo "{\"iteration\":0,\"status\":\"init\",\"verify_command\":$(if [[ "$VERIFY_COMMAND" != "null" ]]; then echo "\"${VERIFY_COMMAND//\"/}\""; else echo "null"; fi),\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" > .claude/pua-loop-history.jsonl
+echo "{\"iteration\":0,\"status\":\"init\",\"verify_command\":$(if [[ "$VERIFY_COMMAND" != "null" ]]; then echo "\"${VERIFY_COMMAND//\"/}\""; else echo "null"; fi),\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" > .pua/pua-loop-history.jsonl
 echo "{\"iteration\":0,\"status\":\"init\",\"verify_command\":$(if [[ "$VERIFY_COMMAND" != "null" ]]; then echo "\"${VERIFY_COMMAND//\"/}\""; else echo "null"; fi),\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",\"state_path\":\"$ABS_STATE\"}" >> "${PUA_HOME_DIR}/loop-history.jsonl"
 
 # Output setup message
@@ -214,7 +217,7 @@ Gate protocol:
   Phase 2: Hook runs --verify command → confirms or REJECTS
   $(if [[ "$VERIFY_COMMAND" != "null" ]]; then echo "⚡ Oracle active: Claude cannot lie about completion"; else echo "⚠️  No Oracle: relies on Claude's honesty"; fi)
 
-To monitor: cat .claude/pua-loop-history.jsonl
+To monitor: cat .pua/pua-loop-history.jsonl
 To cancel:  /cancel-pua-loop or Ctrl+C
 
 🔄

@@ -1,6 +1,6 @@
 ---
 name: pua-on
-description: "PUA on alias for Codex. Codex subcommand mapping for Claude Code /pua:on style usage; invoke with $pua-on."
+description: "Enable always-on PUA mode for future sessions."
 license: MIT
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: pua-p7
-description: "PUA P7 alias for Codex. Codex subcommand mapping for Claude Code /pua:p7 style usage; invoke with $pua-p7."
+description: "P7 senior engineer mode: plan, execute, verify, and report evidence."
 license: MIT
 ---
 

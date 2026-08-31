@@ -54,16 +54,34 @@ fi
 
 # ═══════════════════════════════════════════════════════════════
 # State file resolution (v3.2)
-# 用 cwd 哈希命名：$HOME/.claude/pua/loop-<hash>.md（每个项目目录独立）
+# 用 cwd 哈希命名：$HOME/.pua/loop-<hash>.md（每个项目目录独立）
 # 兼容 v3.1 单文件 loop-active.md（检查 started_cwd 匹配）
 # 兼容 legacy .claude/pua-loop.local.md
 # ═══════════════════════════════════════════════════════════════
 HOOK_SESSION_ID=$(echo "$HOOK_INPUT" | jq -r '.session_id // ""' 2>/dev/null || echo "")
-PUA_DIR="${HOME}/.claude/pua"
+DEFAULT_HOME="${HOME:-.}"
+PUA_DIR="${PUA_STATE_DIR:-${DEFAULT_HOME}/.pua}"
+LEGACY_PUA_DIR="${DEFAULT_HOME}/.claude/pua"
+mkdir -p "$PUA_DIR" .pua 2>/dev/null || true
+LOCAL_HISTORY_FILE=".pua/pua-loop-history.jsonl"
 CWD_HASH=$(printf '%s' "$(pwd)" | md5sum 2>/dev/null | cut -c1-8 || printf '%s' "$(pwd)" | md5 2>/dev/null | cut -c1-8 || echo "default")
 ABS_STATE_FILE="${PUA_DIR}/loop-${CWD_HASH}.md"
 LEGACY_ABS_STATE_FILE="${PUA_DIR}/loop-active.md"
-LEGACY_STATE_FILE=".claude/pua-loop.local.md"
+CLAUDE_ABS_STATE_FILE="${LEGACY_PUA_DIR}/loop-${CWD_HASH}.md"
+CLAUDE_LEGACY_ABS_STATE_FILE="${LEGACY_PUA_DIR}/loop-active.md"
+LOCAL_LEGACY_STATE_FILE=".pua/pua-loop.local.md"
+CLAUDE_LEGACY_STATE_FILE=".claude/pua-loop.local.md"
+
+cleanup_state_files() {
+  rm -f \
+    "$RALPH_STATE_FILE" \
+    "$ABS_STATE_FILE" \
+    "$LEGACY_ABS_STATE_FILE" \
+    "$CLAUDE_ABS_STATE_FILE" \
+    "$CLAUDE_LEGACY_ABS_STATE_FILE" \
+    "$LOCAL_LEGACY_STATE_FILE" \
+    "$CLAUDE_LEGACY_STATE_FILE" 2>/dev/null || true
+}
 
 if [[ -f "$ABS_STATE_FILE" ]]; then
   RALPH_STATE_FILE="$ABS_STATE_FILE"
@@ -72,13 +90,30 @@ elif [[ -f "$LEGACY_ABS_STATE_FILE" ]]; then
   LEGACY_CWD=$(sed -n '/^---$/,/^---$/{ /^---$/d; p; }' "$LEGACY_ABS_STATE_FILE" | grep '^started_cwd:' | sed 's/started_cwd: *//' | sed 's/^"\(.*\)"$/\1/' || true)
   if [[ "$LEGACY_CWD" == "$(pwd)" ]] || [[ -z "$LEGACY_CWD" ]]; then
     RALPH_STATE_FILE="$LEGACY_ABS_STATE_FILE"
-  elif [[ -f "$LEGACY_STATE_FILE" ]]; then
-    RALPH_STATE_FILE="$LEGACY_STATE_FILE"
+  elif [[ -f "$LOCAL_LEGACY_STATE_FILE" ]]; then
+    RALPH_STATE_FILE="$LOCAL_LEGACY_STATE_FILE"
+  elif [[ -f "$CLAUDE_LEGACY_STATE_FILE" ]]; then
+    RALPH_STATE_FILE="$CLAUDE_LEGACY_STATE_FILE"
   else
     exit 0
   fi
-elif [[ -f "$LEGACY_STATE_FILE" ]]; then
-  RALPH_STATE_FILE="$LEGACY_STATE_FILE"
+elif [[ -f "$CLAUDE_ABS_STATE_FILE" ]]; then
+  RALPH_STATE_FILE="$CLAUDE_ABS_STATE_FILE"
+elif [[ -f "$CLAUDE_LEGACY_ABS_STATE_FILE" ]]; then
+  LEGACY_CWD=$(sed -n '/^---$/,/^---$/{ /^---$/d; p; }' "$CLAUDE_LEGACY_ABS_STATE_FILE" | grep '^started_cwd:' | sed 's/started_cwd: *//' | sed 's/^"\(.*\)"$/\1/' || true)
+  if [[ "$LEGACY_CWD" == "$(pwd)" ]] || [[ -z "$LEGACY_CWD" ]]; then
+    RALPH_STATE_FILE="$CLAUDE_LEGACY_ABS_STATE_FILE"
+  elif [[ -f "$LOCAL_LEGACY_STATE_FILE" ]]; then
+    RALPH_STATE_FILE="$LOCAL_LEGACY_STATE_FILE"
+  elif [[ -f "$CLAUDE_LEGACY_STATE_FILE" ]]; then
+    RALPH_STATE_FILE="$CLAUDE_LEGACY_STATE_FILE"
+  else
+    exit 0
+  fi
+elif [[ -f "$LOCAL_LEGACY_STATE_FILE" ]]; then
+  RALPH_STATE_FILE="$LOCAL_LEGACY_STATE_FILE"
+elif [[ -f "$CLAUDE_LEGACY_STATE_FILE" ]]; then
+  RALPH_STATE_FILE="$CLAUDE_LEGACY_STATE_FILE"
 else
   exit 0
 fi
@@ -93,8 +128,8 @@ NOW=$(date +%s)
 if [[ "$MTIME" =~ ^[0-9]+$ ]] && [[ $((NOW - MTIME)) -gt 1800 ]]; then
   echo "🧹 PUA Loop: state file stale (>30min idle), reaping orphan" >&2
   echo "{\"status\":\"orphan_reaped\",\"state_file\":\"$RALPH_STATE_FILE\",\"age_sec\":$((NOW - MTIME)),\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> "${PUA_DIR}/loop-history.jsonl" 2>/dev/null || \
-    echo "{\"status\":\"orphan_reaped\",\"state_file\":\"$RALPH_STATE_FILE\",\"age_sec\":$((NOW - MTIME)),\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> .claude/pua-loop-history.jsonl 2>/dev/null || true
-  rm -f "$RALPH_STATE_FILE"
+    echo "{\"status\":\"orphan_reaped\",\"state_file\":\"$RALPH_STATE_FILE\",\"age_sec\":$((NOW - MTIME)),\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> "$LOCAL_HISTORY_FILE" 2>/dev/null || true
+  cleanup_state_files
   exit 0
 fi
 
@@ -137,21 +172,21 @@ fi
 # Validate iteration
 if [[ ! "$ITERATION" =~ ^[0-9]+$ ]]; then
   echo "⚠️  PUA Loop: State file corrupted (iteration: '$ITERATION')" >&2
-  rm "$RALPH_STATE_FILE"
+  cleanup_state_files
   exit 0
 fi
 
 if [[ ! "$MAX_ITERATIONS" =~ ^[0-9]+$ ]]; then
   echo "⚠️  PUA Loop: State file corrupted (max_iterations: '$MAX_ITERATIONS')" >&2
-  rm "$RALPH_STATE_FILE"
+  cleanup_state_files
   exit 0
 fi
 
 # Check max iterations
 if [[ $MAX_ITERATIONS -gt 0 ]] && [[ $ITERATION -ge $MAX_ITERATIONS ]]; then
   echo "🛑 PUA Loop: Max iterations ($MAX_ITERATIONS) reached."
-  echo "{\"iteration\":$ITERATION,\"status\":\"max_reached\",\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> .claude/pua-loop-history.jsonl 2>/dev/null || true
-  rm "$RALPH_STATE_FILE"
+  echo "{\"iteration\":$ITERATION,\"status\":\"max_reached\",\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> "$LOCAL_HISTORY_FILE" 2>/dev/null || true
+  cleanup_state_files
   exit 0
 fi
 
@@ -160,33 +195,54 @@ TRANSCRIPT_PATH=$(echo "$HOOK_INPUT" | jq -r '.transcript_path')
 
 if [[ ! -f "$TRANSCRIPT_PATH" ]]; then
   echo "⚠️  PUA Loop: Transcript not found" >&2
-  rm "$RALPH_STATE_FILE"
+  cleanup_state_files
   exit 0
 fi
 
-if ! grep -q '"role":"assistant"' "$TRANSCRIPT_PATH"; then
+if ! grep -Eq '"role"[[:space:]]*:[[:space:]]*"assistant"' "$TRANSCRIPT_PATH"; then
   echo "⚠️  PUA Loop: No assistant messages in transcript" >&2
-  rm "$RALPH_STATE_FILE"
+  cleanup_state_files
   exit 0
 fi
 
 # Extract last assistant text
-LAST_LINES=$(grep '"role":"assistant"' "$TRANSCRIPT_PATH" | tail -n 100) || true
+LAST_LINES=$(grep -E '"role"[[:space:]]*:[[:space:]]*"assistant"' "$TRANSCRIPT_PATH" | tail -n 100) || true
 if [[ -z "$LAST_LINES" ]]; then
-  rm "$RALPH_STATE_FILE"
+  cleanup_state_files
   exit 0
 fi
 
 set +e
 LAST_OUTPUT=$(echo "$LAST_LINES" | jq -rs '
-  map(.message.content[]? | select(.type == "text") | .text) | last // ""
+  def text_content($content):
+    if ($content | type) == "string" then
+      $content
+    elif ($content | type) == "array" then
+      ($content[]? | if type == "string" then . elif (.type == "text" or .type == "output_text") then (.text // "") else empty end)
+    else
+      empty
+    end;
+  [
+    .[] |
+    if (.role? == "assistant") then
+      text_content(.message.content? // .content?)
+    elif (.message.role? == "assistant") then
+      text_content(.message.content?)
+    elif (.payload.role? == "assistant") then
+      text_content(.payload.content?)
+    elif (.payload.message.role? == "assistant") then
+      text_content(.payload.message.content?)
+    else
+      empty
+    end
+  ] | last // ""
 ' 2>&1)
 JQ_EXIT=$?
 set -e
 
 if [[ $JQ_EXIT -ne 0 ]]; then
   echo "⚠️  PUA Loop: JSON parse failed" >&2
-  rm "$RALPH_STATE_FILE"
+  cleanup_state_files
   exit 0
 fi
 
@@ -196,8 +252,8 @@ fi
 ABORT_TEXT=$(echo "$LAST_OUTPUT" | perl -0777 -ne 'if (/<loop-abort>(.*?)<\/loop-abort>/s) { $t=$1; $t=~s/^\s+|\s+$//g; print $t }' 2>/dev/null || echo "")
 if [[ -n "$ABORT_TEXT" ]]; then
   echo "🛑 PUA Loop: <loop-abort> received. Reason: $ABORT_TEXT"
-  echo "{\"iteration\":$ITERATION,\"status\":\"abort\",\"reason\":\"$(echo "$ABORT_TEXT" | head -1 | tr '"' "'")\",\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> .claude/pua-loop-history.jsonl 2>/dev/null || true
-  rm "$RALPH_STATE_FILE"
+  echo "{\"iteration\":$ITERATION,\"status\":\"abort\",\"reason\":\"$(echo "$ABORT_TEXT" | head -1 | tr '"' "'")\",\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> "$LOCAL_HISTORY_FILE" 2>/dev/null || true
+  cleanup_state_files
   exit 0
 fi
 
@@ -211,8 +267,8 @@ if [[ -n "$PAUSE_TEXT" ]]; then
   echo ""
   echo "⏸️  PUA Loop paused (iteration $ITERATION)"
   echo "   Needs: $PAUSE_TEXT"
-  echo "   State saved. Resume by reopening Claude Code."
-  echo "{\"iteration\":$ITERATION,\"status\":\"pause\",\"reason\":\"$(echo "$PAUSE_TEXT" | head -1 | tr '"' "'")\",\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> .claude/pua-loop-history.jsonl 2>/dev/null || true
+  echo "   State saved. Resume by reopening Codex/Claude Code."
+  echo "{\"iteration\":$ITERATION,\"status\":\"pause\",\"reason\":\"$(echo "$PAUSE_TEXT" | head -1 | tr '"' "'")\",\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> "$LOCAL_HISTORY_FILE" 2>/dev/null || true
   exit 0
 fi
 
@@ -238,7 +294,7 @@ if [[ "$COMPLETION_PROMISE" != "null" ]] && [[ -n "$COMPLETION_PROMISE" ]]; then
 
         # Log rejection with verify output tail
         VERIFY_TAIL=$(echo "$VERIFY_OUTPUT" | tail -5 | tr '\n' ' ' | cut -c1-200)
-        echo "{\"iteration\":$ITERATION,\"status\":\"promise_rejected\",\"verify_exit\":$VERIFY_EXIT,\"rejections\":$PROMISE_REJECTIONS,\"verify_tail\":\"$(echo "$VERIFY_TAIL" | tr '"' "'")\",\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> .claude/pua-loop-history.jsonl 2>/dev/null || true
+        echo "{\"iteration\":$ITERATION,\"status\":\"promise_rejected\",\"verify_exit\":$VERIFY_EXIT,\"rejections\":$PROMISE_REJECTIONS,\"verify_tail\":\"$(echo "$VERIFY_TAIL" | tr '"' "'")\",\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> "$LOCAL_HISTORY_FILE" 2>/dev/null || true
 
         # Update state file: increment iteration + promise_rejections
         NEXT_ITERATION=$((ITERATION + 1))
@@ -251,7 +307,7 @@ if [[ "$COMPLETION_PROMISE" != "null" ]] && [[ -n "$COMPLETION_PROMISE" ]]; then
         PROMPT_TEXT=$(awk '/^---$/{i++; next} i>=2' "$RALPH_STATE_FILE")
         if [[ -z "$PROMPT_TEXT" ]]; then
           echo "⚠️  PUA Loop: State file corrupted" >&2
-          rm "$RALPH_STATE_FILE"
+          cleanup_state_files
           exit 0
         fi
 
@@ -261,7 +317,7 @@ if [[ "$COMPLETION_PROMISE" != "null" ]] && [[ -n "$COMPLETION_PROMISE" ]]; then
 
         # Stall escalation on repeated rejections
         if [[ $PROMISE_REJECTIONS -ge 5 ]]; then
-          REJECTION_MSG="$REJECTION_MSG | ⚠️ 已连续 ${PROMISE_REJECTIONS} 次虚假 promise！你在解决错误的问题。退回到需求本身重新理解。读 .claude/pua-loop-history.jsonl 了解失败模式。"
+          REJECTION_MSG="$REJECTION_MSG | ⚠️ 已连续 ${PROMISE_REJECTIONS} 次虚假 promise！你在解决错误的问题。退回到需求本身重新理解。读 .pua/pua-loop-history.jsonl 了解失败模式。"
         elif [[ $PROMISE_REJECTIONS -ge 3 ]]; then
           REJECTION_MSG="$REJECTION_MSG | ⚠️ 连续 ${PROMISE_REJECTIONS} 次验证失败。REASSESS：重读验证输出、搜索相关源码、列 3 个不同假设再行动。不要再用同样的方法。"
         fi
@@ -283,8 +339,8 @@ if [[ "$COMPLETION_PROMISE" != "null" ]] && [[ -n "$COMPLETION_PROMISE" ]]; then
     fi
 
     # ═══ PROMISE ACCEPTED ═══
-    echo "{\"iteration\":$ITERATION,\"status\":\"complete\",\"promise_rejections\":$PROMISE_REJECTIONS,\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> .claude/pua-loop-history.jsonl 2>/dev/null || true
-    rm "$RALPH_STATE_FILE"
+    echo "{\"iteration\":$ITERATION,\"status\":\"complete\",\"promise_rejections\":$PROMISE_REJECTIONS,\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> "$LOCAL_HISTORY_FILE" 2>/dev/null || true
+    cleanup_state_files
     exit 0
   fi
 fi
@@ -294,14 +350,14 @@ fi
 NEXT_ITERATION=$((ITERATION + 1))
 
 # Log continuation
-echo "{\"iteration\":$ITERATION,\"status\":\"continue\",\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> .claude/pua-loop-history.jsonl 2>/dev/null || true
+echo "{\"iteration\":$ITERATION,\"status\":\"continue\",\"timestamp\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"}" >> "$LOCAL_HISTORY_FILE" 2>/dev/null || true
 
 # Extract prompt
 PROMPT_TEXT=$(awk '/^---$/{i++; next} i>=2' "$RALPH_STATE_FILE")
 
 if [[ -z "$PROMPT_TEXT" ]]; then
   echo "⚠️  PUA Loop: State file corrupted (no prompt)" >&2
-  rm "$RALPH_STATE_FILE"
+  cleanup_state_files
   exit 0
 fi
 
@@ -320,7 +376,7 @@ if [[ $NEXT_ITERATION -le 3 ]]; then
 elif [[ $NEXT_ITERATION -le 7 ]]; then
   PUA_PRESSURE="▎ 第 ${NEXT_ITERATION} 轮了还没搞定？换方案，别原地打转。"
 elif [[ $NEXT_ITERATION -le 15 ]]; then
-  PUA_PRESSURE="▎ 第 ${NEXT_ITERATION} 轮。底层逻辑到底是什么？先 git log 看自己做了什么，读 .claude/pua-loop-history.jsonl 了解迭代历史。"
+  PUA_PRESSURE="▎ 第 ${NEXT_ITERATION} 轮。底层逻辑到底是什么？先 git log 看自己做了什么，读 .pua/pua-loop-history.jsonl 了解迭代历史。"
 elif [[ $NEXT_ITERATION -le 30 ]]; then
   PUA_PRESSURE="▎ 第 ${NEXT_ITERATION} 轮。3.25 的边缘了。穷尽了吗？git diff 确认没在重复。"
 elif [[ $NEXT_ITERATION -le 50 ]]; then

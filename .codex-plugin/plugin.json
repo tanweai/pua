@@ -1,0 +1,51 @@
+{
+  "name": "pua",
+  "version": "3.5.0",
+  "description": "Opt-in productivity coaching for Codex. Adds PUA skills, command aliases, and lifecycle hooks for evidence-first delivery, failure recovery, methodology switching, PUA Loop, and agent lifecycle accounting.",
+  "author": {
+    "name": "探微安全实验室",
+    "url": "https://github.com/tanweai"
+  },
+  "homepage": "https://openpua.ai",
+  "repository": "https://github.com/tanweai/pua",
+  "license": "MIT",
+  "keywords": [
+    "pua",
+    "codex",
+    "hooks",
+    "motivation",
+    "productivity",
+    "try-harder",
+    "retry",
+    "change-approach",
+    "frustration",
+    "quality-check",
+    "completion-checks",
+    "verify-before-done",
+    "evidence-first",
+    "agent-team",
+    "pua-loop",
+    "offline",
+    "feedback",
+    "jsonl"
+  ],
+  "skills": "./codex/",
+  "hooks": "./hooks/codex-hooks.json",
+  "interface": {
+    "displayName": "PUA",
+    "shortDescription": "Make Codex try harder with hooks",
+    "longDescription": "PUA for Codex bundles skills and lifecycle hooks for always-on coaching, frustration triggers, failure escalation, PreCompact checkpoints, PUA Loop continuation, and agent lifecycle accounting.",
+    "developerName": "TanWei Security Lab",
+    "category": "Productivity",
+    "capabilities": ["Skills", "Lifecycle hooks"],
+    "websiteURL": "https://openpua.ai",
+    "defaultPrompt": [
+      "Use $pua for this task.",
+      "Turn on PUA always-on mode.",
+      "Run this in PUA Loop until verified."
+    ],
+    "brandColor": "#f97316",
+    "composerIcon": "./assets/hero.jpeg",
+    "logo": "./assets/hero.jpeg"
+  }
+}

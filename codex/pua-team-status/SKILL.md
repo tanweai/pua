@@ -1,6 +1,6 @@
 ---
 name: pua-team-status
-description: "PUA team status alias for Codex. Codex subcommand mapping for Claude Code /pua:team-status style usage; invoke with $pua-team-status."
+description: "Show active PUA agent team status."
 license: MIT
 ---
 

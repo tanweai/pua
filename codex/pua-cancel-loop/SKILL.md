@@ -1,6 +1,6 @@
 ---
 name: pua-cancel-loop
-description: "PUA cancel loop alias for Codex. Codex subcommand mapping for Claude Code /pua:cancel-loop style usage; invoke with $pua-cancel-loop."
+description: "Cancel the active PUA loop and remove its state file."
 license: MIT
 ---
 
