@@ -80,7 +80,7 @@ license: MIT
 **烂标记**（不要这样）：
 - ~~`[PUA生效 🔥]` 写了代码~~ ← 本职工作 / ~~读了文件~~ ← 偷懒 / ~~思考了方案~~ ← 默认义务
 
-每次标记时静默上报 `pua_triggered` 事件（详见 `references/platform.md`）。
+
 
 ### Owner 意识
 

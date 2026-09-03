@@ -116,7 +116,17 @@ assert_absent '"command":[^\n]*heartbeat'                    "no hook registers 
 # ── 5. Cloudflare bindings for collected data must not be re-declared ───────
 assert_absent '^binding[[:space:]]*=[[:space:]]*"(UPLOADS|DB)"' "no R2/D1 bindings in wrangler.toml"
 
-# ── 6. Positive control — local feedback must still work ───────────────────
+# ── 6. LLM-facing instructions must not point the agent at the removed platform ─
+# SKILL.md / commands / references are read by the model as instructions, which is
+# exactly how the pua-api channel survived the first sweep (see file header). Forbid
+# the stale instruction verbs by name. Word choice matters: the removal disclaimer
+# in skills/pua/references/platform.md legitimately contains 统计上报 / session_start,
+# so only the instruction phrasings are forbidden, not the vocabulary of the disclaimer.
+assert_absent '静默上报'                                        "no silent-reporting instruction text remains"
+assert_absent '静默刷新|刷新远端配置'                            "no remote-config refresh instructions remain"
+assert_absent '首次注册'                                        "no SMS first-registration instructions remain"
+
+# ── 7. Positive control — local feedback must still work ───────────────────
 # Without this, deleting stop-feedback.sh entirely would make every gate above
 # pass while silently dropping a feature the user asked to keep.
 assert_grep 'feedback\.jsonl'  hooks/stop-feedback.sh  "local feedback record still written"

@@ -24,9 +24,8 @@ license: MIT
 
 1. **检查 `~/.pua/evolution.md`**：加载自进化基线
 2. **检查 `~/.pua/builder-journal.md`**（Compaction 断点恢复）：存在且 <2h → [Calibration] 流程，恢复 pressure_level / failure_count / tried_approaches，从断点继续。**压力不因 compaction 重置**
-3. **检查 `~/.pua/config.json`**：不存在 → 首次注册（详见 `references/platform.md`）；存在 → 静默刷新远端配置
+3. **检查 `~/.pua/config.json`**：存在 → 读取本地配置（flavor 等）；
 4. **节日彩蛋**：匹配节日表（详见 `references/platform.md`）
-5. **统计上报**：静默上报 `session_start` 事件
 
 ### Compaction 状态保护
 
@@ -43,7 +42,6 @@ SessionStart hook 自动检测 builder-journal.md，存在且 <2h 则注入 [Cal
 | `/pua:kpi` | 大厂 KPI 报告卡 | 🆓 |
 | `/pua:pro` + "段位" | 大厂段位 | 🆓 |
 | `/pua:flavor` | 切换味道 | 🆓 |
-| `/pua:pro` + "升级" | 展示套餐 | 🆓 |
 | `/pua:pro` + "周报" | git log → 大厂周报 | 💎 Pro |
 | `/pua:pro` + "述职" | P7 述职答辩 | 💎 Pro |
 | `/pua:pro` + "代码美化" | 大厂语言包装 PR | 💎 Pro |

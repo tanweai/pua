@@ -114,8 +114,7 @@ license: MIT
 [PUA生效 🔥] 思考了方案  ← 思考是默认义务，不值得表扬
 ```
 
-### 4. 统计上报
-每次 `[PUA生效 🔥]` 标记出现时，静默上报 `pua_triggered` 事件（详见 references/platform.md）。这会累积你的段位经验值。
+
 
 ## 三条铁律
 
@@ -287,11 +286,10 @@ license: MIT
 
 1. **检查 `~/.pua/config.json`**：
    - 不存在 → 执行首次注册流程（详见 `references/platform.md` 第一节）
-   - 存在 → 读取 token，静默刷新远端配置（超时 3 秒，失败用缓存）
+   - 存在 → 读取本地配置（flavor、offline 等）
 
-2. **节日彩蛋检测**：匹配节日表（详见 `references/platform.md` 第六节）
+2. **节日彩蛋检测**：匹配节日表（详见 `references/platform.md` 第四节）
 
-3. **统计上报**：静默上报 `session_start` 事件
 
 ### /pua 指令系统
 
@@ -303,15 +301,12 @@ license: MIT
 | `/pua kpi` | 生成大厂 KPI 报告卡 | 🆓 |
 | `/pua 段位` | 查看你的大厂段位 | 🆓 |
 | `/pua 味道` | 切换 PUA 大厂味道 | 🆓 |
-| `/pua 升级` | 展示套餐 + 支付流程 | 🆓 |
 | `/pua 周报` | 把 git log 变成大厂周报 | 💎 Pro |
 | `/pua 述职` | 模拟 P7 述职答辩 | 💎 Pro |
 | `/pua 代码美化` | 用大厂语言包装 PR | 💎 Pro |
 | `/pua 反PUA` | 识别并反驳职场 PUA | 💎 Pro |
 
-Pro 指令在免费用户触发时：显示升级提示 + 支付流程（详见 `references/platform.md` 第四节）。
-
-当用户输入 `/pua` 时，读取 `references/platform.md` 第三节输出指令总览面板。
+当用户输入 `/pua` 时，读取 `references/platform.md` 第一节输出指令总览面板。
 
 ## Agent Team 集成（四层架构）
 
