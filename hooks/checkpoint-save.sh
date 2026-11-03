@@ -51,6 +51,6 @@ fi
 # A PreCompact command hook may save local state, but it need not inject text.
 # Keep stdout empty so it cannot claim a task result or alter user-visible flow.
 printf '%s' "$HOOK_INPUT" | "$PUA_PY" "$PY_HELPER" checkpoint \
-  --home "$PY_HOME" --cwd "$PY_CWD" "${STATE_ARGS[@]}" >/dev/null 2>&1 || true
+  --home "$PY_HOME" --cwd "$PY_CWD" ${STATE_ARGS[@]+"${STATE_ARGS[@]}"} >/dev/null 2>&1 || true
 
 exit 0

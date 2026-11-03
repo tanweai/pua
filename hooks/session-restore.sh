@@ -52,7 +52,7 @@ except Exception:
     # runtime-state.py avoids creating a state directory when this exact scope
     # has no existing state file.
     printf '%s' "$HOOK_INPUT" | "$PUA_PY" "$CLEAR_PY_HELPER" clear \
-      --home "$CLEAR_PY_HOME" --cwd "$CLEAR_PY_CWD" "${CLEAR_STATE_ARGS[@]}" >/dev/null 2>&1 || true
+      --home "$CLEAR_PY_HOME" --cwd "$CLEAR_PY_CWD" ${CLEAR_STATE_ARGS[@]+"${CLEAR_STATE_ARGS[@]}"} >/dev/null 2>&1 || true
   fi
 fi
 
@@ -161,7 +161,7 @@ if [ -n "$PUA_PY" ]; then
       STATE_ARGS=(--state-dir "$PY_STATE_DIR")
     fi
     RESTORE_RESULT="$(printf '%s' "$HOOK_INPUT" | "$PUA_PY" "$PY_HELPER" restore \
-      --home "$PY_HOME" --cwd "$PY_CWD" "${STATE_ARGS[@]}" 2>/dev/null || true)"
+      --home "$PY_HOME" --cwd "$PY_CWD" ${STATE_ARGS[@]+"${STATE_ARGS[@]}"} 2>/dev/null || true)"
     RESTORE_ACTION=""
     RESTORE_COUNT=""
     RESTORE_LEVEL=""

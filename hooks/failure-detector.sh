@@ -88,7 +88,7 @@ if [ -n "${PUA_STATE_DIR:-}" ]; then
 fi
 
 RESULT="$(printf '%s' "$HOOK_INPUT" | "$PUA_PY" "$PY_HELPER" record \
-  --home "$PY_HOME" --cwd "$PY_CWD" "${STATE_ARGS[@]}" 2>/dev/null || true)"
+  --home "$PY_HOME" --cwd "$PY_CWD" ${STATE_ARGS[@]+"${STATE_ARGS[@]}"} 2>/dev/null || true)"
 ACTION=""
 COUNT=""
 LEVEL=""
